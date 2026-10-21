@@ -78,7 +78,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 .layout{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
 .side{display:contents}
-#next{order:1}#exams{order:2}#calcard{order:3}#goals{order:4}#tasksCard{order:5}
+#next{order:0}#capcard{order:1}#exams{order:2}#calcard{order:3}#goals{order:4}#tasksCard{order:5}
 @media (min-width:1080px){
   .layout{grid-template-columns:minmax(0,1fr) 380px;align-items:start}
   #calcard{grid-column:1;grid-row:1;position:sticky;top:12px}
@@ -685,6 +685,7 @@ function load(){
   return o;
 }
 let S=load();
+(function(){S.tasks=S.tasks.filter(t=>!t.ex||S.exams.some(x=>x.id===t.ex));const ids=new Set(S.tasks.map(t=>t.id));S.blocks=S.blocks.filter(b=>ids.has(b.tid));})();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 save();
 
@@ -790,6 +791,7 @@ function planExams(only){
   return {items,short};
 }
 function planApply(only){
+  S.noauto=false;
   if(!S.exams.some(x=>x.date>todayS())){say('Cargá un examen con fecha futura y armo el plan.');return;}
   const {items,short}=planExams(only);
   for(const it of items){
@@ -801,7 +803,20 @@ function planApply(only){
   const bad=Object.keys(short)[0];
   say(items.length?`Armé ${items.length} ${items.length===1?'bloque':'bloques'} de estudio${bad?'. No alcanza el tiempo para '+examOf(bad).name:''}`:(bad?`No hay lugar para más estudio de ${examOf(bad).name}`:'Ya tenés todo el estudio programado'));
 }
+function autoPlanQuiet(force){
+  if(force)S.noauto=false;
+  if(S.noauto||!S.exams.some(x=>x.date>todayS()))return 0;
+  const {items}=planExams(null);
+  for(const it of items){
+    const x=examOf(it.ex);x.seq=(x.seq||0)+1;
+    const et=examTitle(x,it.date,x.seq);
+    applyItem({date:it.date,s:it.s,m:it.m,a:'est',ex:x.id,tid:null,title:et.title,hint:et.hint},true);
+  }
+  if(items.length)save();
+  return items.length;
+}
 function undoAuto(){
+  S.noauto=true;
   const gone=new Set(S.tasks.filter(x=>x.auto&&!x.done).map(x=>x.id));
   const before=S.blocks.length;
   S.blocks=S.blocks.filter(b=>!(b.auto&&taskOf(b.tid)&&!taskOf(b.tid).done));
@@ -1426,6 +1441,9 @@ function capAdd(){
   if(rem!=null){if(p.s==null)say(`Anotado ${dayWord(p.date)}. Sin hora: te aviso a las 9:00`);if((S.rmode||'gcal')==='gcal')calCreate(t);else{t.rs='manual';save();render();}}
 }
 const FIRE_GRACE=90;
+function nfire(title,body){
+  try{if(window.Notification&&Notification.permission==='granted'&&S.ntf){new Notification(title,{body});}}catch(_){}
+}
 function dueFire(){
   const T=todayS(),now=nowM();let hit=null;
   for(const t of S.tasks){
@@ -1434,8 +1452,30 @@ function dueFire(){
     if(cur>=tr&&cur<st+FIRE_GRACE){t.fired=true;hit=t;}
     else if(cur>=st+FIRE_GRACE)t.fired=true;
   }
-  if(hit){save();const b=$('#ban');const when=hit.due===T?hm(hit.ds!=null?hit.ds:540):dayWord(hit.due)+' '+hm(hit.ds!=null?hit.ds:540);
+  S.nf=S.nf||{};let bh=null;
+  for(const b of blocksOf(T)){
+    const t=taskOf(b.tid);if(!t||t.done)continue;
+    const k=b.id+T;if(S.nf[k])continue;
+    if(now>=b.s-5&&now<b.s+FIRE_GRACE){S.nf[k]=1;bh={t:t.t,s:b.s};}
+    else if(now>=b.s+FIRE_GRACE)S.nf[k]=1;
+  }
+  if(bh){nfire('Empieza ahora',bh.t+' · '+hm(bh.s));save();const b=$('#ban');b.innerHTML=`<span>Empieza ${hm(bh.s)}: ${esc(bh.t)}</span><button class="sm" data-banx="1">Listo</button>`;b.hidden=false;}
+  if(hit){nfire(hit.t,(hit.due===T?'Hoy ':dayWord(hit.due)+' ')+hm(hit.ds!=null?hit.ds:540));save();const b=$('#ban');const when=hit.due===T?hm(hit.ds!=null?hit.ds:540):dayWord(hit.due)+' '+hm(hit.ds!=null?hit.ds:540);
     b.innerHTML=`<span>${esc(hit.t)} · ${when}</span><button class="sm" data-banx="1">Listo</button>`;b.hidden=false;}
+}
+function nstate(){
+  if(!window.Notification)return 'No disponible en este navegador';
+  if(Notification.permission==='denied')return 'Bloqueados en el navegador';
+  return (S.ntf&&Notification.permission==='granted')?'Activados · tocá para apagar':'Activar';
+}
+async function toggleNtf(){
+  if(!window.Notification){say('Este navegador no permite avisos desde la página.');return;}
+  if(S.ntf){S.ntf=false;save();renderCap();say('Avisos de la Mac apagados');return;}
+  let r=Notification.permission;
+  try{if(r!=='granted')r=await Notification.requestPermission();}catch(_){}
+  if(r==='granted'){S.ntf=true;save();nfire('Mi semana','Listo, te voy a avisar mientras esta pestaña esté abierta.');say('Avisos activados');}
+  else say('No te dejó activarlos. Permitilos en los ajustes del sitio del navegador.');
+  renderCap();
 }
 function renderCap(){
   const up=S.tasks.filter(t=>t.rem!=null&&t.due&&!t.done&&t.due>=todayS()).sort((a,b)=>(a.due+hm(a.ds||0)).localeCompare(b.due+hm(b.ds||0))).slice(0,6);
@@ -1451,7 +1491,7 @@ function renderCap(){
   }).join('');
   const mode=S.rmode||'gcal';
   const stTxt={unknown:'Todavía no probé la conexión.',ok:'<b>Conectado.</b> Los avisos se crean solos en tu Google Calendar.',nomcp:'<b>No disponible acá.</b> Esta copia de la app no está dentro de Claude, así que no puede crear avisos sola. Abrí la app desde el link de Claude o usá los botones de cada aviso.',needs_reauth:'<b>Hay que reconectar.</b> En Claude, andá a Conectores y volvé a conectar Google Calendar.',server_not_connected:'<b>No está conectado.</b> En Claude, andá a Conectores y conectá Google Calendar con tu cuenta.',not_granted:'<b>Sin permiso.</b> Cuando Claude te pregunte, tocá Permitir.',err:'<b>No pude conectar.</b> Probá de nuevo en un rato.'};
-  $('#remst').innerHTML=`<div class="cfg"><label>Cómo crear los avisos<select id="rmode"><option value="gcal"${mode==='gcal'?' selected':''}>Automático en Google Calendar</option><option value="manual"${mode==='manual'?' selected':''}>Yo los agrego (Mac o Google)</option></select></label><div class="st" id="rst">${stTxt[calStat]||stTxt.err}</div><div class="row2"><button class="sm" id="rtest" type="button">Probar conexión</button><button class="sm ghost" id="rall" type="button">Todos al Calendario de la Mac</button></div><div class="st">Esta página no puede mandar notificaciones sola. Los avisos los hace tu Calendario, y mientras la app está abierta también ves un cartel arriba.</div></div>`;
+  $('#remst').innerHTML=`<div class="cfg"><label>Cómo crear los avisos<select id="rmode"><option value="gcal"${mode==='gcal'?' selected':''}>Automático en Google Calendar</option><option value="manual"${mode==='manual'?' selected':''}>Yo los agrego (Mac o Google)</option></select></label><div class="st" id="rst">${stTxt[calStat]||stTxt.err}</div><div class="row2"><button class="sm" id="rtest" type="button">Probar conexión</button><button class="sm ghost" id="rall" type="button">Todo al Calendario de la Mac</button></div><div class="st"><b>Avisos de la Mac</b> (mientras esta pestaña esté abierta): <button class="sm" id="ntog" type="button">${nstate()}</button></div><div class="st">Esta página no puede mandar notificaciones sola. Los avisos los hace tu Calendario, y mientras la app está abierta también ves un cartel arriba.</div></div>`;
   const ex=['Dentista el jueves a las 10, avisame','Comprar leche y pan','Pagar la luz el 25','Idea: app para el estudio','Mañana 18hs gimnasio, avisame 30 min antes'];
   $('#capx').innerHTML=ex.map(x=>`<button class="ghost" data-capx="${esc(x)}">${esc(x)}</button>`).join('');
 }
@@ -1498,7 +1538,15 @@ document.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.dataset.capx!==undefined){const i=$('#capi');i.value=b.dataset.capx;renderPv();i.focus();}
   else if(b.id==='rtest'){testConn();}
-  else if(b.id==='rall'){const l=S.tasks.filter(t=>t.rem!=null&&t.due&&!t.done&&t.due>=todayS());if(!l.length)say('No hay avisos por agregar.');else saveIcs(icsOf(l),'avisos-mi-semana.ics');}
+  else if(b.id==='ntog'){toggleNtf();}
+  else if(b.id==='rall'){
+    const T=todayS();
+    const l=S.tasks.filter(t=>t.rem!=null&&t.due&&!t.done&&t.due>=T);
+    const bl=S.blocks.filter(x=>x.date>=T&&taskOf(x.tid)&&!taskOf(x.tid).done).map(x=>({id:'b'+x.id,t:taskOf(x.tid).t,due:x.date,ds:x.s,m:x.m,rem:10}));
+    const ids=new Set(l.map(t=>t.due+'|'+t.ds+'|'+t.t));
+    const all=l.concat(bl.filter(x=>!ids.has(x.due+'|'+x.ds+'|'+x.t)));
+    if(!all.length)say('No hay nada por agregar todavía.');else saveIcs(icsOf(all),'mi-semana.ics');
+  }
   else if(b.dataset.ics!==undefined){const t=taskOf(b.dataset.ics);if(t)saveIcs(icsOf([t]),'aviso-mi-semana.ics');}
   else if(b.dataset.gcl!==undefined){const t=taskOf(b.dataset.gcl);if(t)window.open(gclUrl(t),'_blank','noopener');}
   else if(b.dataset.retry!==undefined){const t=taskOf(b.dataset.retry);if(t)calCreate(t);}
@@ -1538,6 +1586,11 @@ async function initSync(){
 }
 
 /* Traer mi estudio: importa el backup del Estudio Tracker */
+function cleanOrphans(){
+  S.tasks=S.tasks.filter(t=>!t.ex||S.exams.some(x=>x.id===t.ex));
+  const ids=new Set(S.tasks.map(t=>t.id));
+  S.blocks=S.blocks.filter(b=>ids.has(b.tid));
+}
 function importET(o){
   if(!o||o.format!=='estudio-tracker-backup'||!Array.isArray(o.mats))throw new Error('formato');
   const T=todayS(),hist=o.history||{};
@@ -1547,7 +1600,7 @@ function importET(o){
     if(/^\d{4}-\d{2}-\d{2}$/.test(d)){S.log[d]=m;days++;mins+=m;}
     for(const id in (h.mats||{}))tot[id]=(tot[id]||0)+(+h.mats[id]||0);
   }
-  S.exams=S.exams.filter(x=>!x.ej);
+  S.exams=S.exams.filter(x=>!x.ej);cleanOrphans();
   let n=0,upd=0;
   for(const m of o.mats){
     const name=String(m.name||'').trim();if(!name)continue;
@@ -1560,7 +1613,7 @@ function importET(o){
     S.exams.push({id:uid(),src:'et'+m.id,name,date:m.exam,need:Math.max(600,units*150),done,ci,units,seq:0});n++;
   }
   const cut=addD(T,-120);for(const d in S.log)if(d<cut)delete S.log[d];
-  save();render();
+  autoPlanQuiet(true);save();render();
   say(`Traje ${n} ${n===1?'examen':'exámenes'}${upd?' y actualicé '+upd:''}. Estudio registrado: ${fmtH(mins)} h en ${days} días.`);
 }
 $('#impBtn').addEventListener('click',()=>$('#impFile').click());
@@ -1590,7 +1643,7 @@ $('#exf').addEventListener('submit',e=>{
   const used=new Set(S.exams.map(x=>x.ci));let ci=0;while(used.has(ci)&&ci<5)ci++;
   if(used.has(ci))ci=S.exams.length%6;
   S.exams.push({id:uid(),name,date,need:Math.round(h*60),done:0,ci,units:u,seq:0});
-  exForm=false;f.reset();save();render();say('Examen guardado. Tocá "Armar plan de estudio".');
+  exForm=false;f.reset();const np=autoPlanQuiet(true);save();render();say(np?`Examen guardado. Armé ${np} bloques de estudio en tu calendario.`:'Examen guardado.');
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('#modal').hidden)closeModal();if(!$('#hmodal').hidden)closeH();}});
 $('#hmodal').addEventListener('click',e=>{if(e.target.id==='hmodal')closeH();});
@@ -1630,6 +1683,7 @@ document.addEventListener('click',e=>{
 });
 
 fillStatic();
+autoPlanQuiet();
 render();
 dueFire();
 initSync();
