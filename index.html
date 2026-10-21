@@ -685,6 +685,7 @@ function load(){
   return o;
 }
 let S=load();
+S.mats=Array.isArray(S.mats)?S.mats:[];
 (function(){S.tasks=S.tasks.filter(t=>!t.ex||S.exams.some(x=>x.id===t.ex));const ids=new Set(S.tasks.map(t=>t.id));S.blocks=S.blocks.filter(b=>ids.has(b.tid));})();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 save();
@@ -893,7 +894,7 @@ const whenTxt=(date,s)=>{const T=todayS(),h='a las '+hm(s);return date===T?'hoy 
 
 /* Temporizador */
 let timer={tid:null,end:0,iv:null,done:false};
-let sel=dow(todayS()),delId=null,delF=null,delX=null,pick=null,altIdx=0,exForm=false;
+let sel=dow(todayS()),delId=null,delF=null,delX=null,pick=null,altIdx=0,exForm=false,exEdit=null;
 function resetTimer(){clearInterval(timer.iv);timer={tid:null,end:0,iv:null,done:false};}
 function startTimer(tid,min=25){
   clearInterval(timer.iv);
@@ -1045,6 +1046,8 @@ function renderExams(){
   const list=[...S.exams].sort((a,b)=>a.date<b.date?-1:1);
   const sim=planExams();
   $('#exBtn').textContent=exForm?'Cerrar':'+ Examen';
+  $('#subjects').innerHTML=[...new Set(S.mats.concat(['Instituciones de Derecho Administrativo','Derecho de Familia','Derecho del Trabajo']))].map(n=>`<option value="${esc(n)}">`).join('');
+  const sb=$('#exf button[type=submit]');if(sb)sb.textContent=exEdit?'Guardar cambios':'Guardar examen';
   $('#exf').hidden=!exForm;
   const anyEj=S.exams.some(x=>x.ej);
   $('#exlist').innerHTML=(anyEj?'<p class="empty" style="margin:0">Los exámenes marcados como "Ejemplo" son de muestra. Borralos y cargá los tuyos.</p>':'')+
@@ -1056,7 +1059,7 @@ function renderExams(){
     for(let i=0;i<n;i++){const lim=(i+1)*unit-unit/2;stn+=`<span class="stn ${st.done>=lim?'f':st.done+st.planned>=lim?'p':''}"></span>`;}
     const sh=sim.short[x.id];
     return `<div class="ex x${x.ci%6} ${dl<0?'past':''}">
-      <div class="exh"><span class="exdot"></span><span class="exn">${esc(x.name)}</span>${x.ej?'<span class="eje">Ejemplo</span>':''}<button class="ic" data-exdel="${x.id}" aria-label="Borrar examen">${delX===x.id?'¿Borrar?':'✕'}</button></div>
+      <div class="exh"><span class="exdot"></span><span class="exn">${esc(x.name)}</span>${x.ej?'<span class="eje">Ejemplo</span>':''}<button class="ic" data-exedit="${x.id}" aria-label="Editar examen" title="Editar">✎</button><button class="ic" data-exdel="${x.id}" aria-label="Borrar examen">${delX===x.id?'¿Borrar?':'✕'}</button></div>
       <p class="exd">Rendís el <b>${fmtDate(x.date)}</b> · ${dl>1?`faltan <b>${dl} días</b>`:dl===1?'<b>es mañana</b>':dl===0?'<b>es hoy</b>':'ya pasó'}${x.units>0?` · ${x.units} unidades`:''}</p>
       <div class="stl" role="img" aria-label="Estudio: ${fmtH(st.done)} horas hechas de ${fmtH(x.need)}">${stn}</div>
       <p class="exm">Hecho ${fmtH(st.done)} h · Programado ${fmtH(st.planned)} h · Sin programar ${fmtH(st.remaining)} h</p>
@@ -1600,6 +1603,7 @@ function importET(o){
     if(/^\d{4}-\d{2}-\d{2}$/.test(d)){S.log[d]=m;days++;mins+=m;}
     for(const id in (h.mats||{}))tot[id]=(tot[id]||0)+(+h.mats[id]||0);
   }
+  S.mats=o.mats.map(m=>String(m.name||'').trim()).filter(Boolean);
   S.exams=S.exams.filter(x=>!x.ej);cleanOrphans();
   let n=0,upd=0;
   for(const m of o.mats){
@@ -1616,6 +1620,14 @@ function importET(o){
   autoPlanQuiet(true);save();render();
   say(`Traje ${n} ${n===1?'examen':'exámenes'}${upd?' y actualicé '+upd:''}. Estudio registrado: ${fmtH(mins)} h en ${days} días.`);
 }
+function readBackup(f){
+  const r=new FileReader();
+  r.onload=()=>{try{importET(JSON.parse(r.result));}catch(_){say('Ese archivo no parece un backup del Estudio Tracker.');}};
+  r.onerror=()=>say('No pude leer el archivo.');
+  r.readAsText(f);
+}
+window.addEventListener('dragover',e=>{if(e.dataTransfer&&[...e.dataTransfer.types].includes('Files'))e.preventDefault();});
+window.addEventListener('drop',e=>{const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];if(!f)return;e.preventDefault();readBackup(f);});
 $('#impBtn').addEventListener('click',()=>$('#impFile').click());
 $('#impFile').addEventListener('change',e=>{
   const f=e.target.files&&e.target.files[0];if(!f)return;
@@ -1639,6 +1651,18 @@ $('#exf').addEventListener('submit',e=>{
   e.preventDefault();
   const f=e.target,name=f.n.value.trim(),date=f.d.value,h=+f.h.value,u=Math.max(0,Math.floor(+f.u.value||0));
   if(!name||!date||!(h>0))return;
+  if(exEdit){
+    const x=examOf(exEdit);
+    if(x){
+      const old=x.name;x.name=name;x.date=date;x.need=Math.round(h*60);x.units=u;x.ej=false;
+      for(const t of S.tasks){if(t.ex===x.id&&t.t.startsWith(old))t.t=name+t.t.slice(old.length);}
+      const gone=new Set(S.tasks.filter(t=>t.ex===x.id&&t.auto&&!t.done).map(t=>t.id));
+      S.tasks=S.tasks.filter(t=>!gone.has(t.id));S.blocks=S.blocks.filter(b=>!gone.has(b.tid));
+      exEdit=null;exForm=false;f.reset();const np=autoPlanQuiet(true);save();render();
+      say('Examen actualizado'+(np?'. Rehice el plan de estudio.':'.'));
+    }
+    return;
+  }
   if(date<=todayS()){say('La fecha del examen tiene que ser posterior a hoy.');return;}
   const used=new Set(S.exams.map(x=>x.ci));let ci=0;while(used.has(ci)&&ci<5)ci++;
   if(used.has(ci))ci=S.exams.length%6;
@@ -1667,7 +1691,13 @@ document.addEventListener('click',e=>{
     else{S.fixed=S.fixed.filter(f=>f.id!==d.fdel);delF=null;save();renderH();render();}
   }
   else if(d.pick!==undefined){pickAssign(+d.pick);}
-  else if(d.exform!==undefined){exForm=!exForm;renderExams();if(exForm)$('#exf').n.focus();}
+  else if(d.exform!==undefined){exForm=!exForm;if(!exForm){exEdit=null;$('#exf').reset();}renderExams();if(exForm)$('#exf').n.focus();}
+  else if(d.exedit!==undefined){
+    const x=examOf(d.exedit);if(!x)return;
+    exEdit=x.id;exForm=true;const f=$('#exf');
+    f.n.value=x.name;f.d.value=x.date;f.h.value=Math.round(x.need/60);f.u.value=x.units||'';
+    renderExams();f.scrollIntoView({block:'nearest',behavior:'smooth'});f.n.focus();
+  }
   else if(d.plan!==undefined){planApply(d.plan==='all'?null:d.plan);}
   else if(d.replan!==undefined){undoAuto();planApply(null);}
   else if(d.undo!==undefined){const n=undoAuto();say(`Quité ${n} bloques del plan`);}
