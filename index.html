@@ -484,6 +484,7 @@ html,body{overflow-x:hidden;max-width:100%}
 .localban{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:12px 16px;border-radius:22px;background:var(--surface);border:2px solid var(--line2);font-size:13.5px}
 .localban[hidden]{display:none}
 .localban p{margin:0;flex:1 1 220px;min-width:0}
+body:has(.modal:not([hidden])) #msg{top:calc(12px + env(safe-area-inset-top,0px));bottom:auto}
 #msg button{margin-left:10px;min-height:30px;padding:2px 12px;font-size:13px;color:var(--bg);border-color:var(--bg);background:transparent}
 .paceb{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13px;margin:0;padding:8px 10px;border-radius:14px;background:var(--surface2)}
 .paceb span{flex:1 1 200px;min-width:0}
@@ -1114,6 +1115,8 @@ body.apopen{overflow:hidden}
     <div id="gBody" class="sbody"></div>
     <h4>Entre la Mac y el celular</h4>
     <div id="sBody" class="sbody"></div>
+    <h4>Notificaciones de la Mac</h4>
+    <div id="ntfBody" class="sbody"></div>
     <h4>Avisos</h4>
     <div class="remst" id="remst"></div>
     <h4>Copias automáticas</h4>
@@ -2376,8 +2379,8 @@ function capAdd(){
   if(rem!=null){if(p.s==null)say(`Anotado ${dayWord(p.date)}. Sin hora: te aviso a las 9:00`);if((S.rmode||'gcal')==='gcal')calCreate(t);else{t.rs='manual';save();render();}}
 }
 const FIRE_GRACE=90;
-function nfire(title,body){
-  try{if(window.Notification&&Notification.permission==='granted'&&S.ntf){new Notification(title,{body});}}catch(_){}
+function nfire(title,body,tag){
+  try{if(window.Notification&&Notification.permission==='granted'&&S.ntf){const n=new Notification(title,Object.assign({body,icon:'icon-192.png'},tag?{tag}:{}));n.onclick=()=>{try{window.focus();}catch(_){}n.close();};}}catch(_){}
 }
 function dueFire(){
   const T=todayS(),now=nowM();let hit=null;
@@ -2391,17 +2394,18 @@ function dueFire(){
   for(const b of blocksOf(T)){
     const t=taskOf(b.tid);if(!t||t.done)continue;
     const k=b.id+T;if(S.nf[k])continue;
-    if(now>=b.s-5&&now<b.s+FIRE_GRACE){S.nf[k]=1;bh={t:t.t,s:b.s};}
+    if(now>=b.s-(S.ntfLead==null?5:S.ntfLead)&&now<b.s+FIRE_GRACE){S.nf[k]=1;bh={t:t.t,s:b.s};}
     else if(now>=b.s+FIRE_GRACE)S.nf[k]=1;
   }
   for(const h of habTimed(T)){
     if(habDone(h,T))continue;const k='h'+h.id+T;if(S.nf[k])continue;
-    if(now>=h.s-5&&now<h.s+FIRE_GRACE){S.nf[k]=1;if(!bh)bh={t:h.n,s:h.s};}
+    if(now>=h.s-(S.ntfLead==null?5:S.ntfLead)&&now<h.s+FIRE_GRACE){S.nf[k]=1;if(!bh)bh={t:h.n,s:h.s};}
     else if(now>=h.s+FIRE_GRACE)S.nf[k]=1;
   }
-  if(bh){nfire('Empieza ahora',bh.t+' · '+hm(bh.s));save();const b=$('#ban');b.innerHTML=`<span>Empieza ${hm(bh.s)}: ${esc(bh.t)}</span><button class="sm" data-banx="1">Listo</button>`;b.hidden=false;}
+  if(bh){if(typeof ntfK!=='function'||ntfK().bk)nfire(bh.s>now?'Empieza a las '+hm(bh.s):'Empieza ahora',bh.t,'bk'+bh.s+T);save();const b=$('#ban');b.innerHTML=`<span>Empieza ${hm(bh.s)}: ${esc(bh.t)}</span><button class="sm" data-banx="1">Listo</button>`;b.hidden=false;}
   if(hit){nfire(hit.t,(hit.due===T?'Hoy ':dayWord(hit.due)+' ')+hm(hit.ds!=null?hit.ds:540));save();const b=$('#ban');const when=hit.due===T?hm(hit.ds!=null?hit.ds:540):dayWord(hit.due)+' '+hm(hit.ds!=null?hit.ds:540);
     b.innerHTML=`<span>${esc(hit.t)} · ${when}</span><button class="sm" data-banx="1">Listo</button>`;b.hidden=false;}
+  if(typeof ntfMore==='function')ntfMore();
 }
 function nstate(){
   if(!window.Notification)return 'No disponible en este navegador';
@@ -2492,6 +2496,7 @@ function icsAll(){
   const blocks=S.blocks.filter(b=>b.date>=cut&&taskOf(b.tid)&&!taskOf(b.tid).done);
   const exams=S.exams.filter(x=>x.date>=T);
   const habs=[];for(let i=0;i<14;i++){const d=addD(T,i);for(const h of habTimed(d))habs.push({uid:'h'+h.id+'-'+ymd(d),date:d,s:h.s,m:h.m,title:h.n,desc:'Rutina · Mi semana',alarms:bkR()==null?[]:[bkR()]});}
+  for(let i=0;i<14;i++){const d=addD(T,i),ida=travelOn(d).find(t=>t.k==='ida');if(ida)habs.push({uid:'tv-'+ymd(d),date:d,s:ida.s,m:ida.e-ida.s,title:'Salir para la facultad',desc:'Viaje · Mi semana',alarms:[10]});}
   return {count:tasks.length+blocks.length+exams.length+habs.length,text:icsOf([...tasks.map(evTask),...blocks.map(evBlock),...exams.map(evExam),...habs])};
 }
 async function saveIcs(text,name){
@@ -2613,7 +2618,7 @@ async function gh(path,opt={}){
   return r.status===204?null:r.json();
 }
 const syPayload=()=>JSON.stringify({app:'mi-semana',v:1,upd:S.upd||0,dev:devName(),S});
-const syFiles=()=>({[GFILE]:{content:syPayload()},[GICS]:{content:icsAll().text}});
+const syFiles=()=>Object.assign({[GFILE]:{content:syPayload()},[GICS]:{content:icsAll().text}},typeof xFiles==='function'?xFiles():{});
 async function syRead(g){
   const f=g&&g.files&&g.files[GFILE];if(!f)return null;
   let txt=f.content;
@@ -2646,12 +2651,19 @@ async function syncNow(manual){
   try{
     const g=await gh('/gists/'+SY.gist);if(g.owner)SY.login=g.owner.login;
     const r=await syRead(g);
+    let m=null,here=false,thereS=false;
+    if(r){m=mergeS(S,r.S);here=canon(m)!==canon(S);thereS=canon(m)!==canon(r.S);if(here)adopt({S:m,upd:m.upd});}
+    /* Primero se junta Mi semana y después las otras apps, así los exámenes que llegan de Estudio no se duplican */
+    const xp=typeof xPull==='function'?await xPull(g):{pulled:[],push:false};
+    if(typeof dedupeExams==='function'&&dedupeExams()){save();render();thereS=true;}
+    const who=(r&&r.dev)||'tu otro dispositivo';
     if(!r){await syPush();if(manual)say('Cambios subidos');}
     else{
-      const m=mergeS(S,r.S),here=canon(m)!==canon(S),there=canon(m)!==canon(r.S);
-      if(here){adopt({S:m,upd:m.upd});say(there?'Combiné tus cambios con los de '+(r.dev||'tu otro dispositivo'):'Traje los cambios de '+(r.dev||'tu otro dispositivo'));}
-      if(there){await syPush();if(manual&&!here)say('Cambios subidos');}
-      if(!here&&!there){SY.base=r.upd;SY.hash=hashS();if(manual)say('Ya estaba todo al día');}
+      const there=thereS||xp.push||canon(S)!==canon(r.S);
+      const got=[here?'Mi semana':null,...xp.pulled].filter(Boolean);
+      if(got.length)say((there?'Combiné tus cambios con los de ':'Traje lo nuevo de ')+(there?who:got.join(', ')+' desde '+who));
+      if(there){await syPush();if(manual&&!got.length)say('Cambios subidos');}
+      if(!got.length&&!there){SY.base=r.upd;SY.hash=hashS();if(manual)say('Ya estaba todo al día');}
     }
     SY.at=Date.now();
   }catch(e){SY.err=syErr(e);if(manual)say(SY.err);}
@@ -2708,6 +2720,7 @@ function renderSync(){
     const raw=`https://gist.githubusercontent.com/${SY.login||'TU-USUARIO'}/${SY.gist}/raw/${GICS}`;
     h=`<p style="margin:0">${SY.err?`<span class="bad">${esc(SY.err)}</span>`:`<span class="ok">✓ Sincronizando</span> con GitHub${SY.login?' (@'+esc(SY.login)+')':''}${ago?' · última vez '+ago:''}.`}</p>
       <p class="st">Se sincroniza solo cuando cambiás algo, al abrir la app y cada 2 minutos mientras está abierta. Si cambiás cosas distintas en cada lado, se juntan; si tocás lo mismo en los dos, queda la versión más nueva.</p>
+      ${APPS_ON?`<div class="xs"><p class="st" style="margin-top:6px"><b>También viajan tus otras apps:</b></p>${Object.keys(XAPPS).map(a=>{const m=XM[a],d=m&&m.t?new Date(m.t):null;return `<label class="aichk"><input type="checkbox" data-xs="${a}" ${xOn(a)?'checked':''}> ${APPS[a].n}${d?` <span class="st">· último cambio ${dayWord(iso(d))} ${hm(d.getHours()*60+d.getMinutes())}</span>`:' <span class="st">· todavía sin datos acá</span>'}</label>`;}).join('')}<p class="st">Viaja lo que cada app guarda en este navegador. Si la misma app cambió en los dos dispositivos entre una sincronización y otra, queda la versión más nueva. No viajan los apuntes y archivos que subiste a Estudio, ni las fotos de tickets, ni el código de bloqueo y el buzón de Gastos.</p></div>`:''}
       <div class="row"><button class="sm" id="syNow" type="button">Sincronizar ahora</button><button class="sm ghost" id="syOff" type="button">${syOff?'¿Seguro? Tocá de nuevo':'Desconectar este dispositivo'}</button></div>
       <h4>Avisos automáticos en el Calendario de la Mac</h4>
       <ol><li>En Calendario: Archivo → Nueva suscripción a calendario.</li><li>Pegá esta dirección:</li></ol>
@@ -2720,11 +2733,12 @@ function renderSync(){
         <li>En <b>Permissions → Account → Gists</b> elegí <b>Read and write</b>. No le des ningún otro permiso. Ponele vencimiento de un año.</li>
         <li>Pegalo acá y tocá Conectar. En el otro dispositivo hacé lo mismo, con el mismo token o con otro: la app encuentra tus datos sola.</li></ol>
       <div class="url"><input id="syTok" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…" aria-label="Token de GitHub"><button class="sm btn" id="syGo" type="button">${syBusy?'Conectando…':'Conectar'}</button></div>
+      <p class="st">Sincroniza Mi semana y, en tu app de GitHub, también Estudio, Gastos, Inglés y Ajedrez.</p>
       <p class="st">Tus datos quedan en un <b>gist secreto</b> de tu cuenta: no aparece en tu perfil ni en búsquedas, pero cualquiera con la dirección exacta lo puede leer. El token queda guardado solo en este navegador y no viaja con los datos.</p>`;
   }
   $('#sBody').innerHTML=h;
 }
-function openS(){syOff=false;renderSync();renderBk();renderG();renderCap();$('#smodal').hidden=false;}
+function openS(){syOff=false;renderSync();renderBk();renderG();renderCap();if(typeof renderNtf==='function')renderNtf();$('#smodal').hidden=false;}
 function closeS(){$('#smodal').hidden=true;$('#bkAsk').innerHTML='';bkPend=null;}
 $('#smodal').addEventListener('click',e=>{
   if(e.target.id==='smodal'||e.target.closest('[data-sclose]')){closeS();return;}
@@ -3852,6 +3866,7 @@ function gWanted(){
   for(const b of S.blocks){if(b.date<T)continue;const t=taskOf(b.tid);if(!t||t.done)continue;const x=t.ex&&examOf(t.ex);timed('b'+b.id,b.date,b.s,b.m,t.t,'Mi semana'+(x?' · Examen: '+x.name:'')+(t.h?'\n'+t.h:''),t.rem!=null?t.rem:bkR(),x?'2':'7');}
   for(const t of S.tasks){if(t.done||t.note||!t.due||t.due<T||isScheduled(t.id)||t.ds==null)continue;timed('t'+t.id,t.due,t.ds,t.m||30,t.t,'Mi semana · aviso',t.rem,'5');}
   for(const x of S.exams){if(x.date<T)continue;W.set('x'+x.id,{summary:'Examen: '+x.name,description:'Mi semana',start:{date:x.date},end:{date:addD(x.date,1)},transparency:'transparent',reminders:{useDefault:false,overrides:[{method:'popup',minutes:900}]},colorId:'11',extendedProperties:{private:{misemana:'1',mk:'x'+x.id}}});}
+  for(let i=0;i<14;i++){const d=addD(T,i),ida=travelOn(d).find(t=>t.k==='ida');if(ida)timed('tv'+d.replace(/-/g,''),d,ida.s,ida.e-ida.s,'Salir para la facultad','Mi semana · viaje',10,'8');}
   if(GG.rt)for(let i=0;i<14;i++){const d=addD(T,i);for(const h of habTimed(d))timed('h'+h.id+d.replace(/-/g,''),d,h.s,h.m,h.n,'Mi semana · rutina',bkR(),'10');}
   return W;
 }
@@ -4361,6 +4376,136 @@ function autoHabits(){
 setTimeout(autoHabits,800);
 setInterval(autoHabits,120000);
 
+/* ===== Sincronizar también Estudio, Gastos, Inglés y Ajedrez (en el mismo gist secreto) =====
+   Cada app viaja entera en su propio archivo. Si cambió en los dos dispositivos, queda la versión más nueva.
+   De Gastos no viajan el código de bloqueo ni las claves del buzón: quedan solo en cada dispositivo. */
+var XAPPS={
+  estudio:{re:/^(pom_mats|pom_history|pom_weekly_goal|pom_custom_study|pom_custom_break|pom_recall|carrera_v2|fc_use_notes)$/},
+  gastos:{re:/^gastos\.v1$/},
+  ingles:{re:/^englishc2_db$/},
+  ajedrez:{re:/^ajedrez-entrenador-v1$/}
+};
+const XLOCAL=['inbox','lock','notif','cloud'];
+var XM={};try{XM=JSON.parse(localStorage.getItem('hub-xmeta'))||{};}catch(_){XM={};}
+const xSave=()=>{try{localStorage.setItem('hub-xmeta',JSON.stringify(XM));}catch(_){}};
+const xOn=app=>(S.xsync||{})[app]!==false;
+function xSnap(app){
+  const o={};
+  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&XAPPS[app].re.test(k))o[k]=localStorage.getItem(k);}
+  if(app==='gastos'&&o['gastos.v1']){try{const g=JSON.parse(o['gastos.v1']);if(g&&g.settings){for(const f of XLOCAL)delete g.settings[f];}o['gastos.v1']=JSON.stringify(g);}catch(_){}}
+  return o;
+}
+function xHash(o){const j=JSON.stringify(o);let h=5381;for(let i=0;i<j.length;i++)h=((h<<5)+h+j.charCodeAt(i))>>>0;return h.toString(36)+'.'+j.length;}
+/* Anota cuándo cambió cada app en este dispositivo. Devuelve true si alguna cambió */
+function xTouch(){
+  if(!APPS_ON)return false;let ch=false;
+  for(const app in XAPPS){
+    const o=xSnap(app),n=Object.keys(o).length,h=xHash(o);
+    if(!n&&!XM[app])continue;
+    if(!XM[app]||XM[app].h!==h){XM[app]={h,t:Date.now(),n,fresh:!XM[app]};ch=true;}
+  }
+  if(ch)xSave();return ch;
+}
+function xFiles(){
+  const out={};if(!APPS_ON)return out;xTouch();
+  for(const app in XAPPS){if(!xOn(app))continue;const o=xSnap(app);if(!Object.keys(o).length)continue;out['x-'+app+'.json']={content:JSON.stringify({app,t:(XM[app]&&XM[app].t)||Date.now(),dev:devName(),data:o})};}
+  return out;
+}
+function xApply(app,data){
+  const f=appFrame(app),vis=!!(f&&f.classList.contains('on')&&$('#appov').classList.contains('show'));
+  if(f){f.remove();APPST[app].ready=false;APPST[app].q=[];}
+  for(const k in data){
+    let v=data[k];
+    if(app==='gastos'&&k==='gastos.v1'){try{const r=JSON.parse(v),l=JSON.parse(localStorage.getItem(k)||'null');if(r&&r.settings&&l&&l.settings)for(const fld of XLOCAL)if(l.settings[fld]!==undefined)r.settings[fld]=l.settings[fld];v=JSON.stringify(r);}catch(_){}}
+    try{localStorage.setItem(k,v);}catch(_){}
+  }
+  if(APPS_ON){ensureFrame(app);if(vis)openApp(app);}
+}
+async function xPull(g){
+  const out={pulled:[],push:false};if(!APPS_ON)return out;
+  xTouch();
+  for(const app in XAPPS){
+    if(!xOn(app))continue;
+    const f=g&&g.files&&g.files['x-'+app+'.json'],loc=XM[app];let rem=null;
+    if(f){let txt=f.content;if(f.truncated){try{txt=await (await fetch(f.raw_url,{cache:'no-store'})).text();}catch(_){txt=null;}}try{rem=JSON.parse(txt);}catch(_){rem=null;}}
+    if(!rem||!rem.data||!Object.keys(rem.data).length){if(loc&&loc.n)out.push=true;continue;}
+    const rh=xHash(rem.data);
+    if(loc&&loc.h===rh){if(loc.fresh){loc.fresh=false;}continue;}
+    let take;
+    if(!loc||!loc.n)take=true;
+    else if(loc.fresh){take=JSON.stringify(rem.data).length>JSON.stringify(xSnap(app)).length;}   /* primera vez en este dispositivo: gana la copia con más datos */
+    else take=(rem.t||0)>(loc.t||0);
+    if(take){xApply(app,rem.data);const o=xSnap(app);XM[app]={h:xHash(o),t:rem.t||Date.now(),n:Object.keys(o).length,fresh:false};out.pulled.push(APPS[app].n);}
+    else{if(loc.fresh)loc.fresh=false;out.push=true;}
+  }
+  xSave();
+  if(out.pulled.length){try{localStorage.removeItem('hub-et-sig');}catch(_){}estudioSync();autoHabits();renderHero();renderCal();}
+  return out;
+}
+let _xT=null;
+window.addEventListener('storage',e=>{
+  if(!e.key||!SY.gist)return;
+  /* Como máximo una vez cada 30 segundos (Inglés guarda seguido mientras practicás) */
+  for(const app in XAPPS)if(XAPPS[app].re.test(e.key)){if(!_xT)_xT=setTimeout(()=>{_xT=null;if(xTouch())syncNow(false);},30000);break;}
+});
+
+/* ===== Notificaciones de la Mac: bloques, salida a la facultad, pagos, inglés y exámenes ===== */
+const NTFK0={bk:true,tv:true,pg:true,en:true,ex:true};
+const ntfK=()=>Object.assign({},NTFK0,S.ntfK||{});
+function ntfMore(){
+  if(!S.ntf)return;
+  const T=todayS(),now=nowM(),K=ntfK();S.nf=S.nf||{};let ch=false;
+  const once=(k,t,b)=>{if(S.nf[k])return;S.nf[k]=1;ch=true;nfire(t,b,k);};
+  const ida=travelOn(T).find(t=>t.k==='ida');
+  if(K.tv&&ida&&now>=ida.s-10&&now<ida.s+15)once('tv'+T,'Salí para la facultad',`La clase arranca a las ${hm(ida.e)}. Tenés ${durTxt(ida.e-ida.s)} de viaje.`);
+  if(K.pg&&now>=600&&now<1320)for(const p of gastosAgenda(T))if(!p.done)once('pg'+T+p.t,p.card?p.t:'Hoy vence: '+p.t,p.amt?gMoney(p.amt):'Pago fijo');
+  if(K.en&&now>=1260&&now<1410){const si=studyInfo();if(si&&!si.done)once('en'+T,'Te falta tu hora de inglés',`Llevás ${si.mins} de 60 minutos hoy.`);}
+  if(K.ex&&now>=1200&&now<1410)for(const x of S.exams)if(x.date===addD(T,1))once('ex'+x.id,'Mañana rendís '+x.name,'Repaso liviano y a dormir temprano.');
+  if(Object.keys(S.nf).length>400){const keep={};for(const k in S.nf)if(k.includes(T))keep[k]=1;S.nf=keep;ch=true;}
+  if(ch)save();
+}
+function renderNtf(){
+  const el=$('#ntfBody');if(!el)return;
+  const K=ntfK(),lead=S.ntfLead==null?5:S.ntfLead,ok=window.Notification&&Notification.permission==='granted'&&S.ntf;
+  const row=(k,l)=>`<label class="aichk"><input type="checkbox" data-ntfk="${k}" ${K[k]?'checked':''} ${ok?'':'disabled'}> ${l}</label>`;
+  el.innerHTML=`<div class="row"><button class="sm ${ok?'':'btn'}" id="ntog2" type="button">${nstate()}</button>${ok?'<button class="sm ghost" id="ntest" type="button">Probar un aviso</button>':''}</div>
+    ${row('bk','Bloques y rutinas con hora')}
+    <label class="aichk" style="padding-left:26px">Avisar <select id="ntfLead" ${ok?'':'disabled'}>${[[0,'al empezar'],[5,'5 min antes'],[10,'10 min antes'],[15,'15 min antes']].map(([v,l])=>`<option value="${v}"${lead===v?' selected':''}>${l}</option>`).join('')}</select></label>
+    ${row('tv','Salir para la facultad (10 min antes del viaje)')}
+    ${row('pg','Pagos fijos y vencimientos de tarjeta del día (a las 10)')}
+    ${row('en','Si a las 21 te falta tu hora de inglés')}
+    ${row('ex','La noche antes de un examen (a las 20)')}
+    <p class="st">Llegan mientras Mi semana esté abierta, aunque esté minimizada o en otra pestaña. Con la app cerrada te avisa Google Calendar (si lo conectaste) o el Calendario de la Mac con el archivo .ics, que ahora también llevan la hora de salir para la facultad.</p>`;
+}
+document.addEventListener('change',e=>{
+  if(e.target.dataset&&e.target.dataset.ntfk){S.ntfK=Object.assign({},ntfK(),{[e.target.dataset.ntfk]:e.target.checked});save();}
+  else if(e.target.id==='ntfLead'){S.ntfLead=+e.target.value;save();}
+});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.id==='ntog2'){toggleNtf().then(()=>renderNtf());}
+  else if(b.id==='ntest'){nfire('Mi semana','Así te van a llegar los avisos.','test'+Date.now());say('Te mandé un aviso de prueba');}
+});
+
+document.addEventListener('change',e=>{if(e.target.dataset&&e.target.dataset.xs){S.xsync=Object.assign({},S.xsync||{},{[e.target.dataset.xs]:e.target.checked});save();if(SY.gist)syncNow(false);}});
+/* Si por sincronizar quedó el mismo examen dos veces (misma materia de Estudio o mismo nombre y fecha), queda uno solo */
+function dedupeExams(){
+  const seen={},gone=[];
+  for(const x of S.exams){
+    const k=x.src?'s:'+x.src:'n:'+x.name.trim().toLowerCase()+'|'+x.date;
+    const y=seen[k];if(!y){seen[k]=x;continue;}
+    const keep=(y._u||0)<=(x._u||0)?y:x,drop=keep===y?x:y;seen[k]=keep;
+    keep.done=Math.max(keep.done||0,drop.done||0);keep.need=Math.max(keep.need||0,drop.need||0);
+    for(const t of S.tasks)if(t.ex===drop.id)t.ex=keep.id;
+    gone.push(drop.id);
+  }
+  if(!gone.length)return false;
+  S.exams=S.exams.filter(x=>!gone.includes(x.id));
+  /* los bloques automáticos de los dos se rearman como un solo plan */
+  const ids=new Set(S.tasks.filter(t=>t.auto&&!t.done&&gone.length&&S.exams.some(x=>x.id===t.ex)).map(t=>t.id));
+  S.blocks=S.blocks.filter(b=>!ids.has(b.tid)||b.date<todayS());S.tasks=S.tasks.filter(t=>!ids.has(t.id)||isScheduled(t.id));
+  cleanOrphans();autoPlanQuiet();return true;
+}
 /* Arranque de la unión de apps */
 if(APPS_ON&&location.hash!=='#mini'){
   try{localStorage.setItem('hub-url',location.origin+location.pathname);}catch(_){}
