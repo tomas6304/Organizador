@@ -4001,7 +4001,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#tmodal').hidde
    Las tres viven en tomas6304.github.io, así que comparten el almacenamiento del navegador:
    desde acá se leen tus datos de Estudio y Gastos (solo lectura) y se abren las apps sin salir. */
 var APPS={estudio:{n:'Estudio',path:'/Estudio/'},gastos:{n:'Gastos',path:'/Gastos/'}};
-var APPS_ON=!inClaude&&/^https?:$/.test(location.protocol);
+/* Solo cuando Mi semana está abierta sola: si quedara adentro de otra ventana, no abre las otras apps (evita que se repita adentro de sí misma) */
+var APPS_ON=!inClaude&&/^https?:$/.test(location.protocol)&&window.top===window;
 function lsj(k){try{return JSON.parse(localStorage.getItem(k));}catch(_){return null;}}
 function estudioInfo(){
   const mats=lsj('pom_mats'),hist=lsj('pom_history');
