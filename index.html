@@ -763,13 +763,14 @@ body.mini{padding:10px!important;min-height:100vh}
 .apps button:hover{background:color-mix(in srgb,var(--fg) 10%,transparent)}
 .apps button.on{background:var(--fg);color:var(--bg)}
 #appov{position:fixed;inset:0;z-index:60;background:var(--bg);display:grid;grid-template-rows:auto minmax(0,1fr)}
-#appov[hidden]{display:none}
+/* Las apps quedan cargadas y con su tamaño real aunque no se vean (así funcionan bien al mostrarlas, también en Safari) */
+#appov:not(.show){visibility:hidden;pointer-events:none}
 body.apopen{overflow:hidden}
 .apbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:max(8px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));border-bottom:2px solid var(--fg)}
 .apbar a.btnl{color:var(--fg);border-color:var(--fg)}
 #apframes{position:relative;min-height:0}
 #apframes iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
-#apframes iframe[hidden]{display:none}
+#apframes iframe:not(.on){visibility:hidden;pointer-events:none}
 .apt{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
 .aptile{display:grid;gap:3px;text-align:left;padding:10px 12px;border-radius:18px;border:0;background:rgba(247,240,220,.1);color:var(--hero-fg);min-height:0}
 .aptile:hover{background:rgba(247,240,220,.17);border:0}
@@ -1143,7 +1144,7 @@ body.apopen{overflow:hidden}
     <button class="ghost" type="button" data-tclose>Listo</button>
   </div>
 </div>
-<div id="appov" hidden><div class="apbar"><nav class="apps" aria-label="Tus apps"><button type="button" data-app="semana" class="on">Mi semana</button><button type="button" data-app="estudio">Estudio</button><button type="button" data-app="gastos">Gastos</button></nav><span class="apkeys">⌘1 · ⌘2 · ⌘3</span><a class="btnl" id="apOut" target="_blank" rel="noopener" href="#">Abrir aparte</a></div><div id="apframes"></div></div>
+<div id="appov"><div class="apbar"><nav class="apps" aria-label="Tus apps"><button type="button" data-app="semana" class="on">Mi semana</button><button type="button" data-app="estudio">Estudio</button><button type="button" data-app="gastos">Gastos</button></nav><span class="apkeys">⌘1 · ⌘2 · ⌘3</span><a class="btnl" id="apOut" target="_blank" rel="noopener" href="#">Abrir aparte</a></div><div id="apframes"></div></div>
 <div id="wmodal" class="modal" hidden><div class="sheet wsheet" role="dialog" aria-modal="true" aria-labelledby="wkT"><div><h3 id="wkT">Tu semana</h3><p class="muted" id="wkR" style="margin:4px 0 0"></p></div><div id="wkBody"></div><button class="ghost" type="button" data-wclose>Listo</button></div></div>
 <div id="msg" hidden></div>
 
@@ -4069,7 +4070,7 @@ let apCur='semana';
 function apSetOn(){document.querySelectorAll('[data-app]').forEach(b=>{if(b.closest('.apps'))b.classList.toggle('on',b.dataset.app===apCur);});}
 
 document.addEventListener('click',e=>{const b=e.target.closest('[data-app]');if(b){e.preventDefault();openApp(b.dataset.app,b.dataset.go);}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#appov').hidden&&!e.target.closest('input,textarea'))openApp('semana');});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#appov').classList.contains('show')&&!e.target.closest('input,textarea'))openApp('semana');});
 let _apT=null;
 window.addEventListener('storage',e=>{if(e.key&&(e.key.startsWith('pom_')||e.key==='gastos.v1')){clearTimeout(_apT);_apT=setTimeout(()=>{renderHero();renderMini();},400);}});
 $('#apps').hidden=!APPS_ON;
@@ -4080,8 +4081,8 @@ const appFrame=k=>document.getElementById('apf-'+k);
 function ensureFrame(k){
   let f=appFrame(k);
   if(!f&&APPS_ON&&APPS[k]){
-    f=document.createElement('iframe');f.id='apf-'+k;f.title=APPS[k].n;f.hidden=true;
-    f.setAttribute('allow','clipboard-read; clipboard-write; camera; microphone; fullscreen; screen-wake-lock');
+    f=document.createElement('iframe');f.id='apf-'+k;f.title=APPS[k].n;
+    f.setAttribute('allow','clipboard-read; clipboard-write; camera; microphone; fullscreen; screen-wake-lock; publickey-credentials-get *');
     f.src=location.origin+APPS[k].path;$('#apframes').appendChild(f);
   }
   return f;
@@ -4099,16 +4100,16 @@ window.addEventListener('message',e=>{
 function openApp(k,go){
   const ov=$('#appov');
   if(k==='semana'||!APPS[k]){
-    if(!ov.hidden){ov.classList.add('out');setTimeout(()=>{ov.hidden=true;ov.classList.remove('out');},150);}
+    if(ov.classList.contains('show')){ov.classList.add('out');setTimeout(()=>{ov.classList.remove('show','out');},150);}
     document.body.classList.remove('apopen');apCur='semana';apSetOn();
     try{localStorage.setItem('hub-last','semana');}catch(_){}
     render();return;
   }
   if(!APPS_ON){say('Las otras apps se abren desde tu versión de GitHub.');return;}
   const f=ensureFrame(k);apCur=k;
-  if(ov.hidden){ov.hidden=false;ov.classList.remove('enter');void ov.offsetWidth;ov.classList.add('enter');}
+  if(!ov.classList.contains('show')){ov.classList.add('show');ov.classList.remove('enter');void ov.offsetWidth;ov.classList.add('enter');}
   document.body.classList.add('apopen');
-  document.querySelectorAll('#apframes iframe').forEach(x=>{x.hidden=x!==f;});
+  document.querySelectorAll('#apframes iframe').forEach(x=>{x.classList.toggle('on',x===f);});
   f.classList.remove('fadein');void f.offsetWidth;f.classList.add('fadein');
   $('#apOut').href=location.origin+APPS[k].path;apSetOn();
   try{localStorage.setItem('hub-last',k);}catch(_){}
