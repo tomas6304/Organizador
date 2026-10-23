@@ -676,6 +676,38 @@ body.dragging,body.dragging *{cursor:grabbing!important;user-select:none}
 }
 .kbd{display:inline-block;min-width:18px;padding:0 5px;border:1.5px solid currentColor;border-radius:6px;font-size:11px;font-weight:700;text-align:center;line-height:16px}
 
+/* ===== v7: grilla a medida, pestañas al costado, asistente compacto ===== */
+.axis,.col{height:var(--gh,calc(24*var(--hp)))}
+.col{overflow:hidden}
+.agi.agp{opacity:.5}
+#capcard h2{font-size:clamp(20px,2.2vw,24px)}
+#capcard .ch{margin-bottom:10px}
+.capr{margin-top:8px}
+details.capex{flex:1 1 100%;margin:0;color:var(--fg)}
+details.capex summary{font-size:12.5px;font-weight:700}
+details.capex .capx{margin-top:8px}
+#tasksCard .rems{margin:0 0 12px}
+.stabs{display:none}
+@media (min-width:1080px){
+  #capcard{order:-2!important}
+  .stabs{order:-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;padding:5px;border-radius:999px;background:#1b2620;border:2px solid #1b2620;position:sticky;top:12px;z-index:8}
+  .stabs button{border:0;border-radius:999px;min-height:40px;padding:4px 6px;display:flex;align-items:center;justify-content:center;gap:6px;background:transparent;color:#f7f0dc;font-size:13px;font-weight:700;white-space:nowrap}
+  .stabs button .gl{font-size:16px}
+  .stabs button:hover{background:rgba(247,240,220,.12)}
+  .stabs button[aria-selected="true"]{background:var(--tc);color:#1b2620}
+  .stabs [data-tab="hoy"]{--tc:#b7a4dd}.stabs [data-tab="exa"]{--tc:#f5e36a}.stabs [data-tab="vida"]{--tc:#f19a78}.stabs [data-tab="cap"]{--tc:#6fb1e0}
+  body[data-tab="hoy"] .side [data-sec]:not([data-sec~="hoy"]),
+  body[data-tab="cal"] .side [data-sec]:not([data-sec~="hoy"]),
+  body[data-tab="exa"] .side [data-sec]:not([data-sec~="exa"]),
+  body[data-tab="vida"] .side [data-sec]:not([data-sec~="vida"]),
+  body[data-tab="cap"] .side [data-sec]:not([data-sec~="cap"]){display:none!important}
+  #capcard{display:block!important}
+  .calscroll{max-height:none}
+}
+
+.sheet .cfg{background:var(--surface2);color:var(--fg);margin-top:0}
+.sheet .cfg label{color:var(--fg)}
+.sheet .cfg .st{color:var(--muted)}
 /* Pestañas del celular: una sección por vez, barra fija abajo */
 .tabbar{display:none}
 @media (max-width:1079px){
@@ -798,11 +830,15 @@ body.dragging,body.dragging *{cursor:grabbing!important;user-select:none}
             <span>antes</span>
           </span>
           <span id="caphint"></span>
+          <details class="capex"><summary>Qué le puedo pedir</summary><div class="capx" id="capx"></div></details>
         </div>
-        <div class="capx" id="capx"></div>
-        <ul class="rems" id="rems"></ul>
-        <details class="cfgd"><summary>Configurar avisos y Calendario de la Mac</summary><div class="remst" id="remst"></div></details>
       </section>
+      <nav class="stabs" id="stabs" role="tablist" aria-label="Secciones">
+        <button type="button" role="tab" data-tab="hoy"><svg class="gl" aria-hidden="true"><use href="#g-hoy"/></svg>Hoy</button>
+        <button type="button" role="tab" data-tab="exa"><svg class="gl" aria-hidden="true"><use href="#g-est"/></svg>Estudio</button>
+        <button type="button" role="tab" data-tab="vida"><svg class="gl" aria-hidden="true"><use href="#g-vida"/></svg>Vida</button>
+        <button type="button" role="tab" data-tab="cap"><svg class="gl" aria-hidden="true"><use href="#g-cap"/></svg>Pendientes</button>
+      </nav>
 
 
       <section class="card" id="aicard" data-sec="hoy">
@@ -850,12 +886,13 @@ body.dragging,body.dragging *{cursor:grabbing!important;user-select:none}
         <div class="exact row" id="exact"></div>
       </section>
 
-      <section class="card" id="goals" data-sec="hoy vida"></section>
+      <section class="card" id="goals" data-sec="vida"></section>
 
       <section class="card" id="projCard" data-sec="vida"></section>
 
-      <section class="card" id="tasksCard" data-sec="hoy cap">
+      <section class="card" id="tasksCard" data-sec="cap">
         <div class="ch"><div><p class="k">Pendientes</p><h2>Todo lo anotado</h2></div></div>
+        <ul class="rems" id="rems"></ul>
         <form id="add" class="add" autocomplete="off" hidden>
           <input name="t" placeholder="¿Qué más querés hacer?" aria-label="Nueva tarea" required>
           <select name="a" id="areaSel" aria-label="Área"></select>
@@ -952,7 +989,12 @@ body.dragging,body.dragging *{cursor:grabbing!important;user-select:none}
 <div id="smodal" class="modal" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sTitle">
     <div><h3 id="sTitle">Sincronizar y avisos</h3><p class="muted" style="margin:4px 0 0">Los mismos datos en la Mac y en el celular, y los avisos que llegan solos al Calendario.</p></div>
+    <h4>Google Calendar</h4>
+    <div id="gBody" class="sbody"></div>
+    <h4>Entre la Mac y el celular</h4>
     <div id="sBody" class="sbody"></div>
+    <h4>Avisos</h4>
+    <div class="remst" id="remst"></div>
     <h4>Copias automáticas</h4>
     <div id="bkAuto" class="sbody"></div>
     <h4>Copia manual (sin cuentas)</h4>
@@ -996,7 +1038,7 @@ const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','di
 const MESF=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const AREAS={est:['Estudio'],ing:['Inglés'],aje:['Ajedrez'],lec:['Lectura'],tra:['Trabajo y proyectos'],sal:['Salud y deporte'],cas:['Casa y trámites'],pla:['Plata'],soc:['Gente y salidas'],com:['Compras'],ide:['Ideas y notas'],otr:['Otro']};
 const HAB=['ing','aje','lec'];
-const START=0,END=1440,HP=40;
+const START=0,END=1440;let HP=40,GS=0,GE=1440;
 const GOALS0={ing:0,aje:0,lec:0};
 const SET0={ws:540,we:1320,cap:300,sm:90,ti:60,tv:40};
 const IDEAL={ing:60,aje:30,lec:30};
@@ -1084,7 +1126,7 @@ const examOf=id=>S.exams.find(x=>x.id===id);
 const blocksOf=d=>S.blocks.filter(b=>b.date===d).sort((a,b)=>a.s-b.s);
 const isScheduled=id=>S.blocks.some(b=>b.tid===id);
 const clsOf=t=>t.ex?'x'+((examOf(t.ex)||{ci:0}).ci%6):'a-'+t.a;
-const pos=(s,e)=>`top:${(s-START)/60*HP}px;height:${Math.max(0,(e-s)/60*HP-2)}px`;
+const pos=(s,e)=>`top:${(s-GS)/60*HP}px;height:${Math.max(0,(e-s)/60*HP-2)}px`;
 let wo=0;
 const viewDates=()=>{const mon=addD(monday(todayS()),wo*7);return [0,1,2,3,4,5,6].map(i=>addD(mon,i));};
 
@@ -1510,7 +1552,7 @@ function wxLine(){
     if(m<now-60||m<S.set.ws||m>S.set.we)continue;
     if(p>=50&&(!best||p>best.p))best={p,m};
   }
-  return best?`Puede llover cerca de las <b>${hm(best.m)}</b> (${best.p}%): si salís, llevá paraguas.`:'';
+  return best?(best.m<=now?`Ahora hay ${best.p}% de probabilidad de lluvia: si salís, llevá paraguas.`:`Puede llover cerca de las <b>${hm(best.m)}</b> (${best.p}%): si salís, llevá paraguas.`):'';
 }
 function briefLines(){
   const T=todayS(),now=nowM(),L=[];
@@ -1634,8 +1676,19 @@ function toTomorrow(bid){
 }
 
 /* Render: calendario */
+/* La grilla arranca en tu día (o antes si hay algo más temprano), termina al final y en la Mac entra entera en la pantalla */
+function gridFit(dates){
+  let first=S.set.ws,last=S.set.we;
+  for(const ds of dates)for(const i of dayItems(ds)){if(i.s==null)continue;if(i.s<first)first=i.s;if((i.e||i.s)>last)last=i.e||i.s;}
+  GS=Math.max(0,Math.floor(first/60)*60);GE=Math.min(1440,Math.max(GS+360,Math.ceil(last/60)*60));
+  const hrs=(GE-GS)/60,card=$('#calcard');
+  if(wide()){if(renderCal._fit&&renderCal._hp)HP=renderCal._hp;else if(renderCal._hp)HP=renderCal._hp;else{const avail=window.innerHeight-24-(card.querySelector('.ch').offsetHeight+42+86+46+36);HP=Math.max(26,Math.min(48,Math.floor(avail/hrs)));}}
+  else HP=40;
+  card.style.setProperty('--hp',HP+'px');card.style.setProperty('--gh',(hrs*HP)+'px');
+}
 function renderCal(){
   const T=todayS(),now=nowM(),dates=viewDates();
+  gridFit(dates);
   const d0=parse(dates[0]),d6=parse(dates[6]);
   $('#range').textContent=`${d0.getDate()} ${MES[d0.getMonth()]} – ${d6.getDate()} ${MES[d6.getMonth()]}${wo===0?' · esta semana':''}`;
   let study=0,free=0;
@@ -1653,11 +1706,11 @@ function renderCal(){
     return `<button class="dh d${i} ${ds===T?'today':''} ${i===sel?'on':''}" data-pill="${i}" aria-label="${DFULL[i]} ${parse(ds).getDate()}"><small>${DAYS[i]}</small><b>${parse(ds).getDate()}</b><em>${ds<T?'—':fmtH(freeWin(ds,ds===T?now:0))+' h libres'}</em>${holc}${exs}</button>`;
   }).join('');
   let ax='<div class="axis">';
-  for(let h=0;h<24;h++)ax+=`<span class="${h===0?'z':''}" style="top:${h*HP}px">${h}:00</span>`;
+  for(let h=GS/60;h<GE/60;h++)ax+=`<span class="${h*60===GS?'z':''}" style="top:${(h*60-GS)/60*HP}px">${h}:00</span>`;
   ax+='</div>';
   const cols=dates.map((ds,i)=>{
-    const fr=gaps(ds).map(g=>`<div class="fr" style="${pos(g.s,g.e)}">${g.e-g.s>=90?'Libre · '+durTxt(g.e-g.s):''}</div>`).join('');
-    const off=`<div class="off" style="top:0;height:${S.set.ws/60*HP}px"><span>Descanso</span></div><div class="off" style="top:${S.set.we/60*HP}px;height:${(1440-S.set.we)/60*HP}px"><span>Descanso</span></div>`;
+    const fr=gapsIn(ds,Math.max(S.set.ws,GS),Math.min(S.set.we,GE)).map(g=>`<div class="fr" style="${pos(g.s,g.e)}">${g.e-g.s>=90&&(g.e-g.s)/60*HP>=30?'Libre · '+durTxt(g.e-g.s):''}</div>`).join('');
+    const off=(S.set.ws>GS?`<div class="off" style="top:0;height:${(S.set.ws-GS)/60*HP}px"><span>Descanso</span></div>`:'')+(S.set.we<GE?`<div class="off" style="top:${(S.set.we-GS)/60*HP}px;height:${(GE-S.set.we)/60*HP}px"><span>Descanso</span></div>`:'');
     const fx=fixedOn(ds).map(f=>`<button class="fx" data-fx="${f.id}" style="${pos(f.s,f.e)}" title="Editar horarios"><b>${esc(f.name||'Facultad')}</b><small>${hm(f.s)}–${hm(f.e)}</small></button>`).join('');
     const tvl=travelOn(ds).map(t=>`<button class="tv" data-fx="tv" style="${pos(t.s,t.e)}" title="${t.k==='ida'?'Viaje a la facultad':'Vuelta a casa'} (${hm(t.s)}–${hm(t.e)}) · Editar en Mis horarios"><b>${t.k==='ida'?'Viaje · ida':'Vuelta'}</b>${t.e-t.s>=60?`<small>${hm(t.s)}–${hm(t.e)}</small>`:''}</button>`).join('');
     const rtl=habTimed(ds).map(x=>{const dn=habDone(x,ds);return `<button class="rtn a-${x.a} ${dn?'dn':''}" data-hchk="${x.id}" data-hd="${ds}" style="${pos(x.s,x.s+x.m)}" title="${esc(x.n)} · ${hm(x.s)}–${hm(x.s+x.m)} · tocá para marcarla"><span class="rtt">${dn?'✓ ':''}${esc(x.n)}</span>${x.m>=45?`<small>${hm(x.s)}–${hm(x.s+x.m)}</small>`:''}</button>`;}).join('');
@@ -1670,18 +1723,25 @@ function renderCal(){
         <button class="bk-main" data-bk="${b.id}" title="${esc(tk.t)}" aria-label="${esc(tk.t)}, ${hm(b.s)} a ${hm(b.s+b.m)}">${glyph(tk.ex?'est':tk.a)}<span class="tx"><span class="tt2">${esc(blockLabel(tk))}</span><small>${hm(b.s)}–${hm(b.s+b.m)}</small></span></button>
         <button class="x" data-unb="${b.id}" aria-label="Quitar del calendario">×</button></div>`;
     }).join('');
-    const past=ds<T?`<div class="past" style="height:${24*HP}px"></div>`:(ds===T&&now>0?`<div class="past" style="height:${now/60*HP}px"></div>`:'');
-    const line=ds===T?`<div class="now" data-t="${hm(now)}" style="top:${now/60*HP}px"></div>`:'';
+    const past=ds<T?`<div class="past" style="height:100%"></div>`:(ds===T&&now>GS?`<div class="past" style="height:${(Math.min(GE,now)-GS)/60*HP}px"></div>`:'');
+    const line=ds===T&&now>=GS&&now<=GE?`<div class="now" data-t="${hm(now)}" style="top:${(now-GS)/60*HP}px"></div>`:'';
     return `<div class="col d${i} ${i===sel?'on':''} ${ds===T?'tdy':''}" data-col="${i}" aria-label="${DFULL[i]}">${fr}${off}${fx}${tvl}${rtl}${gx}${bks}${past}${line}</div>`;
   }).join('');
   $('#calbody').innerHTML=ax+cols;
   $('#calcard').classList.toggle('agv',VIEW==='ag');$('#calT').textContent=VIEW==='ag'?'Agenda':'Calendario';
   $('#vAg').classList.toggle('on',VIEW==='ag');$('#vWk').classList.toggle('on',VIEW!=='ag');
   renderAgenda();
+  /* Segunda pasada: medir lo que ocupa la tarjeta y ajustar la altura de cada hora para que entre justo */
+  if(wide()&&VIEW!=='ag'&&!renderCal._fit){
+    const card=$('#calcard'),hrs=(GE-GS)/60,rest=card.offsetHeight-hrs*HP;
+    const top=Math.min(card.getBoundingClientRect().top+window.scrollY,window.innerHeight*.3);
+    const want=Math.max(24,Math.min(48,Math.floor((window.innerHeight-top-16-rest)/hrs)));
+    if(want!==HP){renderCal._hp=want;renderCal._fit=true;renderCal();renderCal._fit=false;}
+  }
 }
 function scrollCal(){
   const h=wo===0?Math.max(0,Math.floor(nowM()/60)-1):Math.max(0,Math.floor(S.set.ws/60)-1);
-  const go=()=>{$('#calscroll').scrollTop=h*HP;};go();requestAnimationFrame(go);setTimeout(go,300);
+  const go=()=>{$('#calscroll').scrollTop=Math.max(0,(h*60-GS)/60*HP);};go();requestAnimationFrame(go);setTimeout(go,300);
 }
 
 /* Render: exámenes */
@@ -1990,7 +2050,7 @@ $('#offAdd').addEventListener('click',()=>{
 /* Selección en la grilla: arrastrar con mouse, tocar en el celu */
 let drag=null;
 const calbody=$('#calbody');
-const colMin=(col,e)=>START+(e.clientY-col.getBoundingClientRect().top)/HP*60;
+const colMin=(col,e)=>GS+(e.clientY-col.getBoundingClientRect().top)/HP*60;
 function showSel(){
   let el=drag.col.querySelector('.sel');
   if(!el){el=document.createElement('div');el.className='sel';drag.col.appendChild(el);}
@@ -2529,7 +2589,7 @@ function renderSync(){
   }
   $('#sBody').innerHTML=h;
 }
-function openS(){syOff=false;renderSync();renderBk();$('#smodal').hidden=false;}
+function openS(){syOff=false;renderSync();renderBk();renderG();renderCap();$('#smodal').hidden=false;}
 function closeS(){$('#smodal').hidden=true;$('#bkAsk').innerHTML='';bkPend=null;}
 $('#smodal').addEventListener('click',e=>{
   if(e.target.id==='smodal'||e.target.closest('[data-sclose]')){closeS();return;}
@@ -2838,7 +2898,12 @@ document.addEventListener('click',e=>{
 let gcBusy=false;
 const EXRE=/\b(parcial|final|examen|recuperatorio|coloquio)\b/i;
 function gcStatus(){
-  if(!inClaude)return '';
+  if(!inClaude){
+    if(typeof GG==='undefined'||location.protocol!=='https:')return '';
+    if(!GG.cid)return `<span class="gcst"><button class="ghost" data-smodal="1" type="button">Conectar Google Calendar</button></span>`;
+    const at=GG.at?new Date(GG.at):null;
+    return `<span class="gcst">${gBusy?'Sincronizando con Google…':gErr?esc(gErr):at?'Google Calendar · '+hm(at.getHours()*60+at.getMinutes()):'Google Calendar'}${gBusy?'':' <button class="ghost" data-gsync="1" type="button">Sincronizar</button>'}</span>`;
+  }
   const at=GC.at?new Date(GC.at):null,btn=t=>`<button class="ghost" data-gcr="1" type="button">${t}</button>`;
   const m={busy:'Leyendo tu Google Calendar…',
     ok:`Google Calendar al día${at?' ('+hm(at.getHours()*60+at.getMinutes())+')':''}`,
@@ -3112,11 +3177,14 @@ function setTab(t,top){
   if(!TABS.includes(t))t='hoy';
   document.body.dataset.tab=t;
   try{localStorage.setItem(TABKEY,t);}catch(_){}
+  const sideT=t==='cal'?'hoy':t;
   document.querySelectorAll('#tabbar [data-tab]').forEach(b=>{const on=b.dataset.tab===t;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;});
+  document.querySelectorAll('#stabs [data-tab]').forEach(b=>{const on=b.dataset.tab===sideT;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1;});
   if(top&&!wide())window.scrollTo(0,0);
   if(t==='cal')scrollCal();
 }
-function goTab(t){if(!wide())setTab(t,true);}
+function goTab(t){setTab(wide()&&t==='cal'?'hoy':t,!wide());}
+$('#stabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)setTab(b.dataset.tab,false);});
 $('#tabbar').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)setTab(b.dataset.tab,true);});
 $('#tabbar').addEventListener('keydown',e=>{
   const i=TABS.indexOf(document.body.dataset.tab),d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(!d)return;
@@ -3492,7 +3560,7 @@ function agRow(i,ds){
   else if(i.k==='rt')act=`<button class="chk ${i.done?'on':''}" type="button" data-hchk="${i.id}" data-hd="${ds}" aria-label="${i.done?'Desmarcar':'Marcar hecha'}: ${esc(i.t)}">${i.done?'✓':''}</button>`;
   const open=i.k==='bk'?`data-bk="${i.id}"`:i.k==='fx'||i.k==='tv'?'data-hmodal="1"':'';
   const body=`<b>${esc(i.t)}</b><small>${meta}</small>`;
-  return `<li class="agi ${cls} ${i.done?'done':''} ${past?'past':''}"><span class="agt">${i.s!=null?hm(i.s):'—'}${i.e!=null?`<small>${hm(i.e)}</small>`:''}</span><span class="agb"></span>${open?`<button type="button" class="agc" ${open}>${body}</button>`:`<div class="agc">${body}</div>`}${act}</li>`;
+  return `<li class="agi ${cls} ${i.done?'done':''} ${past?'agp':''}"><span class="agt">${i.s!=null?hm(i.s):'—'}${i.e!=null?`<small>${hm(i.e)}</small>`:''}</span><span class="agb"></span>${open?`<button type="button" class="agc" ${open}>${body}</button>`:`<div class="agc">${body}</div>`}${act}</li>`;
 }
 function renderAgenda(){
   const el=$('#agenda');if(!el)return;
@@ -3531,9 +3599,9 @@ window.addEventListener('pointermove',e=>{
   const hit=document.elementsFromPoint(e.clientX,e.clientY).find(n=>n.classList&&n.classList.contains('col'));
   const col=hit||mv.col;
   if(col!==mv.el.parentNode)col.appendChild(mv.el);
-  let s=Math.round((colMin(col,e)-mv.off)/15)*15;s=Math.max(0,Math.min(1440-mv.b.m,s));
+  let s=Math.round((colMin(col,e)-mv.off)/15)*15;s=Math.max(GS,Math.min(GE-mv.b.m,s));
   mv.s=s;mv.date=viewDates()[+col.dataset.col];
-  mv.el.style.top=((s-START)/60*HP)+'px';
+  mv.el.style.top=((s-GS)/60*HP)+'px';
   const sm=mv.el.querySelector('small');if(sm)sm.textContent=`${hm(s)}–${hm(s+mv.b.m)}`;
   mv.el.classList.toggle('bad',!freeFor(mv.date,s,mv.b.m,mv.b.id));
 });
@@ -3573,6 +3641,136 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>scrollCal(
 try{localStorage.removeItem(TKEY);}catch(_){}
 wxFetch();setInterval(wxFetch,30*60000);
 
+/* ===== Google Calendar con tu cuenta (app propia, fuera de Claude) =====
+   Usa el inicio de sesión de Google en el navegador (sin servidor). Lee tus eventos para no pisarlos
+   y sube tus bloques, avisos y exámenes a tu calendario principal, marcados como "Mi semana". */
+const GKEY='mi-semana-google',GAPI='https://www.googleapis.com/calendar/v3';
+var GG={cid:'',on:false,push:true,rt:false,at:0};try{Object.assign(GG,JSON.parse(localStorage.getItem(GKEY))||{});}catch(_){}
+const ggSave=()=>{try{localStorage.setItem(GKEY,JSON.stringify(GG));}catch(_){}};
+let gTok=null,gExp=0,gBusy=false,gErr='',gPushT=null;
+const gLive=()=>!!gTok&&Date.now()<gExp-60000;
+function gisLoad(){
+  return new Promise((res,rej)=>{
+    if(window.google&&google.accounts&&google.accounts.oauth2)return res();
+    const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.async=true;
+    s.onload=()=>res();s.onerror=()=>rej(Object.assign(new Error('gis'),{code:'gis'}));document.head.appendChild(s);
+  });
+}
+async function gToken(ask){
+  if(gLive())return gTok;
+  if(!GG.cid)throw Object.assign(new Error('nocid'),{code:'nocid'});
+  await gisLoad();
+  return new Promise((res,rej)=>{
+    const c=google.accounts.oauth2.initTokenClient({client_id:GG.cid,scope:'https://www.googleapis.com/auth/calendar.events',
+      callback:r=>{if(r&&r.access_token){gTok=r.access_token;gExp=Date.now()+(+r.expires_in||3600)*1000;GG.on=true;ggSave();res(gTok);}else rej(Object.assign(new Error('denied'),{code:r&&r.error||'denied'}));},
+      error_callback:e=>rej(Object.assign(new Error('popup'),{code:e&&e.type||'popup'}))});
+    c.requestAccessToken({prompt:ask?'consent':''});
+  });
+}
+async function gApi(path,opt={}){
+  const r=await fetch(GAPI+path,{method:opt.method||'GET',headers:Object.assign({Authorization:'Bearer '+gTok},opt.body?{'Content-Type':'application/json'}:{}),body:opt.body?JSON.stringify(opt.body):undefined});
+  if(r.status===401){gTok=null;throw Object.assign(new Error('401'),{code:'expired'});}
+  if(!r.ok)throw Object.assign(new Error('g'+r.status),{code:'http',status:r.status});
+  return r.status===204?null:r.json();
+}
+const rfc=(d,m)=>{let dd=d,mm=m;if(mm>=1440){dd=addD(d,Math.floor(mm/1440));mm%=1440;}return `${dd}T${hm(mm)}:00`;};
+async function gList(q){
+  const out=[];let tok='',n=0;
+  do{const p=await gApi('/calendars/primary/events?'+new URLSearchParams(Object.assign({singleEvents:'true',maxResults:'250'},q,tok?{pageToken:tok}:{})));out.push(...(p.items||[]));tok=p.nextPageToken||'';n++;}while(tok&&n<6);
+  return out;
+}
+async function gPull(){
+  const T=todayS(),raw=await gList({timeMin:new Date(parse(T)).toISOString(),timeMax:new Date(parse(addD(T,60))).toISOString(),orderBy:'startTime'});
+  const ev=[],ex=[];
+  for(const e of raw){
+    if(!e||e.status==='cancelled'||(e.extendedProperties&&e.extendedProperties.private&&e.extendedProperties.private.misemana))continue;
+    const title=String(e.summary||'Ocupado').slice(0,80),sd=e.start&&(e.start.dateTime||e.start.date),ed=e.end&&(e.end.dateTime||e.end.date);
+    if(!sd||!ed)continue;
+    if(EXRE.test(title)){const d=e.start.dateTime?iso(new Date(sd)):String(sd).slice(0,10);if(d>T)ex.push({id:e.id,t:title,date:d});}
+    if(!e.start.dateTime||!e.end.dateTime||e.transparency==='transparent')continue;
+    const a=new Date(sd),b=new Date(ed);if(!(b>a))continue;
+    const last=iso(b);
+    for(let d=iso(a),i=0;d<=last&&i<14;d=addD(d,1),i++){
+      const s=d===iso(a)?a.getHours()*60+a.getMinutes():0,en=d===last?b.getHours()*60+b.getMinutes():1440;
+      if(en>s)ev.push({id:e.id,date:d,s,e:en,t:title});
+    }
+  }
+  GC.ev=ev;GC.ex=ex;GC.at=Date.now();GC.st='ok';gcSave();gcResolve();
+}
+function gWanted(){
+  const T=todayS(),W=new Map(),rem=n=>n==null?{useDefault:false,overrides:[]}:{useDefault:false,overrides:[{method:'popup',minutes:Math.max(0,n)}]};
+  const timed=(k,date,s,m,title,desc,r,color)=>W.set(k,{summary:title,description:desc,start:{dateTime:rfc(date,s),timeZone:TZ},end:{dateTime:rfc(date,s+Math.max(15,m)),timeZone:TZ},reminders:rem(r),colorId:color,extendedProperties:{private:{misemana:'1',mk:k}}});
+  for(const b of S.blocks){if(b.date<T)continue;const t=taskOf(b.tid);if(!t||t.done)continue;const x=t.ex&&examOf(t.ex);timed('b'+b.id,b.date,b.s,b.m,t.t,'Mi semana'+(x?' · Examen: '+x.name:'')+(t.h?'\n'+t.h:''),t.rem!=null?t.rem:bkR(),x?'2':'7');}
+  for(const t of S.tasks){if(t.done||t.note||!t.due||t.due<T||isScheduled(t.id)||t.ds==null)continue;timed('t'+t.id,t.due,t.ds,t.m||30,t.t,'Mi semana · aviso',t.rem,'5');}
+  for(const x of S.exams){if(x.date<T)continue;W.set('x'+x.id,{summary:'Examen: '+x.name,description:'Mi semana',start:{date:x.date},end:{date:addD(x.date,1)},transparency:'transparent',reminders:{useDefault:false,overrides:[{method:'popup',minutes:900}]},colorId:'11',extendedProperties:{private:{misemana:'1',mk:'x'+x.id}}});}
+  if(GG.rt)for(let i=0;i<14;i++){const d=addD(T,i);for(const h of habTimed(d))timed('h'+h.id+d.replace(/-/g,''),d,h.s,h.m,h.n,'Mi semana · rutina',bkR(),'10');}
+  return W;
+}
+async function gPush(){
+  const T=todayS(),W=gWanted();
+  const have=await gList({privateExtendedProperty:'misemana=1',timeMin:new Date(parse(addD(T,-1))).toISOString(),timeMax:new Date(parse(addD(T,120))).toISOString()});
+  let n=0;const seen=new Set();
+  for(const e of have){
+    const k=e.extendedProperties&&e.extendedProperties.private&&e.extendedProperties.private.mk;
+    if(!k||!W.has(k)||seen.has(k)){await gApi('/calendars/primary/events/'+encodeURIComponent(e.id),{method:'DELETE'}).catch(()=>{});n++;continue;}
+    seen.add(k);const w=W.get(k);
+    const st=e.start.dateTime?e.start.dateTime.slice(0,19):e.start.date,en=e.end.dateTime?e.end.dateTime.slice(0,19):e.end.date;
+    if(e.summary!==w.summary||st!==(w.start.dateTime||w.start.date)||en!==(w.end.dateTime||w.end.date)){await gApi('/calendars/primary/events/'+encodeURIComponent(e.id),{method:'PATCH',body:w});n++;}
+    if(n>150)break;
+  }
+  for(const [k,w] of W){if(seen.has(k))continue;await gApi('/calendars/primary/events',{method:'POST',body:w});n++;if(n>150)break;}
+  return n;
+}
+const gErrTxt=e=>{const c=e&&e.code;return c==='nocid'?'Falta el ID de cliente.':c==='gis'?'No pude cargar el inicio de sesión de Google (¿sin internet?).':c==='popup_closed'||c==='popup'||c==='popup_failed_to_open'?'Se cerró o se bloqueó la ventana de Google. Tocá Conectar de nuevo.':c==='access_denied'||c==='denied'?'No diste permiso a Google Calendar.':c==='expired'?'La sesión con Google venció. Tocá Sincronizar.':c==='http'&&e.status===403?'Google no deja: revisá que la API de Google Calendar esté habilitada en tu proyecto.':'No pude hablar con Google Calendar.';};
+async function gSync(ask,quiet){
+  if(gBusy||!GG.cid)return;
+  gBusy=true;gErr='';GC.st='busy';renderG();renderCal();
+  try{
+    await gToken(ask);await gPull();
+    const n=GG.push?await gPush():0;
+    GG.at=Date.now();GC.st='ok';
+    if(!quiet)say(GG.push?(n?`Google Calendar sincronizado (${n} ${n===1?'cambio':'cambios'})`:'Google Calendar al día'):'Traje tus eventos de Google Calendar');
+  }catch(e){gErr=gErrTxt(e);GC.st=GC.ev&&GC.ev.length?'ok':'';if(!quiet)say(gErr);}
+  gBusy=false;ggSave();gcSave();renderG();render();
+}
+function gPushSoon(){if(!GG.on||!GG.push||!gLive())return;clearTimeout(gPushT);gPushT=setTimeout(()=>gSync(false,true),15000);}
+function renderG(){
+  const el=$('#gBody');if(!el)return;
+  const org=location.origin&&location.origin!=='null'?location.origin:'https://tomas6304.github.io';
+  if(inClaude){el.innerHTML='<p class="st">Adentro de Claude, tu Google Calendar se lee con el conector de Claude (botón al lado de la leyenda del calendario). Esta opción es para tu app propia.</p>';return;}
+  if(location.protocol!=='https:'){el.innerHTML='<p class="st">Para conectar tu cuenta de Google, abrí la app desde su dirección de GitHub Pages (https). Como archivo suelto, Google no lo permite.</p>';return;}
+  if(!GG.cid){
+    el.innerHTML=`<p class="st">Se hace una sola vez (unos 10 minutos). Google pide que la app tenga su propio "ID de cliente":</p>
+      <ol><li>Entrá a <a href="https://console.cloud.google.com/projectcreate" target="_blank" rel="noopener">console.cloud.google.com</a> y creá un proyecto, por ejemplo "Mi semana".</li>
+      <li>En <b>APIs y servicios → Biblioteca</b> buscá <b>Google Calendar API</b> y tocá <b>Habilitar</b>.</li>
+      <li>En <b>Pantalla de consentimiento de OAuth</b> elegí <b>Externo</b>, poné un nombre y tu mail. En <b>Usuarios de prueba</b> agregá tu Gmail.</li>
+      <li>En <b>Credenciales → Crear credenciales → ID de cliente de OAuth</b> elegí <b>Aplicación web</b>. En <b>Orígenes autorizados de JavaScript</b> pegá: <b>${esc(org)}</b></li>
+      <li>Copiá el <b>ID de cliente</b> (termina en .apps.googleusercontent.com) y pegalo acá.</li></ol>
+      <div class="url"><input id="gCid" autocomplete="off" spellcheck="false" placeholder="123…apps.googleusercontent.com" aria-label="ID de cliente de Google"><button class="sm btn" id="gGo" type="button">Conectar</button></div>
+      <p class="st">Google te va a mostrar "app no verificada": es tu propia app, tocá <b>Continuar</b>. La app solo puede ver y editar eventos de tu calendario, y todo queda en tu navegador.</p>`;
+    return;
+  }
+  const at=GG.at?new Date(GG.at):null;
+  el.innerHTML=`<p style="margin:0">${gBusy?'Sincronizando…':gErr?`<span class="bad">${esc(gErr)}</span>`:GG.on&&at?`<span class="ok">✓ Conectado</span> · última vez ${dayWord(iso(at))} ${hm(at.getHours()*60+at.getMinutes())}`:'Todavía no conectaste tu cuenta.'}</p>
+    <div class="row"><button class="sm btn" id="gNow" type="button">${GG.on?'Sincronizar ahora':'Conectar con Google'}</button><button class="sm ghost" id="gOff" type="button">Desconectar</button></div>
+    <label class="aichk"><input type="checkbox" id="gPushC" ${GG.push?'checked':''}> Subir mis bloques de estudio, avisos y exámenes a Google Calendar</label>
+    <label class="aichk"><input type="checkbox" id="gRtC" ${GG.rt?'checked':''}> Subir también mis rutinas (próximas 2 semanas)</label>
+    <p class="st">Tus eventos de Google aparecen rayados en el calendario y el plan no los pisa. Lo que sube la app queda marcado "Mi semana": si lo borrás o movés acá, se actualiza allá. Por seguridad, Google pide volver a entrar cada una hora: si pasó más tiempo, tocá Sincronizar.</p>`;
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.id==='gGo'){const v=($('#gCid').value||'').trim();if(!/\.apps\.googleusercontent\.com$/.test(v)){say('Ese no parece un ID de cliente: tiene que terminar en .apps.googleusercontent.com');return;}GG.cid=v;ggSave();gSync(true);}
+  else if(b.id==='gNow'||b.dataset.gsync!==undefined){gSync(!GG.on);}
+  else if(b.id==='gOff'){try{if(gTok&&window.google)google.accounts.oauth2.revoke(gTok,()=>{});}catch(_){}gTok=null;GG={cid:'',on:false,push:true,rt:false,at:0};ggSave();GC.ev=[];GC.ex=[];GC.st='';gcSave();renderG();render();say('Google Calendar desconectado');}
+});
+document.addEventListener('change',e=>{
+  if(e.target.id==='gPushC'){GG.push=e.target.checked;ggSave();if(GG.push)gSync(false,false);}
+  else if(e.target.id==='gRtC'){GG.rt=e.target.checked;ggSave();gSync(false,false);}
+});
+const _saveG=save;save=function(){_saveG();gPushSoon();};
+setInterval(()=>{if(GG.on&&gLive()&&document.visibilityState==='visible')gSync(false,true);},10*60000);
+
+let _rz=null;window.addEventListener('resize',()=>{clearTimeout(_rz);_rz=setTimeout(()=>{renderCal();setTab(document.body.dataset.tab||'hoy',false);},150);});
 fillStatic();
 /* Con sincronización activa, primero traigo lo del otro dispositivo y después completo el plan */
 if(SY.gist||inClaude)Promise.all([SY.gist&&!inClaude?syncNow(false):null,initSync()]).then(()=>{gcResolve();render();if(inClaude)gcFetch();});
