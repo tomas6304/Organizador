@@ -756,6 +756,33 @@ body.mini{padding:10px!important;min-height:100vh}
 .iconb{width:36px;padding:0;display:grid;place-items:center}
 .iconb .gl{font-size:17px}
 
+/* ===== Tus apps ===== */
+.apps{display:inline-flex;gap:2px;padding:3px;border-radius:999px;border:2px solid var(--fg);background:var(--bg)}
+.apps[hidden]{display:none}
+.apps button{border:0;min-height:30px;padding:3px 13px;font-size:13px;font-weight:700;color:var(--fg);background:transparent}
+.apps button:hover{background:color-mix(in srgb,var(--fg) 10%,transparent)}
+.apps button.on{background:var(--fg);color:var(--bg)}
+#appov{position:fixed;inset:0;z-index:60;background:var(--bg);display:grid;grid-template-rows:auto minmax(0,1fr)}
+#appov[hidden]{display:none}
+body.apopen{overflow:hidden}
+.apbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:max(8px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));border-bottom:2px solid var(--fg)}
+.apbar a.btnl{color:var(--fg);border-color:var(--fg)}
+#apframes{position:relative;min-height:0}
+#apframes iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+#apframes iframe[hidden]{display:none}
+.apt{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
+.aptile{display:grid;gap:3px;text-align:left;padding:10px 12px;border-radius:18px;border:0;background:rgba(247,240,220,.1);color:var(--hero-fg);min-height:0}
+.aptile:hover{background:rgba(247,240,220,.17);border:0}
+.aptile small{font-family:var(--f-display);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--hero-mut)}
+.aptile b{font-family:var(--f-display);font-size:16px;font-weight:800;line-height:1.15}
+.aptile span{font-size:12px;color:var(--hero-mut);line-height:1.3}
+.at-e small::before,.at-g small::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#7fc4a0}
+.at-g small::before{background:#f5e36a}
+.apb{display:block;height:5px;border-radius:9px;background:rgba(247,240,220,.15);overflow:hidden;margin-top:4px}
+.apb i{display:block;height:100%;border-radius:9px;background:#7fc4a0}
+.at-g .apb i{background:#f5e36a}.apb.hot i{background:#ff8a70}
+@media (max-width:700px){.top .apps{grid-column:1/-1;order:5;justify-self:start}}
+
 /* Pestañas del celular: una sección por vez, barra fija abajo */
 .tabbar{display:none}
 @media (max-width:1079px){
@@ -823,6 +850,7 @@ body.mini{padding:10px!important;min-height:100vh}
       <circle cx="56" cy="12" r="6" fill="var(--x5)" stroke="var(--bg)" stroke-width="2.5"/>
     </svg>
     <h1>Mi semana</h1>
+    <nav class="apps" id="apps" aria-label="Tus apps" hidden><button type="button" data-app="semana" class="on">Mi semana</button><button type="button" data-app="estudio">Estudio</button><button type="button" data-app="gastos">Gastos</button></nav>
     <div class="topb"><button class="ghost sm" id="instBtn" type="button" hidden>Instalar</button><button class="ghost sm iconb" id="thBtn" type="button" aria-label="Tema de colores" title="Tema de colores"><svg class="gl" aria-hidden="true"><use href="#g-pal"/></svg></button><button class="ghost sm iconb" id="miniBtn" type="button" aria-label="Abrir ventana mini" title="Ventana mini: ahora y lo próximo"><svg class="gl" aria-hidden="true"><use href="#g-mini"/></svg></button><button class="ghost sm" data-hmodal="1">Mis horarios</button><button class="ghost sm sybtn" data-smodal="1" id="syBtn" aria-label="Sincronizar y avisos" title="Sincronizar y avisos"><svg class="gl" aria-hidden="true"><use href="#g-sync"/></svg><i id="syDot"></i></button></div>
     <p class="dt" id="dateTxt"></p>
   </header>
@@ -1086,6 +1114,7 @@ body.mini{padding:10px!important;min-height:100vh}
     <button class="ghost" type="button" data-tclose>Listo</button>
   </div>
 </div>
+<div id="appov" hidden><div class="apbar"><nav class="apps" aria-label="Tus apps"><button type="button" data-app="semana" class="on">Mi semana</button><button type="button" data-app="estudio">Estudio</button><button type="button" data-app="gastos">Gastos</button></nav><a class="btnl" id="apOut" target="_blank" rel="noopener" href="#">Abrir aparte</a></div><div id="apframes"></div></div>
 <div id="msg" hidden></div>
 
 <script>
@@ -1614,6 +1643,7 @@ function wxLine(){
 function briefLines(){
   const T=todayS(),now=nowM(),L=[];
   const w=wxLine();if(w)L.push(['wx',w]);
+  if(typeof appsBrief==='function')L.push(...appsBrief());
   const ida=travelOn(T).find(t=>t.k==='ida');
   if(ida&&now<ida.s)L.push(['tra',`Hoy tenés facultad: salí de casa a las <b>${hm(ida.s)}</b> para llegar a las ${hm(ida.e)}.`]);
   else if(ida&&now<ida.e)L.push(['tra',`Ya tendrías que estar viajando: la clase arranca a las <b>${hm(ida.e)}</b>.`]);
@@ -1685,6 +1715,7 @@ function renderHero(){
     <h2 class="ht">${esc(ti)}</h2>${chips}${su?`<p class="hs">${esc(su)}</p>`:''}
     ${bt?`<div class="row">${bt}</div>`:''}${alts}${missed}</div>
     ${lines.length?`<ul class="brief">${lines.map(([a,t])=>`<li><i class="bdot ${a==='wx'?'bwx':'a-'+a}"></i><span>${t}</span></li>`).join('')}</ul>`:''}
+    ${typeof appsTiles==='function'?appsTiles():''}
     ${upl.length?`<div class="hup"><p class="k2">Lo que sigue hoy</p><ol class="upl">${upl.map(i=>`<li><span class="ut">${hm(i.s)}</span><i class="ud ${dot(i)}"></i><span>${esc(i.t)}</span></li>`).join('')}</ol></div>`:''}
     <div class="hstrip"><p class="k2">Tu recorrido de hoy</p>${strip(T)}<div class="ticks">${ticks}</div></div>`;
 }
@@ -2831,7 +2862,7 @@ function readBackup(f){
 }
 window.addEventListener('dragover',e=>{if(e.dataTransfer&&[...e.dataTransfer.types].includes('Files'))e.preventDefault();});
 window.addEventListener('drop',e=>{const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];if(!f)return;e.preventDefault();readBackup(f);});
-$('#impBtn').addEventListener('click',()=>$('#impFile').click());
+$('#impBtn').addEventListener('click',()=>{const m=lsj('pom_mats');if(Array.isArray(m)&&m.length){try{prepImport({format:'estudio-tracker-backup',mats:m,history:lsj('pom_history')||{}});return;}catch(_){}}$('#impFile').click();});
 $('#impFile').addEventListener('change',e=>{
   const f=e.target.files&&e.target.files[0];if(f)readBackup(f);
 });
@@ -3918,6 +3949,90 @@ applyTheme();
 setInterval(()=>{applyTheme();MINI.forEach(m=>applyTheme(m.ownerDocument));renderMini();},30000);
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#tmodal').hidden)$('#tmodal').hidden=true;});
+/* ===== Tus 3 apps juntas: Mi semana, Estudio y Gastos =====
+   Las tres viven en tomas6304.github.io, así que comparten el almacenamiento del navegador:
+   desde acá se leen tus datos de Estudio y Gastos (solo lectura) y se abren las apps sin salir. */
+var APPS={estudio:{n:'Estudio',path:'/Estudio/'},gastos:{n:'Gastos',path:'/Gastos/'}};
+var APPS_ON=!inClaude&&/^https?:$/.test(location.protocol);
+function lsj(k){try{return JSON.parse(localStorage.getItem(k));}catch(_){return null;}}
+function estudioInfo(){
+  const mats=lsj('pom_mats'),hist=lsj('pom_history');
+  if(!Array.isArray(mats)&&!(hist&&typeof hist==='object'))return null;
+  const T=todayS(),mon=monday(T),H=hist||{},M=Array.isArray(mats)?mats:[];
+  let week=0;for(let d=mon;d<=T;d=addD(d,1))week+=+((H[d]&&H[d].mins)||0);
+  const today=+((H[T]&&H[T].mins)||0),goal=parseInt(localStorage.getItem('pom_weekly_goal')||'300',10)||300;
+  const notes=localStorage.getItem('fc_use_notes')==='1';let due=0;
+  for(const m of M){for(const c of m.cards||[])if(c&&c.q&&c.a&&(!c.srNext||c.srNext<=T))due++;if(notes)for(const u of m.units||[])if(u&&u.note&&String(u.note).trim()&&(!u.srNext||u.srNext<=T))due++;}
+  let run=null;const end=+localStorage.getItem('pom_end_time')||0;
+  if(end>Date.now()){const mid=localStorage.getItem('pom_mat'),mt=M.find(m=>String(m.id)===String(mid));run={left:Math.max(1,Math.ceil((end-Date.now())/60000)),study:(localStorage.getItem('pom_mode')||'study')==='study',mat:mt&&mt.name};}
+  return {today,week,goal,due,run};
+}
+function gastosInfo(){
+  const d=lsj('gastos.v1');if(!d||typeof d!=='object')return null;
+  const st=d.settings||{};if(st.lock&&st.lock.on)return {locked:true};
+  const T=todayS(),M=T.slice(0,7),cur=st.currency||'ARS';
+  const fmt=v=>{try{return new Intl.NumberFormat('es-AR',{style:'currency',currency:cur,maximumFractionDigits:0}).format(v);}catch(_){return '$'+Math.round(v).toLocaleString('es-AR');}};
+  const ex=(d.expenses||[]).filter(e=>e&&String(e.date||'').startsWith(M));
+  const tot=t=>ex.filter(e=>(e.type==='ingreso')===(t==='i')).reduce((a,e)=>a+(+e.amount||0),0);
+  const spent=tot('g'),inc=tot('i'),todaySp=ex.filter(e=>e.type!=='ingreso'&&e.date===T).reduce((a,e)=>a+(+e.amount||0),0);
+  const cats=Array.isArray(d.categories)?d.categories:[];
+  const nextOf=r=>{
+    const s=String(r.start||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;
+    if(r.freq==='semanal'){if(s>=T)return s;const k=Math.ceil(diffD(s,T)/7);return addD(s,k*7);}
+    if(r.freq==='anual'){let c=T.slice(0,4)+s.slice(4);if(c<T)c=(+T.slice(0,4)+1)+s.slice(4);return c<s?s:c;}
+    const day=+s.slice(8,10),mk=(y,m)=>{const last=new Date(y,m+1,0).getDate();return iso(new Date(y,m,Math.min(day,last)));};
+    const n=new Date();let c=mk(n.getFullYear(),n.getMonth());if(c<T)c=mk(n.getFullYear(),n.getMonth()+1);return c<s?s:c;
+  };
+  let next=null;
+  for(const r of d.recurring||[]){
+    if(!r||r.active===false||r.type==='ingreso')continue;const nd=nextOf(r);if(!nd||diffD(T,nd)>10)continue;
+    const c=cats.find(x=>x.id===r.cat);
+    if(!next||nd<next.date)next={date:nd,name:r.note||(c&&c.name)||'Pago fijo',amount:+r.amount||0};
+  }
+  return {spent,inc,today:todaySp,budget:+st.budget||0,fmt,next,month:MESF[new Date().getMonth()]};
+}
+function appsTiles(){
+  const e=estudioInfo(),g=gastosInfo();if(!e&&!g&&!APPS_ON)return '';
+  let h='<div class="apt">';
+  if(e||APPS_ON){
+    const pct=e?Math.min(100,Math.round(e.week/e.goal*100)):0;
+    h+=`<button type="button" class="aptile at-e" data-app="estudio"><small>Estudio</small>${e?`<b>${e.run?(e.run.study?'Pomodoro · '+e.run.left+' min':'Descanso · '+e.run.left+' min'):'Hoy '+(e.today?durTxt(e.today):'0 min')}</b><span>Semana ${fmtH(e.week)} de ${fmtH(e.goal)} h${e.due?' · '+e.due+' para repasar':''}</span><i class="apb"><i style="width:${pct}%"></i></i>`:'<b>Abrir</b><span>Todavía no hay datos</span>'}</button>`;
+  }
+  if(g||APPS_ON){
+    let b='<b>Abrir</b><span>Todavía no hay datos</span>';
+    if(g&&g.locked)b='<b>Bloqueada</b><span>Abrila para ver tus números</span>';
+    else if(g){const left=g.budget?g.budget-g.spent:null,pct=g.budget?Math.min(100,Math.round(g.spent/g.budget*100)):0;
+      b=`<b>${g.fmt(g.spent)}</b><span>${cap(g.month)}${left!=null?` · ${left>=0?'quedan '+g.fmt(left):'te pasaste '+g.fmt(-left)}`:g.today?' · hoy '+g.fmt(g.today):''}</span>${g.budget?`<i class="apb ${pct>=90?'hot':''}"><i style="width:${pct}%"></i></i>`:''}`;}
+    h+=`<button type="button" class="aptile at-g" data-app="gastos"><small>Gastos</small>${b}</button>`;
+  }
+  return h+'</div>';
+}
+/* Líneas para el resumen del asistente */
+function appsBrief(){
+  const L=[],e=estudioInfo(),g=gastosInfo();
+  if(e&&e.run&&e.run.study)L.push(['est',`Tenés un pomodoro en curso${e.run.mat?' de <b>'+esc(e.run.mat)+'</b>':''}: quedan ${e.run.left} min.`]);
+  if(g&&!g.locked&&g.next&&diffD(todayS(),g.next.date)<=2)L.push(['pla',`Pago fijo ${['hoy','mañana'].includes(dayWord(g.next.date))?dayWord(g.next.date):'el '+fmtDate(g.next.date)}: <b>${esc(g.next.name)}</b>${g.next.amount?' ('+g.fmt(g.next.amount)+')':''}.`]);
+  if(g&&!g.locked&&g.budget&&g.spent>=g.budget*.9)L.push(['pla',`Ya usaste el ${Math.round(g.spent/g.budget*100)}% del presupuesto de ${g.month}.`]);
+  return L;
+}
+/* Abrir las otras apps adentro de esta, sin perder lo que estabas haciendo */
+let apCur='semana';
+function apSetOn(){document.querySelectorAll('[data-app]').forEach(b=>{if(b.closest('.apps'))b.classList.toggle('on',b.dataset.app===apCur);});}
+function openApp(k){
+  if(k==='semana'||!APPS[k]){$('#appov').hidden=true;document.body.classList.remove('apopen');apCur='semana';apSetOn();render();return;}
+  if(!APPS_ON){say('Las otras apps se abren desde tu versión de GitHub.');return;}
+  apCur=k;$('#appov').hidden=false;document.body.classList.add('apopen');
+  let f=document.getElementById('apf-'+k);
+  if(!f){f=document.createElement('iframe');f.id='apf-'+k;f.title=APPS[k].n;f.src=location.origin+APPS[k].path;f.setAttribute('allow','clipboard-read; clipboard-write; camera; microphone; fullscreen; screen-wake-lock');$('#apframes').appendChild(f);}
+  document.querySelectorAll('#apframes iframe').forEach(x=>{x.hidden=x!==f;});
+  $('#apOut').href=location.origin+APPS[k].path;apSetOn();
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-app]');if(b){e.preventDefault();openApp(b.dataset.app);}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#appov').hidden&&!e.target.closest('input,textarea'))openApp('semana');});
+let _apT=null;
+window.addEventListener('storage',e=>{if(e.key&&(e.key.startsWith('pom_')||e.key==='gastos.v1')){clearTimeout(_apT);_apT=setTimeout(()=>{renderHero();renderMini();},400);}});
+$('#apps').hidden=!APPS_ON;
+
 fillStatic();
 /* Con sincronización activa, primero traigo lo del otro dispositivo y después completo el plan */
 if(SY.gist||inClaude)Promise.all([SY.gist&&!inClaude?syncNow(false):null,initSync()]).then(()=>{gcResolve();render();if(inClaude)gcFetch();});
