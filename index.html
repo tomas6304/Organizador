@@ -708,6 +708,54 @@ details.capex .capx{margin-top:8px}
 .sheet .cfg{background:var(--surface2);color:var(--fg);margin-top:0}
 .sheet .cfg label{color:var(--fg)}
 .sheet .cfg .st{color:var(--muted)}
+/* ===== Temas de color ===== */
+:root[data-skin="menta"]{--bg:#e2eee5;--hero-bg:#1f4d4a}
+@media (prefers-color-scheme:dark){:root[data-skin="menta"]:not([data-theme="light"]){--bg:#111a16}}:root[data-skin="menta"][data-theme="dark"]{--bg:#111a16}
+:root[data-skin="menta"] #calcard{background:#f2f6ee} :root[data-skin="menta"] #capcard{background:#9fd8bd} :root[data-skin="menta"] #exams{background:#dbe98a} :root[data-skin="menta"] #goals{background:#a9d6d3} :root[data-skin="menta"] #tasksCard{background:#b9d7f0} :root[data-skin="menta"] #aicard{background:#cde7a6} :root[data-skin="menta"] #projCard{background:#f3c49b}
+:root[data-skin="menta"] .d0{--dp:#9fd8bd;--di:#0f3d2c}:root[data-skin="menta"] .d1{--dp:#1f4d4a;--di:#dbe98a}:root[data-skin="menta"] .d2{--dp:#eef3e6;--di:#1f6f5f}:root[data-skin="menta"] .d3{--dp:#a9d6d3;--di:#0d3a40}:root[data-skin="menta"] .d4{--dp:#7fbfd9;--di:#0b2f45}:root[data-skin="menta"] .d5{--dp:#dbe98a;--di:#3a4a0d}:root[data-skin="menta"] .d6{--dp:#26332f;--di:#9fd8bd}
+:root[data-skin="atardecer"]{--bg:#f5e2d2;--hero-bg:#5a2840}
+@media (prefers-color-scheme:dark){:root[data-skin="atardecer"]:not([data-theme="light"]){--bg:#1c1416}}:root[data-skin="atardecer"][data-theme="dark"]{--bg:#1c1416}
+:root[data-skin="atardecer"] #calcard{background:#fbefe3} :root[data-skin="atardecer"] #capcard{background:#ffb08a} :root[data-skin="atardecer"] #exams{background:#ffd46e} :root[data-skin="atardecer"] #goals{background:#f3a6bb} :root[data-skin="atardecer"] #tasksCard{background:#c8b5f0} :root[data-skin="atardecer"] #aicard{background:#ffd9a4} :root[data-skin="atardecer"] #projCard{background:#f08d6b}
+:root[data-skin="atardecer"] .d0{--dp:#ffb08a;--di:#5c1e08}:root[data-skin="atardecer"] .d1{--dp:#5a2840;--di:#ffd46e}:root[data-skin="atardecer"] .d2{--dp:#fbefe3;--di:#b2452a}:root[data-skin="atardecer"] .d3{--dp:#f3a6bb;--di:#5a1430}:root[data-skin="atardecer"] .d4{--dp:#c8b5f0;--di:#2e1a5e}:root[data-skin="atardecer"] .d5{--dp:#ffd46e;--di:#6a3b00}:root[data-skin="atardecer"] .d6{--dp:#2e2228;--di:#ffb08a}
+:root[data-skin="oceano"]{--bg:#dde8f2;--hero-bg:#1c3557}
+@media (prefers-color-scheme:dark){:root[data-skin="oceano"]:not([data-theme="light"]){--bg:#10151d}}:root[data-skin="oceano"][data-theme="dark"]{--bg:#10151d}
+:root[data-skin="oceano"] #calcard{background:#eef3f8} :root[data-skin="oceano"] #capcard{background:#9cc6ef} :root[data-skin="oceano"] #exams{background:#f1e59a} :root[data-skin="oceano"] #goals{background:#b5b9f1} :root[data-skin="oceano"] #tasksCard{background:#8fd0d8} :root[data-skin="oceano"] #aicard{background:#a8dfc6} :root[data-skin="oceano"] #projCard{background:#f4b39a}
+:root[data-skin="oceano"] .d0{--dp:#9cc6ef;--di:#0d2a4d}:root[data-skin="oceano"] .d1{--dp:#1c3557;--di:#f1e59a}:root[data-skin="oceano"] .d2{--dp:#eef3f8;--di:#2c62d8}:root[data-skin="oceano"] .d3{--dp:#b5b9f1;--di:#25206a}:root[data-skin="oceano"] .d4{--dp:#8fd0d8;--di:#0b3a40}:root[data-skin="oceano"] .d5{--dp:#f1e59a;--di:#2a3d6b}:root[data-skin="oceano"] .d6{--dp:#1e2633;--di:#9cc6ef}
+:root[data-skin="mono"]{--bg:#ebe9e4;--hero-bg:#1b1b1b}
+@media (prefers-color-scheme:dark){:root[data-skin="mono"]:not([data-theme="light"]){--bg:#151515}}:root[data-skin="mono"][data-theme="dark"]{--bg:#151515}
+:root[data-skin="mono"] #calcard{background:#f7f6f2} :root[data-skin="mono"] #capcard{background:#e4e1da} :root[data-skin="mono"] #exams{background:#f2e36a} :root[data-skin="mono"] #goals{background:#d9d6cf} :root[data-skin="mono"] #tasksCard{background:#cfcbc3} :root[data-skin="mono"] #aicard{background:#e9e6df} :root[data-skin="mono"] #projCard{background:#dedad2}
+:root[data-skin="mono"] .d0{--dp:#f2f0eb;--di:#1b1b1b}:root[data-skin="mono"] .d1{--dp:#1b1b1b;--di:#f2e36a}:root[data-skin="mono"] .d2{--dp:#e4e1da;--di:#1b1b1b}:root[data-skin="mono"] .d3{--dp:#d0ccc4;--di:#1b1b1b}:root[data-skin="mono"] .d4{--dp:#f2e36a;--di:#1b1b1b}:root[data-skin="mono"] .d5{--dp:#e9e6df;--di:#1b1b1b}:root[data-skin="mono"] .d6{--dp:#2a2a2a;--di:#f2f0eb}
+.skins{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.skin{display:grid;gap:8px;padding:10px;border-radius:18px;border:2px solid var(--line2);background:var(--surface2);text-align:left;min-height:0}
+.skin.on{outline:3px solid var(--fg);outline-offset:2px}
+.skin b{font-size:14px}
+.skin .sw{display:flex;height:26px;border-radius:10px;overflow:hidden;border:2px solid #1b2620}
+.skin .sw i{flex:1}
+/* ===== Widget mini ===== */
+body.mini .wrap,body.mini .tabbar,body.mini .localban{display:none!important}
+body.mini{padding:10px!important;min-height:100vh}
+.miniw{display:grid;gap:10px}
+.mcard{gap:8px!important;padding:16px!important;border-radius:24px!important}
+.mtop{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mtop b{font-family:var(--f-display);font-size:28px;line-height:1;font-variant-numeric:tabular-nums}
+.mtop span{font-size:12px;color:var(--hero-mut);text-align:right}
+.mcard small{font-family:var(--f-display);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--hero-mut)}
+.mcard h3{margin:0;font-family:var(--f-display);font-size:20px;font-weight:800;line-height:1.1;overflow-wrap:anywhere}
+.mcard p{margin:0;color:var(--hero-mut);font-size:13px}
+.mbar{height:8px;border-radius:99px;background:rgba(247,240,220,.18);overflow:hidden}
+.mbar i{display:block;height:100%;background:#f5e36a;border-radius:99px}
+.mcard .row button{min-height:34px;padding:4px 14px;font-size:13px}
+.mup{list-style:none;margin:0;padding:12px 14px;border-radius:20px;background:var(--surface);color:var(--fg);border:2px solid var(--line2);display:grid;gap:6px;font-size:13.5px}
+.mup li{display:grid;grid-template-columns:42px 10px minmax(0,1fr);gap:8px;align-items:center}
+.mup li span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mup .ut{font-family:var(--f-display);font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.mup .ud.k-fx{background:var(--fg)}.mup .ud.k-tv{border-color:var(--fg)}
+.mform{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
+.mform input{min-height:40px;border-radius:999px;padding-inline:14px}
+.mform button{min-height:40px}
+.iconb{width:36px;padding:0;display:grid;place-items:center}
+.iconb .gl{font-size:17px}
+
 /* Pestañas del celular: una sección por vez, barra fija abajo */
 .tabbar{display:none}
 @media (max-width:1079px){
@@ -760,6 +808,8 @@ details.capex .capx{margin-top:8px}
   <symbol id="w-cloud" viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7 9a4.5 4.5 0 0 0 0 9z" fill="#e3dbc6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="w-rain" viewBox="0 0 24 24"><path d="M7 15h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7 6a4.5 4.5 0 0 0 0 9z" fill="#e3dbc6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 18l-1 3M12 18l-1 3M16 18l-1 3" stroke="#5aa6dc" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="w-storm" viewBox="0 0 24 24"><path d="M7 15h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7 6a4.5 4.5 0 0 0 0 9z" fill="#b9ae98" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12.5 15l-2.5 4h3l-2 3.5" fill="none" stroke="#f5e36a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="g-pal" viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16a5 5 0 0 0 5-5c0-3.900-4-7.200-9-7.200z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7.500" cy="11" r="1.300" fill="currentColor"/><circle cx="10" cy="7.300" r="1.300" fill="currentColor"/><circle cx="14.500" cy="7.300" r="1.300" fill="currentColor"/></symbol>
+  <symbol id="g-mini" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="15" rx="2.500" fill="none" stroke="currentColor" stroke-width="2"/><rect x="12" y="11" width="7" height="6" rx="1.200" fill="currentColor"/></symbol>
   <symbol id="g-ide" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.500 10.900c.6.5 1 1.200 1 2.100h5c0-.9.4-1.600 1-2.100A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></symbol>
 </svg>
 
@@ -773,7 +823,7 @@ details.capex .capx{margin-top:8px}
       <circle cx="56" cy="12" r="6" fill="var(--x5)" stroke="var(--bg)" stroke-width="2.5"/>
     </svg>
     <h1>Mi semana</h1>
-    <div class="topb"><button class="ghost sm" id="instBtn" type="button" hidden>Instalar</button><button class="ghost sm" data-hmodal="1">Mis horarios</button><button class="ghost sm sybtn" data-smodal="1" id="syBtn" aria-label="Sincronizar y avisos" title="Sincronizar y avisos"><svg class="gl" aria-hidden="true"><use href="#g-sync"/></svg><i id="syDot"></i></button></div>
+    <div class="topb"><button class="ghost sm" id="instBtn" type="button" hidden>Instalar</button><button class="ghost sm iconb" id="thBtn" type="button" aria-label="Tema de colores" title="Tema de colores"><svg class="gl" aria-hidden="true"><use href="#g-pal"/></svg></button><button class="ghost sm iconb" id="miniBtn" type="button" aria-label="Abrir ventana mini" title="Ventana mini: ahora y lo próximo"><svg class="gl" aria-hidden="true"><use href="#g-mini"/></svg></button><button class="ghost sm" data-hmodal="1">Mis horarios</button><button class="ghost sm sybtn" data-smodal="1" id="syBtn" aria-label="Sincronizar y avisos" title="Sincronizar y avisos"><svg class="gl" aria-hidden="true"><use href="#g-sync"/></svg><i id="syDot"></i></button></div>
     <p class="dt" id="dateTxt"></p>
   </header>
 
@@ -1027,6 +1077,13 @@ details.capex .capx{margin-top:8px}
       <button class="ghost w2" type="button" id="rCancel" hidden>Cancelar edición</button>
     </form>
     <button class="ghost" type="button" data-rclose>Listo</button>
+  </div>
+</div>
+<div id="tmodal" class="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="thT">
+    <div><h3 id="thT">Tema</h3><p class="muted" style="margin:4px 0 0">Elegí los colores de tu semana. Se guarda en este dispositivo.</p></div>
+    <div id="thBody" class="sbody"></div>
+    <button class="ghost" type="button" data-tclose>Listo</button>
   </div>
 </div>
 <div id="msg" hidden></div>
@@ -1825,7 +1882,7 @@ function renderTasks(){
   $('#hechas').hidden=!dn.length;
   $('#hechas').innerHTML=dn.length?`<summary>Hechas (${dn.length})</summary><ul class="tasks">${dn.map(taskRow).join('')}</ul>`:'';
 }
-function renderAll(){renderHero();renderCal();renderExams();renderGoals();renderProj();renderTasks();if(typeof renderCap==='function')renderCap();}
+function renderAll(){renderHero();renderCal();renderExams();renderGoals();renderProj();renderTasks();if(typeof renderMini==='function'&&typeof MINI!=='undefined')renderMini();if(typeof renderCap==='function')renderCap();}
 function render(){
   const n=new Date();
   $('#dateTxt').textContent=`${cap(DFULL[dow(todayS())])} ${n.getDate()} de ${MESF[n.getMonth()]}`;
@@ -3721,7 +3778,7 @@ async function gPush(){
   for(const [k,w] of W){if(seen.has(k))continue;await gApi('/calendars/primary/events',{method:'POST',body:w});n++;if(n>150)break;}
   return n;
 }
-const gErrTxt=e=>{const c=e&&e.code;return c==='nocid'?'Falta el ID de cliente.':c==='gis'?'No pude cargar el inicio de sesión de Google (¿sin internet?).':c==='popup_closed'||c==='popup'||c==='popup_failed_to_open'?'Se cerró o se bloqueó la ventana de Google. Tocá Conectar de nuevo.':c==='access_denied'||c==='denied'?'No diste permiso a Google Calendar.':c==='expired'?'La sesión con Google venció. Tocá Sincronizar.':c==='http'&&e.status===403?'Google no deja: revisá que la API de Google Calendar esté habilitada en tu proyecto.':'No pude hablar con Google Calendar.';};
+const gErrTxt=e=>{const c=e&&e.code;return c==='nocid'?'Falta el ID de cliente.':c==='gis'?'No pude cargar el inicio de sesión de Google (¿sin internet?).':c==='popup_closed'||c==='popup'||c==='popup_failed_to_open'?'Se cerró la ventana de Google. Si decía "Acceso bloqueado", falta agregar tu Gmail como usuario de prueba en Google Cloud (Google Auth Platform → Público → Usuarios de prueba). Después tocá Conectar de nuevo.':c==='access_denied'||c==='denied'?'No diste permiso a Google Calendar.':c==='expired'?'La sesión con Google venció. Tocá Sincronizar.':c==='http'&&e.status===403?'Google no deja: revisá que la API de Google Calendar esté habilitada en tu proyecto.':'No pude hablar con Google Calendar.';};
 async function gSync(ask,quiet){
   if(gBusy||!GG.cid)return;
   gBusy=true;gErr='';GC.st='busy';renderG();renderCal();
@@ -3743,7 +3800,7 @@ function renderG(){
     el.innerHTML=`<p class="st">Se hace una sola vez (unos 10 minutos). Google pide que la app tenga su propio "ID de cliente":</p>
       <ol><li>Entrá a <a href="https://console.cloud.google.com/projectcreate" target="_blank" rel="noopener">console.cloud.google.com</a> y creá un proyecto, por ejemplo "Mi semana".</li>
       <li>En <b>APIs y servicios → Biblioteca</b> buscá <b>Google Calendar API</b> y tocá <b>Habilitar</b>.</li>
-      <li>En <b>Pantalla de consentimiento de OAuth</b> elegí <b>Externo</b>, poné un nombre y tu mail. En <b>Usuarios de prueba</b> agregá tu Gmail.</li>
+      <li>En <b>Google Auth Platform</b> (antes "Pantalla de consentimiento de OAuth") elegí <b>Externo</b> y poné un nombre y tu mail. Después, en <b>Público → Usuarios de prueba</b>, agregá <b>el mismo Gmail con el que vas a entrar</b>. Si no, Google responde "Acceso bloqueado".</li>
       <li>En <b>Credenciales → Crear credenciales → ID de cliente de OAuth</b> elegí <b>Aplicación web</b>. En <b>Orígenes autorizados de JavaScript</b> pegá: <b>${esc(org)}</b></li>
       <li>Copiá el <b>ID de cliente</b> (termina en .apps.googleusercontent.com) y pegalo acá.</li></ol>
       <div class="url"><input id="gCid" autocomplete="off" spellcheck="false" placeholder="123…apps.googleusercontent.com" aria-label="ID de cliente de Google"><button class="sm btn" id="gGo" type="button">Conectar</button></div>
@@ -3771,6 +3828,96 @@ const _saveG=save;save=function(){_saveG();gPushSoon();};
 setInterval(()=>{if(GG.on&&gLive()&&document.visibilityState==='visible')gSync(false,true);},10*60000);
 
 let _rz=null;window.addEventListener('resize',()=>{clearTimeout(_rz);_rz=setTimeout(()=>{renderCal();setTab(document.body.dataset.tab||'hoy',false);},150);});
+/* ===== Temas de color (se guardan en este dispositivo) ===== */
+const SKINS={papel:{n:'Papel',sw:['#f19ac2','#1f5a45','#f5e36a','#b7a4dd','#5aa6dc']},menta:{n:'Menta',sw:['#9fd8bd','#1f4d4a','#dbe98a','#a9d6d3','#7fbfd9']},atardecer:{n:'Atardecer',sw:['#ffb08a','#5a2840','#ffd46e','#f3a6bb','#c8b5f0']},oceano:{n:'Océano',sw:['#9cc6ef','#1c3557','#f1e59a','#b5b9f1','#8fd0d8']},mono:{n:'Grafito',sw:['#f2f0eb','#1b1b1b','#f2e36a','#d0ccc4','#2a2a2a']}};
+const THKEY='mi-semana-theme';
+let TH={skin:'papel',auto:false,mode:'auto'};try{Object.assign(TH,JSON.parse(localStorage.getItem(THKEY))||{});}catch(_){}
+function skinNow(){if(!TH.auto)return SKINS[TH.skin]?TH.skin:'papel';const h=new Date().getHours();return h>=6&&h<12?'menta':h>=12&&h<19?'papel':'oceano';}
+function applyTheme(doc){
+  const r=(doc||document).documentElement;r.dataset.skin=skinNow();
+  if(TH.mode==='auto')delete r.dataset.theme;else r.dataset.theme=TH.mode;
+}
+function thSave(){try{localStorage.setItem(THKEY,JSON.stringify(TH));}catch(_){}applyTheme();MINI.forEach(m=>applyTheme(m.ownerDocument));renderTh();}
+function renderTh(){
+  const el=$('#thBody');if(!el)return;
+  el.innerHTML=`<div class="skins">${Object.entries(SKINS).map(([k,v])=>`<button type="button" class="skin ${!TH.auto&&TH.skin===k?'on':''}" data-skin="${k}"><span class="sw">${v.sw.map(c=>`<i style="background:${c}"></i>`).join('')}</span><b>${v.n}</b></button>`).join('')}</div>
+    <label class="aichk"><input type="checkbox" id="thAuto" ${TH.auto?'checked':''}> Que cambie solo según la hora: Menta a la mañana, Papel a la tarde y Océano a la noche</label>
+    <h4>Fondo</h4>
+    <div class="seg" role="group" aria-label="Fondo">${[['auto','Como la Mac'],['light','Claro'],['dark','Oscuro']].map(([v,l])=>`<button type="button" data-thmode="${v}" class="${TH.mode===v?'on':''}" aria-pressed="${TH.mode===v}">${l}</button>`).join('')}</div>`;
+}
+function openTh(){renderTh();$('#tmodal').hidden=false;}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.skin!==undefined&&b.classList.contains('skin')){TH.skin=b.dataset.skin;TH.auto=false;thSave();}
+  else if(b.dataset.thmode!==undefined){TH.mode=b.dataset.thmode;thSave();}
+  else if(b.id==='thBtn')openTh();
+  else if(b.dataset.tclose!==undefined)$('#tmodal').hidden=true;
+  else if(b.id==='miniBtn')openMini();
+});
+document.addEventListener('change',e=>{if(e.target.id==='thAuto'){TH.auto=e.target.checked;thSave();}});
+$('#tmodal').addEventListener('click',e=>{if(e.target.id==='tmodal')$('#tmodal').hidden=true;});
+
+/* ===== Widget mini: ahora y lo próximo, en una ventanita aparte ===== */
+var MINI=[];
+function miniHtml(){
+  const T=todayS(),now=nowM(),it=dayItems(T).filter(i=>i.s!=null);
+  const cur=it.find(i=>i.e!=null&&i.s<=now&&now<i.e&&!i.done);
+  const up=it.filter(i=>i.s>now&&!i.done);
+  const dot=i=>i.k==='fx'?'k-fx':i.k==='tv'?'k-tv':i.k==='gc'?'k-gc':(i.cls||'a-'+i.a);
+  const acts=i=>i.k==='bk'?`<div class="row"><button class="btn" type="button" data-mdone="${i.tid}">Hecho</button><button class="ghost" type="button" data-mpost="${i.id}">+30 min</button></div>`:i.k==='rt'?`<div class="row"><button class="btn" type="button" data-mhab="${i.id}">Hecha</button></div>`:i.k==='av'?`<div class="row"><button class="btn" type="button" data-mdone="${i.tid}">Hecho</button></div>`:'';
+  let main,rest=up;
+  if(cur){const pct=Math.max(2,Math.min(100,Math.round((now-cur.s)/(cur.e-cur.s)*100)));main=`<small>Ahora · hasta las ${hm(cur.e)}</small><h3>${esc(cur.t)}</h3><div class="mbar"><i style="width:${pct}%"></i></div><p>Quedan ${durTxt(cur.e-now)}</p>${acts(cur)}`;}
+  else if(up[0]){const n=up[0];rest=up.slice(1);main=`<small>Lo próximo · en ${durTxt(n.s-now)}</small><h3>${esc(n.t)}</h3><p>A las ${hm(n.s)}${n.e?' hasta las '+hm(n.e):''}</p>`;}
+  else{const fi=dayItems(addD(T,1)).filter(i=>i.s!=null&&i.k!=='tv')[0];main=`<small>Hoy</small><h3>No queda nada por hoy</h3><p>${fi?`Mañana: ${esc(fi.t)} a las ${hm(fi.s)}`:'Mañana tenés el día libre'}</p>`;}
+  const d=new Date();
+  return `<div class="miniw"><section class="hero mcard"><div class="mtop"><b>${hm(now)}</b><span>${cap(DFULL[dow(T)])} ${d.getDate()}<br>${MESF[d.getMonth()]}</span></div>${main}</section>
+    ${rest.length?`<ol class="mup">${rest.slice(0,4).map(i=>`<li><span class="ut">${hm(i.s)}</span><i class="ud ${dot(i)}"></i><span>${esc(i.t)}</span></li>`).join('')}</ol>`:''}
+    <form class="mform"><input name="q" placeholder="Anotá o preguntá algo…" aria-label="Anotar rápido" autocomplete="off"><button class="btn" type="submit">+</button></form></div>`;
+}
+function renderMini(){
+  for(let i=MINI.length-1;i>=0;i--){const r=MINI[i];if(!r.isConnected){MINI.splice(i,1);continue;}const f=r.querySelector('input'),v=f?f.value:'',foc=f&&r.ownerDocument.activeElement===f;r.innerHTML=miniHtml();const nf=r.querySelector('input');if(nf){nf.value=v;if(foc)nf.focus();}}
+}
+function hookMini(root){
+  MINI.push(root);
+  root.addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+    if(d.mdone)toggleDone(d.mdone);else if(d.mpost)postpone(d.mpost,30);else if(d.mhab)toggleHab(d.mhab,todayS());else return;
+    renderMini();
+  });
+  root.addEventListener('submit',e=>{
+    e.preventDefault();const i=e.target.querySelector('input'),v=(i.value||'').trim();if(!v)return;
+    const ap=asstParse(v);
+    if(ap&&(['day','exam','free','done'].includes(ap.i)||ap.x)){runAsst(ap);const a=$('#asst');i.value='';i.placeholder=(a&&a.innerText||'').replace(/✕\s*$/,'').replace(/\s+/g,' ').trim().slice(0,90)||'Listo';}
+    else{$('#capi').value=v;capAdd();i.value='';i.placeholder='Anotado ✓';}
+    renderMini();
+  });
+  renderMini();
+}
+async function openMini(){
+  if(window.documentPictureInPicture&&!inClaude){
+    try{
+      const w=await documentPictureInPicture.requestWindow({width:340,height:470});
+      document.querySelectorAll('style,link[rel=stylesheet]').forEach(n=>w.document.head.appendChild(n.cloneNode(true)));
+      const sp=document.querySelector('svg[width="0"]');if(sp)w.document.body.appendChild(sp.cloneNode(true));
+      applyTheme(w.document);w.document.body.classList.add('mini');w.document.title='Mi semana';
+      const root=w.document.createElement('div');w.document.body.appendChild(root);hookMini(root);
+      return;
+    }catch(_){}
+  }
+  const w=window.open(location.pathname+location.search+'#mini','misemana-mini','width=360,height=520');
+  if(!w)say('El navegador bloqueó la ventana. Permití ventanas emergentes para esta página.');
+}
+/* Entre ventanas de la app (la principal y la mini) los cambios pasan al instante */
+window.addEventListener('storage',e=>{
+  if(e.key===THKEY){try{TH=Object.assign(TH,JSON.parse(e.newValue)||{});}catch(_){}applyTheme();return;}
+  if(e.key!==KEY||!e.newValue)return;
+  try{const o=JSON.parse(e.newValue);if(!o||!Array.isArray(o.tasks)||canon(o)===canon(S))return;adopt({S:o,upd:o.upd});renderMini();}catch(_){}
+});
+if(location.hash==='#mini'){document.body.classList.add('mini');document.title='Mi semana · mini';const r=document.createElement('div');r.id='miniRoot';document.body.appendChild(r);hookMini(r);}
+applyTheme();
+setInterval(()=>{applyTheme();MINI.forEach(m=>applyTheme(m.ownerDocument));renderMini();},30000);
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#tmodal').hidden)$('#tmodal').hidden=true;});
 fillStatic();
 /* Con sincronización activa, primero traigo lo del otro dispositivo y después completo el plan */
 if(SY.gist||inClaude)Promise.all([SY.gist&&!inClaude?syncNow(false):null,initSync()]).then(()=>{gcResolve();render();if(inClaude)gcFetch();});
