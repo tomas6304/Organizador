@@ -813,6 +813,19 @@ body.apopen{overflow:hidden}
 .wkl li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .wkl li b{white-space:nowrap;font-weight:700}
 
+/* ===== v11: 5 apps ===== */
+.apps button{display:inline-flex;align-items:center;gap:6px;padding:3px 12px 3px 6px}
+.apps button .gl{width:22px;height:22px;padding:3px;border-radius:50%;background:var(--ac);color:#1b2620;font-size:16px;flex:none}
+.apps button[data-app="semana"] .gl{color:#f7f0dc}
+.apps button.on .gl{box-shadow:0 0 0 2px var(--bg)}
+@media (max-width:860px){.apps button span{display:none}.apps button{padding:3px}.apps button.on span{display:inline;padding-right:8px}}
+.apt{grid-template-columns:repeat(2,minmax(0,1fr))}
+.at-i small::before{background:#6fb1e0}.at-a small::before{background:#b7a4dd}
+.at-i .apb i{background:#6fb1e0}.at-a .apb i{background:#b7a4dd}
+.wk-i{background:#b9d7f0}
+
+@media (max-width:480px){.top{grid-template-columns:minmax(0,1fr)!important}.top h1{font-size:clamp(26px,8vw,34px)!important}.topb{order:4;flex-wrap:wrap}#miniBtn{display:none}}
+@media (pointer:coarse){#miniBtn{display:none}}
 /* Pestañas del celular: una sección por vez, barra fija abajo */
 .tabbar{display:none}
 @media (max-width:1079px){
@@ -880,7 +893,7 @@ body.apopen{overflow:hidden}
       <circle cx="56" cy="12" r="6" fill="var(--x5)" stroke="var(--bg)" stroke-width="2.5"/>
     </svg>
     <h1>Mi semana</h1>
-    <nav class="apps" id="apps" aria-label="Tus apps" hidden><button type="button" data-app="semana" class="on">Mi semana</button><button type="button" data-app="estudio">Estudio</button><button type="button" data-app="gastos">Gastos</button></nav>
+    <nav class="apps" id="apps" aria-label="Tus apps" hidden><button type="button" data-app="semana" class="on" style="--ac:#1f5a45" title="Mi semana (⌘1)"><svg class="gl" aria-hidden="true"><use href="#g-cal"/></svg><span>Mi semana</span></button><button type="button" data-app="estudio" class="" style="--ac:#7fc4a0" title="Estudio (⌘2)"><svg class="gl" aria-hidden="true"><use href="#g-est"/></svg><span>Estudio</span></button><button type="button" data-app="gastos" class="" style="--ac:#f5e36a" title="Gastos (⌘3)"><svg class="gl" aria-hidden="true"><use href="#g-pla"/></svg><span>Gastos</span></button><button type="button" data-app="ingles" class="" style="--ac:#6fb1e0" title="Inglés (⌘4)"><svg class="gl" aria-hidden="true"><use href="#g-ing"/></svg><span>Inglés</span></button><button type="button" data-app="ajedrez" class="" style="--ac:#b7a4dd" title="Ajedrez (⌘5)"><svg class="gl" aria-hidden="true"><use href="#g-aje"/></svg><span>Ajedrez</span></button></nav>
     <div class="topb"><button class="ghost sm" id="instBtn" type="button" hidden>Instalar</button><button class="ghost sm iconb" id="thBtn" type="button" aria-label="Tema de colores" title="Tema de colores"><svg class="gl" aria-hidden="true"><use href="#g-pal"/></svg></button><button class="ghost sm iconb" id="miniBtn" type="button" aria-label="Abrir ventana mini" title="Ventana mini: ahora y lo próximo"><svg class="gl" aria-hidden="true"><use href="#g-mini"/></svg></button><button class="ghost sm" data-hmodal="1">Mis horarios</button><button class="ghost sm sybtn" data-smodal="1" id="syBtn" aria-label="Sincronizar y avisos" title="Sincronizar y avisos"><svg class="gl" aria-hidden="true"><use href="#g-sync"/></svg><i id="syDot"></i></button></div>
     <p class="dt" id="dateTxt"></p>
   </header>
@@ -1144,7 +1157,7 @@ body.apopen{overflow:hidden}
     <button class="ghost" type="button" data-tclose>Listo</button>
   </div>
 </div>
-<div id="appov"><div class="apbar"><nav class="apps" aria-label="Tus apps"><button type="button" data-app="semana" class="on">Mi semana</button><button type="button" data-app="estudio">Estudio</button><button type="button" data-app="gastos">Gastos</button></nav><span class="apkeys">⌘1 · ⌘2 · ⌘3</span><a class="btnl" id="apOut" target="_blank" rel="noopener" href="#">Abrir aparte</a></div><div id="apframes"></div></div>
+<div id="appov"><div class="apbar"><nav class="apps" aria-label="Tus apps"><button type="button" data-app="semana" class="on" style="--ac:#1f5a45" title="Mi semana (⌘1)"><svg class="gl" aria-hidden="true"><use href="#g-cal"/></svg><span>Mi semana</span></button><button type="button" data-app="estudio" class="" style="--ac:#7fc4a0" title="Estudio (⌘2)"><svg class="gl" aria-hidden="true"><use href="#g-est"/></svg><span>Estudio</span></button><button type="button" data-app="gastos" class="" style="--ac:#f5e36a" title="Gastos (⌘3)"><svg class="gl" aria-hidden="true"><use href="#g-pla"/></svg><span>Gastos</span></button><button type="button" data-app="ingles" class="" style="--ac:#6fb1e0" title="Inglés (⌘4)"><svg class="gl" aria-hidden="true"><use href="#g-ing"/></svg><span>Inglés</span></button><button type="button" data-app="ajedrez" class="" style="--ac:#b7a4dd" title="Ajedrez (⌘5)"><svg class="gl" aria-hidden="true"><use href="#g-aje"/></svg><span>Ajedrez</span></button></nav><span class="apkeys">⌘1 a ⌘5 para cambiar</span><a class="btnl" id="apOut" target="_blank" rel="noopener" href="#">Abrir aparte</a></div><div id="apframes"></div></div>
 <div id="wmodal" class="modal" hidden><div class="sheet wsheet" role="dialog" aria-modal="true" aria-labelledby="wkT"><div><h3 id="wkT">Tu semana</h3><p class="muted" id="wkR" style="margin:4px 0 0"></p></div><div id="wkBody"></div><button class="ghost" type="button" data-wclose>Listo</button></div></div>
 <div id="msg" hidden></div>
 
@@ -4001,7 +4014,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#tmodal').hidde
 /* ===== Tus 3 apps juntas: Mi semana, Estudio y Gastos =====
    Las tres viven en tomas6304.github.io, así que comparten el almacenamiento del navegador:
    desde acá se leen tus datos de Estudio y Gastos (solo lectura) y se abren las apps sin salir. */
-var APPS={estudio:{n:'Estudio',path:'/Estudio/'},gastos:{n:'Gastos',path:'/Gastos/'}};
+var APPS={estudio:{n:'Estudio',path:'/Estudio/'},gastos:{n:'Gastos',path:'/Gastos/'},ingles:{n:'Inglés',path:'/Study/'},ajedrez:{n:'Ajedrez',path:'/Ajedrez/'}};
 /* Solo cuando Mi semana está abierta sola: si quedara adentro de otra ventana, no abre las otras apps (evita que se repita adentro de sí misma) */
 var APPS_ON=!inClaude&&/^https?:$/.test(location.protocol)&&window.top===window;
 function lsj(k){try{return JSON.parse(localStorage.getItem(k));}catch(_){return null;}}
@@ -4055,6 +4068,9 @@ function appsTiles(){
       b=`<b>${g.fmt(g.spent)}</b><span>${cap(g.month)}${left!=null?` · ${left>=0?'quedan '+g.fmt(left):'te pasaste '+g.fmt(-left)}`:g.today?' · hoy '+g.fmt(g.today):''}</span>${g.budget?`<i class="apb ${pct>=90?'hot':''}"><i style="width:${pct}%"></i></i>`:''}`;}
     h+=`<button type="button" class="aptile at-g" data-app="gastos" data-go="home"><small>Gastos</small>${b}</button>`;
   }
+  const si=studyInfo(),ci=chessInfo();
+  if(si||APPS_ON)h+=`<button type="button" class="aptile at-i" data-app="ingles"><small>Inglés</small>${si?`<b>${si.done?'Día completo':'Hoy '+si.mins+' de 60 min'}</b><span>${si.level?'Nivel '+esc(si.level)+' · ':''}racha ${si.streak} ${si.streak===1?'día':'días'}</span><i class="apb"><i style="width:${Math.min(100,Math.round(si.mins/60*100))}%"></i></i>`:'<b>Abrir</b><span>Todavía no hay datos</span>'}</button>`;
+  if(ci||APPS_ON)h+=`<button type="button" class="aptile at-a" data-app="ajedrez"><small>Ajedrez</small>${ci?`<b>${ci.plan?'Plan completo':'Plan '+ci.n+' de '+ci.of}</b><span>Elo ${ci.rating}${ci.streak?' · racha '+ci.streak:''}</span><i class="apb"><i style="width:${Math.round(ci.n/ci.of*100)}%"></i></i>`:'<b>Abrir</b><span>Todavía no hay datos</span>'}</button>`;
   return h+'</div>';
 }
 /* Líneas para el resumen del asistente */
@@ -4076,7 +4092,7 @@ window.addEventListener('storage',e=>{if(e.key&&(e.key.startsWith('pom_')||e.key
 $('#apps').hidden=!APPS_ON;
 
 /* ===== Las 3 apps como una sola: cambio instantáneo, accesos directos y datos que van y vienen ===== */
-var APPST={estudio:{ready:false,q:[]},gastos:{ready:false,q:[]}};
+var APPST={estudio:{ready:false,q:[]},gastos:{ready:false,q:[]},ingles:{ready:false,q:[]},ajedrez:{ready:false,q:[]}};
 const appFrame=k=>document.getElementById('apf-'+k);
 function ensureFrame(k){
   let f=appFrame(k);
@@ -4117,7 +4133,7 @@ function openApp(k,go){
   setTimeout(()=>{try{f.contentWindow.focus();}catch(_){}},60);
 }
 document.addEventListener('keydown',e=>{
-  if((e.metaKey||e.ctrlKey)&&!e.altKey&&!e.shiftKey&&/^[123]$/.test(e.key)){e.preventDefault();openApp(['semana','estudio','gastos'][+e.key-1]);}
+  if((e.metaKey||e.ctrlKey)&&!e.altKey&&!e.shiftKey&&/^[1-5]$/.test(e.key)){e.preventDefault();openApp(['semana','estudio','gastos','ingles','ajedrez'][+e.key-1]);}
 });
 
 /* Datos de las otras apps (con memoria, para no releer todo a cada rato) */
@@ -4208,6 +4224,7 @@ function pomCheck(){
 let _esT=null;
 window.addEventListener('storage',e=>{
   if(e.key==='pom_mats'||e.key==='pom_history'){clearTimeout(_esT);_esT=setTimeout(()=>{estudioSync();pomCheck();},500);}
+  else if(e.key==='englishc2_db'||e.key==='ajedrez-entrenador-v1'){clearTimeout(_esT);_esT=setTimeout(()=>{autoHabits();renderHero();},500);}
   else if(e.key==='gastos.v1'){renderCal();}
 });
 
@@ -4288,6 +4305,9 @@ function weekData(mon){
   }else if(g)out.gs={locked:true};
   const nx=[];for(let i=1;i<=7;i++){const d=addD(sun,i);S.exams.filter(x=>x.date===d).forEach(x=>nx.push([d,'Examen: '+x.name]));gastosAgenda(d).filter(p=>!p.done).forEach(p=>nx.push([d,(p.card?'':'Pago: ')+p.t+(p.amt?' · '+gMoney(p.amt):'')]));}
   out.nx=nx;
+  {const db=lsc('englishc2_db'),cp=lsc('ajedrez-entrenador-v1');
+   if(db&&db.days){const dd=days.filter(d=>db.days[d]).length;let secs=0;for(const k in (db.block_time||{})){const d=k.split('|')[0];if(d>=mon&&d<=sun)secs+=Math.min(720,+(db.block_time[k].seconds||0));}out.en={dd,mins:Math.round(secs/60),upto:days.filter(d=>d<=upto).length};}
+   if(cp){const t0=parse(mon).getTime(),t1=parse(addD(sun,1)).getTime(),gs=(cp.games||[]).filter(g=>g&&g.d>=t0&&g.d<t1);out.ch={games:gs.length,w:gs.filter(g=>g.res==='W').length,rating:Math.round(cp.rating||0)};}}
   return out;
 }
 function openWeek(){
@@ -4304,6 +4324,7 @@ function openWeek(){
   if(w.gs){if(w.gs.locked)h+=`<section class="wkc wk-g"><p class="k">Plata</p><p class="wks">Gastos está bloqueada.</p></section>`;
     else{const df=dif(w.gs.tot,w.gs.prev);h+=`<section class="wkc wk-g"><p class="k">Plata</p><b class="wkbig">${gMoney(w.gs.tot)}</b><p class="wks">gastado en la semana${df!=null?` · ${df>=0?'+':''}${df}% vs. la anterior`:''}${w.gs.budget?` · mes: ${gMoney(w.gs.month)} de ${gMoney(w.gs.budget)}`:''}</p>
       ${w.gs.top.length?`<ul class="wkl">${w.gs.top.map(([n,v])=>`<li><span>${esc(n)}</span><b>${gMoney(v)}</b></li>`).join('')}</ul>`:''}</section>`;}}
+  if(w.en||w.ch)h+=`<section class="wkc wk-i"><p class="k">Inglés y ajedrez</p><ul class="wkl">${w.en?`<li><span>Inglés: días completos</span><b>${w.en.dd} de ${w.en.upto}</b></li><li><span>Inglés: tiempo</span><b>${durTxt(w.en.mins)}</b></li>`:''}${w.ch?`<li><span>Ajedrez: partidas</span><b>${w.ch.games}${w.ch.games?' · '+w.ch.w+' ganadas':''}</b></li><li><span>Ajedrez: Elo</span><b>${w.ch.rating}</b></li>`:''}</ul></section>`;
   h+=`<section class="wkc wk-n"><p class="k">La semana que viene</p>${w.nx.length?`<ul class="wkl">${w.nx.slice(0,6).map(([d,t])=>`<li><span>${esc(t)}</span><b>${fmtDate(d)}</b></li>`).join('')}</ul>`:'<p class="wks">Sin exámenes ni pagos marcados. Buena semana para adelantar.</p>'}</section></div>`;
   $('#wkT').textContent='Tu semana';
   $('#wkR').textContent=`${d0.getDate()} ${MES[d0.getMonth()]} – ${d6.getDate()} ${MES[d6.getMonth()]}`;
@@ -4312,11 +4333,40 @@ function openWeek(){
 $('#wmodal').addEventListener('click',e=>{if(e.target.id==='wmodal'||e.target.closest('[data-wclose]'))$('#wmodal').hidden=true;});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#wmodal').hidden)$('#wmodal').hidden=true;});
 
+/* ===== Inglés (Study) y Ajedrez: resumen y rutinas que se marcan solas ===== */
+function studyInfo(){
+  const db=lsc('englishc2_db');if(!db||typeof db!=='object'||!db.block_time)return null;
+  const sh=+((db.settings||{}).day_start_hour)||0,day=iso(new Date(Date.now()-sh*3600e3));
+  let secs=0;for(let n=1;n<=5;n++){const bt=db.block_time[day+'|'+n];secs+=Math.min(720,bt?+bt.seconds||0:0);}
+  const days=db.days||{};let d=days[day]?day:addD(day,-1),st=0;while(days[d]&&st<2000){st++;d=addD(d,-1);}
+  return {day,mins:Math.round(secs/60),done:!!days[day],streak:st,level:(db.settings||{}).level||''};
+}
+function chessInfo(){
+  const p=lsc('ajedrez-entrenador-v1');if(!p||typeof p!=='object')return null;
+  const T=todayS(),d=p.day&&p.day.date===T?p.day:{games:0,puzzles:0,reviews:0,drills:0,dueStart:0,planDone:false};
+  const tasks=[!!(p.daily&&p.daily.date===T),!d.dueStart||d.reviews>=Math.min(5,d.dueStart),d.puzzles>=5,d.drills>=1,d.games>=1];
+  const n=tasks.filter(Boolean).length,y=addD(T,-1);
+  return {n,of:5,plan:!!d.planDone||n===5,rating:Math.round(p.rating||800),streak:(p.lastDaily===T||p.lastDaily===y)?(p.streak||0):0,session:!!d.planDone||d.puzzles>=5||d.games>=1||n>=3};
+}
+/* Si hoy tenés una rutina de inglés o de ajedrez y ya la hiciste en su app, se marca sola (una vez: si la desmarcás, queda desmarcada) */
+function autoHabits(){
+  const T=todayS(),k='hub-auto-'+T;let seen={};try{seen=JSON.parse(localStorage.getItem(k))||{};}catch(_){}
+  const si=studyInfo(),ci=chessInfo(),hit=[];
+  for(const [area,re,ok] of [['ing',/ingl|english/i,si&&si.done],['aje',/ajedrez|chess/i,ci&&ci.session]]){
+    if(!ok)continue;
+    for(const h of habOn(T)){if((h.a===area||re.test(h.n))&&!habDone(h,T)&&!seen[h.id]){h.dn=Object.assign({},h.dn,{[T]:1});seen[h.id]=1;hit.push(h.n);}}
+  }
+  if(hit.length){try{localStorage.setItem(k,JSON.stringify(seen));for(let i=0;i<localStorage.length;i++){const x=localStorage.key(i);if(x&&x.startsWith('hub-auto-')&&x<'hub-auto-'+addD(T,-3))localStorage.removeItem(x);}}catch(_){}save();render();say(`Marqué ${hit.join(' y ')} como hecho: lo completaste en su app`);}
+}
+setTimeout(autoHabits,800);
+setInterval(autoHabits,120000);
+
 /* Arranque de la unión de apps */
 if(APPS_ON&&location.hash!=='#mini'){
   try{localStorage.setItem('hub-url',location.origin+location.pathname);}catch(_){}
   $('#bk3Out').hidden=false;
   setTimeout(()=>{ensureFrame('estudio');ensureFrame('gastos');},2500);
+  setTimeout(()=>ensureFrame('ingles'),5000);setTimeout(()=>ensureFrame('ajedrez'),7500);
   const am=location.hash.match(/app=(estudio|gastos)/);
   if(am){history.replaceState(null,'',location.pathname+location.search);setTimeout(()=>openApp(am[1]),0);}
   else{let last='';try{last=localStorage.getItem('hub-last')||'';}catch(_){}if(APPS[last])setTimeout(()=>openApp(last),0);}
