@@ -484,6 +484,24 @@ html,body{overflow-x:hidden;max-width:100%}
 .localban{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:12px 16px;border-radius:22px;background:var(--surface);border:2px solid var(--line2);font-size:13.5px}
 .localban[hidden]{display:none}
 .localban p{margin:0;flex:1 1 220px;min-width:0}
+.localban.banbad{border-color:#d6301d;background:color-mix(in srgb,#d6301d 10%,var(--surface))}
+.stc{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.02em;padding:2px 9px;border-radius:999px;border:1.5px solid currentColor;white-space:nowrap;vertical-align:1px}
+.stc.s-ok{color:color-mix(in srgb,#14a35a 62%,var(--fg))}.stc.s-warn{color:color-mix(in srgb,#d08700 62%,var(--fg))}.stc.s-bad{color:color-mix(in srgb,#e0321f 70%,var(--fg))}.stc.s-off{color:var(--muted)}
+.diag{display:grid;gap:2px;margin:0;padding:0;list-style:none}
+.diag li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--line)}
+.diag li:last-child{border-bottom:0}
+.diag b{font-size:14px}.diag small{grid-column:1/-1;color:var(--muted);font-size:12.5px;line-height:1.4}
+.diag .row{grid-column:1/-1;margin-top:4px}
+h4 .req{font-weight:600;font-size:11.5px;color:var(--muted);margin-left:6px;letter-spacing:0;text-transform:none}
+.cmp{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+.cmp th,.cmp td{padding:4px 6px;text-align:left;border-bottom:1px solid var(--line)}
+.cmp td.n{text-align:right;font-variant-numeric:tabular-nums}
+.cmp .less{color:#c0261a;font-weight:700}
+.bked{display:grid;gap:8px;width:100%;padding:10px 12px;border:1.5px dashed var(--line2);border-radius:16px}
+.bked .r3{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr);gap:8px}
+.bked label{display:grid;gap:3px;font-size:12.5px;color:var(--muted)}
+.bked input,.bked select{width:100%;min-width:0}
+.bked .why{margin:0;font-size:13px;color:#c0261a;font-weight:600}
 body:has(.modal:not([hidden])) #msg{top:calc(12px + env(safe-area-inset-top,0px));bottom:auto}
 #msg button{margin-left:10px;min-height:30px;padding:2px 12px;font-size:13px;color:var(--bg);border-color:var(--bg);background:transparent}
 .paceb{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13px;margin:0;padding:8px 10px;border-radius:14px;background:var(--surface2)}
@@ -521,7 +539,7 @@ body:has(.modal:not([hidden])) #msg{top:calc(12px + env(safe-area-inset-top,0px)
 .sybtn{position:relative;width:36px;padding:0;display:grid;place-items:center}
 .sybtn .gl{font-size:17px}
 #syDot{position:absolute;top:-2px;right:-2px;width:11px;height:11px;border-radius:50%;border:2px solid var(--bg);display:none}
-#syDot.ok{display:block;background:#1f8a54}#syDot.err{display:block;background:#d6301d}
+#syDot.ok{display:block;background:#1f8a54}#syDot.err{display:block;background:#d6301d}#syDot.warn{display:block;background:#e09a00}
 .sbody{display:grid;gap:10px;font-size:14px}
 .sbody ol{margin:0;padding-left:20px;display:grid;gap:4px;font-size:13.5px}
 .sbody a{color:inherit;font-weight:700}
@@ -820,6 +838,7 @@ body.apopen{overflow:hidden}
 .apps button[data-app="semana"] .gl{color:#f7f0dc}
 .apps button.on .gl{box-shadow:0 0 0 2px var(--bg)}
 @media (max-width:860px){.apps button span{display:none}.apps button{padding:3px}.apps button.on span{display:inline;padding-right:8px}}
+@media (pointer:coarse){.apps button{min-height:40px;min-width:40px;justify-content:center}.apps button .gl{width:28px;height:28px;padding:5px}.apps{gap:4px}}
 .apt{grid-template-columns:repeat(2,minmax(0,1fr))}
 .at-i small::before{background:#6fb1e0}.at-a small::before{background:#b7a4dd}
 .at-i .apb i{background:#6fb1e0}.at-a .apb i{background:#b7a4dd}
@@ -895,7 +914,7 @@ body.apopen{overflow:hidden}
     </svg>
     <h1>Mi semana</h1>
     <nav class="apps" id="apps" aria-label="Tus apps" hidden><button type="button" data-app="semana" class="on" style="--ac:#1f5a45" title="Mi semana (⌘1)"><svg class="gl" aria-hidden="true"><use href="#g-cal"/></svg><span>Mi semana</span></button><button type="button" data-app="estudio" class="" style="--ac:#7fc4a0" title="Estudio (⌘2)"><svg class="gl" aria-hidden="true"><use href="#g-est"/></svg><span>Estudio</span></button><button type="button" data-app="gastos" class="" style="--ac:#f5e36a" title="Gastos (⌘3)"><svg class="gl" aria-hidden="true"><use href="#g-pla"/></svg><span>Gastos</span></button><button type="button" data-app="ingles" class="" style="--ac:#6fb1e0" title="Inglés (⌘4)"><svg class="gl" aria-hidden="true"><use href="#g-ing"/></svg><span>Inglés</span></button><button type="button" data-app="ajedrez" class="" style="--ac:#b7a4dd" title="Ajedrez (⌘5)"><svg class="gl" aria-hidden="true"><use href="#g-aje"/></svg><span>Ajedrez</span></button></nav>
-    <div class="topb"><button class="ghost sm" id="instBtn" type="button" hidden>Instalar</button><button class="ghost sm iconb" id="thBtn" type="button" aria-label="Tema de colores" title="Tema de colores"><svg class="gl" aria-hidden="true"><use href="#g-pal"/></svg></button><button class="ghost sm iconb" id="miniBtn" type="button" aria-label="Abrir ventana mini" title="Ventana mini: ahora y lo próximo"><svg class="gl" aria-hidden="true"><use href="#g-mini"/></svg></button><button class="ghost sm" data-hmodal="1">Mis horarios</button><button class="ghost sm sybtn" data-smodal="1" id="syBtn" aria-label="Sincronizar y avisos" title="Sincronizar y avisos"><svg class="gl" aria-hidden="true"><use href="#g-sync"/></svg><i id="syDot"></i></button></div>
+    <div class="topb"><button class="ghost sm" id="instBtn" type="button" hidden>Instalar</button><button class="ghost sm iconb" id="thBtn" type="button" aria-label="Tema de colores" title="Tema de colores"><svg class="gl" aria-hidden="true"><use href="#g-pal"/></svg></button><button class="ghost sm iconb" id="miniBtn" type="button" aria-label="Abrir ventana mini" title="Ventana mini: ahora y lo próximo"><svg class="gl" aria-hidden="true"><use href="#g-mini"/></svg></button><button class="ghost sm" data-hmodal="1">Mis horarios</button><button class="ghost sm sybtn" data-smodal="1" id="syBtn" aria-label="Datos, avisos y copias" title="Datos, avisos y copias"><svg class="gl" aria-hidden="true"><use href="#g-sync"/></svg><i id="syDot"></i></button></div>
     <p class="dt" id="dateTxt"></p>
   </header>
 
@@ -905,7 +924,8 @@ body.apopen{overflow:hidden}
     <button class="sm ghost" type="button" id="lbMove">Pasar mis datos</button>
     <button class="sm ghost" type="button" id="lbX" aria-label="No mostrar más este aviso">Ocultar</button>
   </div>
-  <div class="localban" id="bkban" hidden><p><b>Las copias en tu carpeta están en pausa.</b> El navegador pide permiso de nuevo para seguir guardándolas.</p><button class="sm btn" type="button" id="bkAllow2">Seguir guardando</button></div>
+  <div class="localban banbad" id="saveban" role="alert" hidden><p><b>No se pudo guardar el último cambio.</b> <span id="saveWhy"></span> Lo que ves sigue en pantalla, pero si cerrás la página se pierde: bajá una copia ahora.</p><button class="sm btn" type="button" id="saveDl">Bajar copia ahora</button><button class="sm ghost" type="button" id="saveRetry">Reintentar</button></div>
+  <div class="localban" id="bkban" role="status" hidden><p id="bkbanT"><b>Las copias en tu carpeta están en pausa.</b> El navegador pide permiso de nuevo para seguir guardándolas.</p><button class="sm btn" type="button" id="bkAllow2">Seguir guardando</button><button class="sm ghost" type="button" id="bkDl2">Bajar copia ahora</button></div>
   <div class="layout">
     <section class="card" id="calcard" data-sec="cal">
       <div class="ch">
@@ -928,7 +948,7 @@ body.apopen{overflow:hidden}
       <div class="ban" id="ban" role="alert" hidden></div>
       <section class="hero" id="next" data-sec="hoy" aria-live="polite"></section>
       <section class="card" id="capcard" data-sec="hoy cap">
-        <div class="ch"><div><p class="k">Tu asistente</p><h2>Decime qué necesitás</h2></div></div>
+        <div class="ch"><div><p class="k">Asistente local · responde al instante, sin IA ni internet</p><h2>Decime qué necesitás</h2></div></div>
         <form id="capf" class="capf" autocomplete="off">
           <input id="capi" placeholder="Anotá, preguntá o pedí: ¿qué tengo mañana?" aria-label="Escribile a tu asistente" enterkeyhint="send">
           <button class="btn" type="submit">Anotar</button>
@@ -964,7 +984,7 @@ body.apopen{overflow:hidden}
 
 
       <section class="card" id="aicard" data-sec="hoy">
-        <div class="ch"><div><p class="k">Con Claude</p><h2>Armá mi día</h2></div>
+        <div class="ch"><div><p class="k" id="aiKind">Con IA</p><h2>Armá mi día</h2></div>
           <div class="seg" role="group" aria-label="Qué día"><button type="button" class="on" data-aiday="0" aria-pressed="true">Hoy</button><button type="button" data-aiday="1" aria-pressed="false">Mañana</button></div></div>
         <label class="ailab" for="aiNote">¿Cómo venís? Contale lo que quieras: energía, imprevistos, qué te importa hoy.</label>
         <textarea id="aiNote" rows="2" placeholder="Ej: dormí mal, a las 17 tengo dentista y quiero avanzar con Familia"></textarea>
@@ -977,7 +997,7 @@ body.apopen{overflow:hidden}
         <p class="aist" id="aiSt" aria-live="polite"></p>
         <div id="aiOut"></div>
         <div id="aiManual" hidden>
-          <p class="aist">Esta copia no está abierta desde Claude, así que la IA no responde sola. Podés usar cualquier chat gratis: copiá el pedido, pegalo ahí y traé la respuesta.</p>
+          <p class="aist"><b>Acá no hay una IA conectada: nada se hace solo.</b> Mi semana arma el pedido con tus horarios, exámenes y pendientes; vos lo pegás en un chat de IA y traés la respuesta. Al cargarla, te muestro los bloques para que elijas cuáles agregar.</p>
           <div class="row"><button class="sm" type="button" id="aiCopy">1. Copiar pedido</button><a class="btnl" href="https://claude.ai/new" target="_blank" rel="noopener">2. Abrir Claude</a></div>
           <textarea id="aiPaste" rows="3" placeholder="3. Pegá acá la respuesta completa del chat"></textarea>
           <div class="row"><button class="sm btn" type="button" id="aiLoad">4. Cargar respuesta</button></div>
@@ -1110,20 +1130,22 @@ body.apopen{overflow:hidden}
 </div>
 <div id="smodal" class="modal" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sTitle">
-    <div><h3 id="sTitle">Sincronizar y avisos</h3><p class="muted" style="margin:4px 0 0">Los mismos datos en la Mac y en el celular, y los avisos que llegan solos al Calendario.</p></div>
-    <h4>Google Calendar</h4>
-    <div id="gBody" class="sbody"></div>
-    <h4>Entre la Mac y el celular</h4>
-    <div id="sBody" class="sbody"></div>
-    <h4>Notificaciones de la Mac</h4>
+    <div><h3 id="sTitle">Datos, avisos y copias</h3><p class="muted" style="margin:4px 0 0">Qué está funcionando, qué necesita un permiso y qué depende de otro servicio.</p></div>
+    <h4>Estado de la app</h4>
+    <div id="diag" class="sbody"></div>
+    <h4>Avisos en la Mac <span class="req">solo con la app abierta · necesita permiso del navegador</span></h4>
     <div id="ntfBody" class="sbody"></div>
-    <h4>Avisos</h4>
+    <h4>Google Calendar <span class="req">avisa aunque la app esté cerrada · necesita tu cuenta de Google</span></h4>
+    <div id="gBody" class="sbody"></div>
+    <h4>Calendario de la Mac y avisos de tareas <span class="req">el .ics avisa con la app cerrada · lo agregás vos</span></h4>
     <div class="remst" id="remst"></div>
-    <h4>Copias automáticas</h4>
+    <h4>Entre la Mac y el celular <span class="req">necesita GitHub conectado en los dos</span></h4>
+    <div id="sBody" class="sbody"></div>
+    <h4>Copias automáticas <span class="req">en este navegador y, en Chrome, en una carpeta</span></h4>
     <div id="bkAuto" class="sbody"></div>
-    <h4>Copia manual (sin cuentas)</h4>
-    <p class="muted" style="margin:0;font-size:13px">Bajá una copia y abrila en el otro dispositivo, por ejemplo por iCloud Drive o AirDrop. Cargarla reemplaza todo lo de acá.</p>
-    <div class="row"><button class="sm" id="bkOut" type="button">Bajar copia (.json)</button><button class="sm ghost" id="bkIn" type="button">Cargar copia</button><button class="sm" id="bk3Out" type="button" hidden>Copia de las 3 apps</button></div>
+    <h4>Copia manual <span class="req">un archivo que guardás vos</span></h4>
+    <p class="muted" style="margin:0;font-size:13px">Bajá una copia y guardala donde quieras (por ejemplo iCloud Drive). Al cargar una, primero te muestro qué trae y guardo sola una copia de lo que tenés ahora, así podés volver atrás.</p>
+    <div class="row"><button class="sm" id="bkOut" type="button">Bajar copia (.json)</button><button class="sm ghost" id="bkIn" type="button">Cargar copia</button><button class="sm" id="bk3Out" type="button" hidden>Copia de todas tus apps</button></div>
     <input type="file" id="bkFile" accept=".json,application/json" hidden>
     <div id="bkAsk"></div>
     <button class="ghost" type="button" data-sclose>Cerrar</button>
@@ -1251,7 +1273,23 @@ let S=load();
 if(!S.ws9){S.set.ws=540;S.ws9=1;}
 S.mats=Array.isArray(S.mats)?S.mats:[];
 (function(){S.tasks=S.tasks.filter(t=>!t.ex||S.exams.some(x=>x.id===t.ex));const ids=new Set(S.tasks.map(t=>t.id));S.blocks=S.blocks.filter(b=>ids.has(b.tid));})();
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+/* Guardar: nunca en silencio. Si el navegador no deja guardar, aparece un aviso fijo con la salida (bajar copia) */
+const SAVE={ok:true,at:0,err:'',fails:0};
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(S));SAVE.ok=true;SAVE.at=Date.now();SAVE.err='';}
+  catch(e){SAVE.ok=false;SAVE.fails++;SAVE.err=e&&(e.name==='QuotaExceededError'||e.name==='NS_ERROR_DOM_QUOTA_REACHED'||e.code===22)?'quota':'blocked';}
+  try{saveUI();}catch(_){}
+  return SAVE.ok;
+}
+function saveUI(){
+  const b=document.getElementById('saveban');if(!b)return;
+  const was=!b.hidden;
+  b.hidden=SAVE.ok;
+  if(!SAVE.ok)document.getElementById('saveWhy').textContent=SAVE.err==='quota'?'El navegador se quedó sin espacio para esta página.':'El navegador no deja guardar (puede ser una ventana privada o un ajuste del sitio).';
+  if(SAVE.ok&&was)try{say('Listo: se volvió a guardar todo bien');}catch(_){}
+  try{renderSyncBadge();}catch(_){}
+  const d=document.getElementById('diag');if(d&&!document.getElementById('smodal').hidden)try{renderDiag();}catch(_){}
+}
 save();
 
 const taskOf=id=>S.tasks.find(t=>t.id===id);
@@ -1787,8 +1825,23 @@ function freeFor(date,s,m,except){
   const busy=[...busyFixed(date),...gcOn(date).map(e=>[e.s,e.e]),...blocksOf(date).filter(b=>b.id!==except).map(b=>[b.s,b.s+b.m])];
   return !busy.some(([a,z])=>s<z&&s+m>a);
 }
+/* Qué hay en ese horario: para explicar por qué un bloque no entra */
+function conflictAt(date,s,m,except){
+  const e=s+m,hit=(a,z)=>s<z&&e>a;
+  for(const f of fixedOn(date))if(hit(f.s,f.e))return {t:f.name?'tu clase de '+f.name:'un horario fijo',a:f.s,z:f.e};
+  for(const t of travelOn(date))if(hit(t.s,t.e))return {t:t.k==='ida'?'el viaje a la facultad':'la vuelta de la facultad',a:t.s,z:t.e};
+  for(const h of habTimed(date))if(hit(h.s,h.s+h.m))return {t:'tu rutina «'+h.n+'»',a:h.s,z:h.s+h.m};
+  for(const g of gcOn(date))if(hit(g.s,g.e))return {t:'«'+(g.t||'un evento')+'» de Google Calendar',a:g.s,z:g.e};
+  for(const b of blocksOf(date))if(b.id!==except&&hit(b.s,b.s+b.m)){const t=taskOf(b.tid);return {t:'«'+(t?t.t:'otro bloque')+'»',a:b.s,z:b.s+b.m};}
+  return null;
+}
+function whyNot(date,s,m,except){
+  if(s<0||s+m>1440)return 'Se pasa de la medianoche. Empezalo más temprano o acortalo.';
+  const c=conflictAt(date,s,m,except);
+  return c?`Se superpone con ${c.t} (${hm(c.a)} a ${hm(c.z)}).`:'';
+}
 function moveBlock(b,date,s,msg){
-  if(!freeFor(date,s,b.m,b.id)){say(`${cap(whenTxt(date,s))} ya tenés algo. Probá otro horario.`);return false;}
+  if(!freeFor(date,s,b.m,b.id)){say(`No entra ${whenTxt(date,s)}: ${(w=>w?w[0].toLowerCase()+w.slice(1):'ya tenés algo.')(whyNot(date,s,b.m,b.id))} Probá otro horario.`);return false;}
   snapUndo();b.date=date;b.s=s;b.auto=false;
   const t=taskOf(b.tid);if(t&&t.due){t.due=date;t.ds=s;t.fired=false;}
   save();render();say(msg||`Movido a ${whenTxt(date,s)}`,true);return true;
@@ -2026,7 +2079,13 @@ function removeExam(id){
 function autoSchedule(id){
   const x=taskOf(id);if(!x)return;
   const f=findSlot(x.m);
-  if(!f){say(`No hay un hueco de ${durTxt(x.m)} en los próximos días. Probá con menos tiempo.`);return;}
+  if(!f){
+    let best=null;const T=todayS(),now=nowM();
+    for(let k=0;k<14;k++){const date=addD(T,k),from=k===0?Math.max(now,S.set.ws):S.set.ws;for(const g of gapsIn(date,from,S.set.we)){const s0=ceil5(g.s),L=Math.floor((g.e-s0)/5)*5;if(L>=15&&(!best||L>best.m))best={date,s:s0,m:L};}}
+    if(!best){say(`No entra: no queda ningún hueco libre entre las ${hm(S.set.ws)} y las ${hm(S.set.we)} en los próximos 14 días.`);return;}
+    sayAct(`No entra: necesita un hueco de ${durTxt(x.m)} y el más largo de los próximos 14 días es de ${durTxt(best.m)} (${whenTxt(best.date,best.s)}).`,`Usar ${durTxt(best.m)}`,()=>{const y=taskOf(id);if(!y)return;y.m=best.m;autoSchedule(id);});
+    return;
+  }
   S.blocks.push({id:uid(),tid:id,date:f.date,s:f.s,m:x.m});
   save();render();say(`Programada ${whenTxt(f.date,f.s)}`);
 }
@@ -2059,10 +2118,47 @@ function openBk(bid){
   const mins=t.id&&!t.done?`<label class="bkmin">Tiempo que le dedicaste<input type="number" id="bkMin" min="0" max="900" step="5" value="${t.wk||b.m}" inputmode="numeric"> min</label>`:'';
   $('#bkA').innerHTML=mins+(t.ex&&!t.done&&APPS_ON?`<button class="btn" data-pom="${b.id}">Pomodoro en Estudio</button>`:'')+(t.id?`<button class="${t.ex&&!t.done&&APPS_ON?'':'btn'}" data-bkdone="${b.id}">${t.done?'Desmarcar':'Marcar hecha'}</button>`:'')+
     (t.id&&!t.done?`<button data-bkpost="${b.id}">Posponer 30 min</button><button data-bkmov="${b.id}">Pasar a mañana</button>`:'')+
+    (t.id?`<button class="ghost" data-bked="${b.id}">Cambiar día, hora o nombre</button>`:'')+
     `<button class="ghost" data-bkunb="${b.id}">Quitar del calendario</button><button class="ghost" data-bkx="1">Cerrar</button>`;
   $('#bkpop').hidden=false;
   ($('#bkA button')||{focus(){}}).focus();
 }
+function bkEdit(bid){
+  const b=S.blocks.find(x=>x.id===bid);if(!b)return;const t=taskOf(b.tid);if(!t)return;
+  const T=todayS(),days=[];for(let i=0;i<21;i++)days.push(addD(T,i));if(!days.includes(b.date))days.unshift(b.date);
+  const st=[];for(let x=360;x<=1425;x+=15)st.push(x);
+  const du=[15,20,25,30,40,45,50,60,75,90,105,120,150,180,210,240,300];
+  const opt=(arr,v,f)=>[...new Set([...arr,v])].sort((p,q)=>p<q?-1:p>q?1:0).map(x=>`<option value="${x}"${x===v?' selected':''}>${f(x)}</option>`).join('');
+  $('#bkA').innerHTML=`<div class="bked" role="group" aria-label="Cambiar el bloque">
+    <label>Nombre<input id="beN" maxlength="140" value="${esc(t.t)}"></label>
+    <div class="r3"><label>Día<select id="beD">${opt(days,b.date,d=>cap(dayWord(d))+' '+parse(d).getDate())}</select></label>
+    <label>Empieza<select id="beS">${opt(st,b.s,hm)}</select></label>
+    <label>Dura<select id="beM">${opt(du,b.m,durTxt)}</select></label></div>
+    <p class="why" id="beW" aria-live="polite"></p>
+    <div class="row"><button class="btn" type="button" data-besave="${b.id}">Guardar</button><button class="ghost" type="button" data-beback="${b.id}">Volver</button></div></div>`;
+  bkCheck(bid);$('#beN').focus();
+}
+function bkCheck(bid){
+  const w=$('#beW');if(!w)return true;
+  const d=$('#beD').value,s0=+$('#beS').value,m=+$('#beM').value,why=whyNot(d,s0,m,bid);
+  w.textContent=why?why+' Elegí otro horario.':'';w.style.color='';
+  if(!why){w.textContent=`Libre: ${hm(s0)} a ${hm(s0+m)}.`;w.style.color='var(--muted)';}
+  return !why;
+}
+document.addEventListener('change',e=>{if(bkOpen&&['beD','beS','beM'].includes(e.target.id))bkCheck(bkOpen);});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+  if(d.bked!==undefined)bkEdit(d.bked);
+  else if(d.beback!==undefined)openBk(d.beback);
+  else if(d.besave!==undefined){
+    const bl=S.blocks.find(x=>x.id===d.besave);if(!bl)return;
+    if(!bkCheck(bl.id)){$('#beS').focus();return;}
+    const t=taskOf(bl.tid),name=fixTxt(($('#beN').value||'').trim());
+    snapUndo();bl.date=$('#beD').value;bl.s=+$('#beS').value;bl.m=+$('#beM').value;bl.auto=false;
+    if(t){if(name)t.t=name;if(t.due){t.due=bl.date;t.ds=bl.s;t.fired=false;}}
+    save();render();closeBk();say(`Listo: ${whenTxt(bl.date,bl.s)} (${durTxt(bl.m)})`,true);
+  }
+});
 function closeBk(){$('#bkpop').hidden=true;bkOpen=null;}
 $('#bkpop').addEventListener('click',e=>{if(e.target.id==='bkpop')closeBk();});
 
@@ -2341,6 +2437,7 @@ function findId(p,d=0){
 }
 async function useCap(n){try{return window.claude&&window.claude.use?await window.claude.use(n):null;}catch(_){return null;}}
 async function calCreate(t){
+  if(!inClaude&&typeof GG!=='undefined'&&GG.on&&GG.push){t.rs='gg';save();render();gPushSoon();return true;}
   const mcp=await useCap('mcp');
   if(!mcp){t.rs='nomcp';calStat='nomcp';save();render();return false;}
   t.rs='busy';render();
@@ -2431,18 +2528,20 @@ function renderCap(){
     if(t.rs==='ok')st='<span class="rw okc">✓ Creado en tu Google Calendar</span>';
     else if(t.rs==='busy')st='<span class="rw">Creando el aviso…</span>';
     else if(t.rs==='err')st=`<span class="rw">${esc(t.re||'No se pudo crear el aviso.')}</span>`;
-    else if(t.rs==='nomcp')st='<span class="rw">Esta copia no puede hablar con Google Calendar. Usá uno de los botones de abajo.</span>';
+    else if(t.rs==='gg')st='<span class="rw okc">✓ Va a tu Google Calendar con la próxima sincronización</span>';
+    else if(t.rs==='nomcp')st=`<span class="rw">${!inClaude?'Conectá tu Google en «Google Calendar» (arriba) para que se cree solo, o usá uno de los botones.':'Esta copia no puede hablar con Google Calendar. Usá uno de los botones de abajo.'}</span>`;
     const bt=[`<button class="sm" data-ics="${t.id}" type="button">Agregar al Calendario de la Mac</button>`,`<a class="btnl" href="${esc(gclUrl(t))}" target="_blank" rel="noopener">Abrir en Google Calendar</a>`];
     if(t.rs==='err'||t.rs==='nomcp')bt.push(`<button class="sm ghost" data-retry="${t.id}" type="button">Reintentar</button>`);
     return `<li><span class="gb a-${t.a}">${glyph(t.a)}</span><span class="rt"><b>${esc(t.t)}</b><span class="rw">${dayWord(t.due)} ${hm(t.ds!=null?t.ds:540)} · aviso ${remTxt(t.rem)}</span>${st}</span><div class="ra">${bt.join('')}</div></li>`;
   }).join('');
   const mode=S.rmode||'gcal';
   const stTxt={unknown:'Todavía no probé la conexión.',ok:'<b>Conectado.</b> Los avisos se crean solos en tu Google Calendar.',nomcp:'<b>No disponible acá.</b> Esta copia de la app no está dentro de Claude, así que no puede crear avisos sola. Abrí la app desde el link de Claude o usá los botones de cada aviso.',needs_reauth:'<b>Hay que reconectar.</b> En Claude, andá a Conectores y volvé a conectar Google Calendar.',server_not_connected:'<b>No está conectado.</b> En Claude, andá a Conectores y conectá Google Calendar con tu cuenta.',not_granted:'<b>Sin permiso.</b> Cuando Claude te pregunte, tocá Permitir.',err:'<b>No pude conectar.</b> Probá de nuevo en un rato.'};
-  $('#remst').innerHTML=`<div class="cfg"><label>Cómo crear los avisos<select id="rmode"><option value="gcal"${mode==='gcal'?' selected':''}>Automático en Google Calendar</option><option value="manual"${mode==='manual'?' selected':''}>Yo los agrego (Mac o Google)</option></select></label><div class="st" id="rst">${stTxt[calStat]||stTxt.err}</div><div class="row2"><button class="sm" id="rtest" type="button">Probar conexión</button></div>
+  const stNow=!inClaude?(typeof GG!=='undefined'&&GG.on?(GG.push?'<b>Conectado con tu Google.</b> Los avisos de tareas se crean solos en tu Google Calendar al sincronizar.':'<b>Google conectado solo para leer.</b> Activá «Subir mis bloques de estudio, avisos y exámenes» en Google Calendar para que los avisos se creen solos.'):'<b>Google no está conectado.</b> Conectalo en «Google Calendar» (arriba) o usá el archivo .ics.'):(stTxt[calStat]||stTxt.err);
+  $('#remst').innerHTML=`<div class="cfg"><label>Cómo crear los avisos<select id="rmode"><option value="gcal"${mode==='gcal'?' selected':''}>Automático en Google Calendar</option><option value="manual"${mode==='manual'?' selected':''}>Yo los agrego (Mac o Google)</option></select></label><div class="st" id="rst">${stNow}</div><div class="row2"><button class="sm" id="rtest" type="button">Probar conexión</button></div>
     <label>Aviso de los bloques de estudio<select id="bkrem">${[['','Sin aviso'],['0','Al empezar'],['5','5 min antes'],['10','10 min antes'],['15','15 min antes']].map(([v,l])=>`<option value="${v}"${String(bkR()==null?'':bkR())===v?' selected':''}>${l}</option>`).join('')}</select></label>
     <div class="row2"><button class="sm btn" id="rall" type="button">Todo al Calendario de la Mac (.ics)</button><button class="sm ghost" data-smodal="1" type="button">Suscripción automática</button></div>
     <div class="st"><b>Lo más seguro:</b> el archivo .ics. Lleva tus avisos, los bloques de estudio y los exámenes (aviso a las 9 del día anterior). Las alarmas las dispara el Calendario de la Mac aunque esta página esté cerrada. Si lo volvés a bajar, se actualiza lo que ya estaba en vez de duplicarse.</div>
-    <div class="st"><b>Avisos del navegador</b> (solo con esta pestaña abierta): <button class="sm" id="ntog" type="button">${nstate()}</button>${location.protocol==='file:'?'<br>Abierta como archivo, el navegador no deja mostrar notificaciones. Publicada en una dirección https (por ejemplo GitHub Pages), sí.':''}</div></div>`;
+    </div>`;
   const ex=['¿Qué tengo mañana?','Gasté 3500 en el súper','¿Cuánto estudié esta semana?','¿Cuánto gasté este mes?','Dentista el jueves a las 10, avisame','Mové gimnasio al viernes','Resumen de la semana'];
   $('#capx').innerHTML=ex.map(x=>`<button class="ghost" data-capx="${esc(x)}">${esc(x)}</button>`).join('');
 }
@@ -2514,6 +2613,7 @@ function gclUrl(t){
   return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(t.t)+'&dates='+tstamp(t.due,s)+'/'+tstamp(t.due,e)+'&ctz=America%2FArgentina%2FBuenos_Aires&details='+encodeURIComponent('Anotado desde Mi semana. Recordatorio: '+(t.rem!=null?remTxt(t.rem):'sin aviso'));
 }
 async function testConn(){
+  if(!inClaude){if(typeof GG!=='undefined'&&GG.cid){await gSync(true);}else say('Primero conectá tu Google en la sección «Google Calendar».');renderCap();return;}
   calStat='unknown';const mcp=await useCap('mcp');
   if(!mcp){calStat='nomcp';renderCap();return;}
   try{await mcp.listTools('Google Calendar');calStat='ok';}catch(e){calStat=(e&&e.code)||'err';if(!stTxtHas(calStat))calStat='err';}
@@ -2700,7 +2800,7 @@ async function syChoose(useRemote){
   }catch(e){SY.choose=c;SY.err=syErr(e);say(SY.err);}
   syBusy=false;sySave();renderSync();renderSyncBadge();
 }
-function renderSyncBadge(){const d=$('#syDot');if(d)d.className=(SY.err&&SY.gist)||dbErr?'err':SY.gist||dbDoc?'ok':'';}
+function renderSyncBadge(){const d=$('#syDot');if(!d)return;let st='';try{st=bkState();}catch(_){}d.className=!SAVE.ok||(SY.err&&SY.gist)||dbErr||st==='err'?'err':st==='perm'?'warn':SY.gist||dbDoc?'ok':'';}
 function renderSync(){
   const ago=SY.at?`${dayWord(iso(new Date(SY.at)))} ${hm(new Date(SY.at).getHours()*60+new Date(SY.at).getMinutes())}`:'';
   let h='';
@@ -2738,7 +2838,7 @@ function renderSync(){
   }
   $('#sBody').innerHTML=h;
 }
-function openS(){syOff=false;renderSync();renderBk();renderG();renderCap();if(typeof renderNtf==='function')renderNtf();$('#smodal').hidden=false;}
+function openS(){syOff=false;renderSync();renderBk();renderG();renderCap();if(typeof renderNtf==='function')renderNtf();renderDiag();$('#smodal').hidden=false;}
 function closeS(){$('#smodal').hidden=true;$('#bkAsk').innerHTML='';bkPend=null;}
 $('#smodal').addEventListener('click',e=>{
   if(e.target.id==='smodal'||e.target.closest('[data-sclose]')){closeS();return;}
@@ -2752,7 +2852,7 @@ $('#smodal').addEventListener('click',e=>{
   else if(b.id==='syCopy'){const i=$('#syUrl');i.select();try{navigator.clipboard.writeText(i.value).then(()=>say('Dirección copiada'),()=>{document.execCommand('copy');say('Dirección copiada');});}catch(_){document.execCommand('copy');say('Dirección copiada');}}
   else if(b.id==='bkOut')backupOut();
   else if(b.id==='bkIn')$('#bkFile').click();
-  else if(b.id==='bkYes'){if(bkPend){snapUndo();const keep={del:S.del,_ku:S._ku};S=normS(clone(bkPend.S));S.del=Object.assign({},keep.del,S.del||{});S._ku=Object.assign({},keep._ku);cleanOrphans();if(timer.tid&&!taskOf(timer.tid))resetTimer();save();render();bkPend=null;$('#bkAsk').innerHTML='';say('Copia cargada',true);if(SY.gist)syncNow(false);}}
+  else if(b.id==='bkYes'){bkApply();}
   else if(b.id==='bkNo'){bkPend=null;$('#bkAsk').innerHTML='';}
 });
 $('#bkFile').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(f)readBackup(f);e.target.value='';});
@@ -2761,17 +2861,40 @@ let bkPend=null;
 function backupOut(){
   const text=JSON.stringify({format:'mi-semana-backup',v:1,at:new Date().toISOString(),S});
   const name='mi-semana-copia-'+todayS()+'.json';
+  bkstSet({outAt:Date.now()});
   (async()=>{
     const dl=await useCap('downloads');
     try{if(dl&&dl.save){await dl.save({filename:name,data:new Blob([text],{type:'application/json'})});say('Copia guardada');return;}}catch(e){if(e&&e.code==='cancelled')return;}
     const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();a.remove();say('Copia descargada');
   })();
 }
-function askBackup(o){
-  bkPend=o;
-  const d=o.at?new Date(o.at):null;
-  $('#bkAsk').innerHTML=`<div class="ask"><b>¿Cargar esta copia?</b><span>Es ${d?'del '+fmtDate(iso(d))+' a las '+hm(d.getHours()*60+d.getMinutes()):'de una fecha desconocida'}, con ${o.S.exams.length} ${o.S.exams.length===1?'examen':'exámenes'} y ${o.S.tasks.filter(t=>!t.ex&&!t.done).length} pendientes. Reemplaza todo lo que hay en este dispositivo.</span><div class="row"><button class="btn sm" id="bkYes" type="button">Reemplazar</button><button class="sm ghost" id="bkNo" type="button">Cancelar</button></div></div>`;
+function bkCounts(X){
+  const T=todayS(),t=Array.isArray(X.tasks)?X.tasks:[];
+  return [['Exámenes',(X.exams||[]).length],['Pendientes',t.filter(x=>!x.ex&&!x.done).length],['Bloques de hoy en adelante',(X.blocks||[]).filter(b=>b.date>=T).length],['Rutinas',(X.habits||[]).length],['Proyectos',(X.projects||[]).filter(p=>!p.arch).length],['Horarios fijos',(X.fixed||[]).length]];
+}
+function askBackup(o,meta){
+  bkPend=o;meta=meta||{};
+  const d=o.at?new Date(o.at):null,A=bkCounts(o.S),B=bkCounts(S);
+  const older=d&&S.upd&&d.getTime()<S.upd-60000;
+  const rows=A.map(([l,n],i)=>`<tr><th>${l}</th><td class="n${n<B[i][1]?' less':''}">${n}</td><td class="n">${B[i][1]}</td></tr>`).join('');
+  $('#bkAsk').innerHTML=`<div class="ask" role="alertdialog" aria-labelledby="bkAskT"><b id="bkAskT">¿Cargar esta copia?</b>
+    <span>${meta.name?'<b>'+esc(meta.name)+'</b> · ':''}${meta.size?kb(meta.size)+' · ':''}${d?'guardada el '+fmtDate(iso(d))+' a las '+hm(d.getHours()*60+d.getMinutes()):'sin fecha'}</span>
+    <table class="cmp"><thead><tr><th></th><th>En la copia</th><th>Ahora acá</th></tr></thead><tbody>${rows}</tbody></table>
+    ${older?'<span class="bad">Ojo: esta copia es más vieja que tu último cambio en este dispositivo ('+whenAt(S.upd)+').</span>':''}
+    <span><b>Reemplaza todo lo de Mi semana en este dispositivo.</b> Antes de hacerlo guardo sola una copia de lo que tenés ahora, así podés volver atrás desde «Copias automáticas».</span>
+    <div class="row"><button class="btn sm" id="bkYes" type="button">Reemplazar</button><button class="sm ghost" id="bkNo" type="button">Cancelar</button></div></div>`;
   if($('#smodal').hidden)openS();
+  setTimeout(()=>{const y=$('#bkAsk .ask');if(y){y.scrollIntoView({block:'nearest',behavior:'smooth'});$('#bkNo').focus();}},60);
+}
+async function bkApply(){
+  const o=bkPend;if(!o)return;bkPend=null;
+  const prev=JSON.stringify({format:'mi-semana-backup',v:1,at:new Date().toISOString(),S});
+  const ok=await prePut('pre',prev,'mi-semana-antes-de-cargar.json');
+  if(!ok)backupOut();
+  snapUndo();const keep={del:S.del,_ku:S._ku};S=normS(clone(o.S));S.del=Object.assign({},keep.del,S.del||{});S._ku=Object.assign({},keep._ku);cleanOrphans();if(timer.tid&&!taskOf(timer.tid))resetTimer();
+  const saved=save();render();$('#bkAsk').innerHTML='';
+  say(saved?(ok?'Copia cargada. Lo de antes quedó guardado por las dudas.':'Copia cargada. Te bajé un archivo con lo de antes, por las dudas.'):'Cargué la copia, pero el navegador no deja guardarla. Mirá el aviso de arriba.',true);
+  if(SY.gist)syncNow(false);renderBk();
 }
 /* Combinar sin perder: cada tarea, bloque, examen y clase guarda cuándo cambió (_u), lo borrado deja
    una marca en S.del y cada ajuste suelto guarda su hora en S._ku. Al sincronizar se junta elemento por
@@ -2913,8 +3036,9 @@ function readBackup(f){
   r.onload=()=>{
     let o=null;try{o=JSON.parse(r.result);}catch(_){}
     try{
-      if(o&&o.format==='mis-apps-backup'&&o.ls)ask3(o);
-      else if(o&&o.format==='mi-semana-backup'&&o.S&&Array.isArray(o.S.tasks))askBackup(o);
+      const meta={name:f.name,size:f.size};
+      if(o&&o.format==='mis-apps-backup'&&o.ls)ask3(o,meta);
+      else if(o&&o.format==='mi-semana-backup'&&o.S&&Array.isArray(o.S.tasks))askBackup(o,meta);
       else prepImport(o);
     }catch(_){say('Ese archivo no es un backup del Estudio Tracker ni una copia de Mi semana.');}
     $('#impFile').value='';
@@ -3293,7 +3417,7 @@ ${$('#aiNote').value.trim()||'(nada)'}`;
   }
 }
 /* Sin Claude: copiar el pedido y pegar la respuesta de cualquier chat */
-function aiManual(on){$('#aiManual').hidden=!on;$('#aiGo').hidden=on;$('#aiRev').hidden=on;}
+function aiManual(on){$('#aiManual').hidden=!on;$('#aiGo').hidden=on;$('#aiRev').hidden=on;const k=$('#aiKind');if(k)k.textContent=on?'Con IA · copiando y pegando (manual)':'Con IA de Claude · automático';}
 function aiCopy(){
   const txt=aiPrompt(aiDate(),$('#aiRe').checked,$('#aiNote').value.trim());
   const done=()=>say('Pedido copiado. Pegalo en el chat.');
@@ -3318,7 +3442,7 @@ $('#aicard').addEventListener('click',e=>{
   else if(b.id==='aiCopy')aiCopy();
   else if(b.id==='aiLoad')aiLoad();
 });
-const aiReady=(async()=>{aiSample=await useCap('sample');if(!aiSample)aiManual(true);})();
+const aiReady=(async()=>{aiSample=await useCap('sample');aiManual(!aiSample);})();
 
 /* Pestañas (solo se ven en pantallas angostas; la elegida se recuerda en este dispositivo) */
 const TABS=['hoy','cal','exa','cap','vida'],TABKEY='mi-semana-tab';
@@ -3504,16 +3628,24 @@ function idb(){
 }
 const idbDo=(store,mode,f)=>idb().then(d=>new Promise((res,rej)=>{const tx=d.transaction(store,mode),r=f(tx.objectStore(store));tx.oncomplete=()=>res(r?r.result:undefined);tx.onerror=tx.onabort=()=>rej(tx.error);}));
 const canDir=!!window.showDirectoryPicker&&!inClaude&&window.isSecureContext;
-const BK={dir:null,perm:'',at:0,err:''};
+/* Estado de las copias: queda en este navegador (no viaja con la sincronización) */
+const BKST_K='mi-semana-bkst';
+function bkst(){try{return JSON.parse(localStorage.getItem(BKST_K))||{};}catch(_){return {};}}
+function bkstSet(o){try{localStorage.setItem(BKST_K,JSON.stringify(Object.assign(bkst(),o)));}catch(_){}}
+const BK={dir:null,perm:'',at:bkst().dirAt||0,err:bkst().dirErr||''};
 let bkT=null;
+const whenAt=t=>{if(!t)return '';const d=new Date(t),k=iso(d);return `${k===addD(todayS(),-1)?'ayer':dayWord(k)} a las ${hm(d.getHours()*60+d.getMinutes())}`;};
+const kb=n=>n<1024?n+' B':n<1048576?(n/1024).toFixed(n<10240?1:0).replace('.',',')+' KB':(n/1048576).toFixed(1).replace('.',',')+' MB';
 async function snapNow(){
   const T=todayS(),json=JSON.stringify({format:'mi-semana-backup',v:1,at:new Date().toISOString(),S});
   try{
     await idbDo('snaps','readwrite',st=>st.put({at:Date.now(),json},T));
     const ks=(await idbDo('snaps','readonly',st=>st.getAllKeys())).sort();
     for(const k of ks.slice(0,Math.max(0,ks.length-14)))await idbDo('snaps','readwrite',st=>st.delete(k));
-  }catch(_){}
+    bkstSet({idbAt:Date.now(),idbErr:''});
+  }catch(_){bkstSet({idbErr:'El navegador no deja guardar copias internas.'});}
   await folderWrite(json,T);
+  bkBan();
 }
 function snapSoon(){clearTimeout(bkT);bkT=setTimeout(snapNow,8000);}
 async function folderLoad(){
@@ -3528,45 +3660,88 @@ async function folderWrite(json,T){
     if(BK.perm!=='granted'){bkBan();return;}
     for(const name of ['mi-semana-'+T+'.json','mi-semana-ultima.json']){const fh=await BK.dir.getFileHandle(name,{create:true});const w=await fh.createWritable();await w.write(json);await w.close();}
     if(APPS_ON){const all=JSON.stringify(allBackup());for(const name of ['mis-apps-'+T+'.json','mis-apps-ultima.json']){const fh=await BK.dir.getFileHandle(name,{create:true});const w=await fh.createWritable();await w.write(all);await w.close();}}
-    BK.at=Date.now();BK.err='';
-  }catch(_){BK.err='No pude escribir en la carpeta.';}
+    BK.at=Date.now();BK.err='';bkstSet({dirAt:BK.at,dirErr:''});
+  }catch(e){BK.err=e&&e.name==='NotFoundError'?'No encuentro la carpeta (¿la moviste o la borraste?).':e&&e.name==='QuotaExceededError'?'No hay espacio en el disco.':'No pude escribir en la carpeta.';bkstSet({dirErr:BK.err});}
   bkBan();if(!$('#smodal').hidden)renderBk();
 }
 async function folderPick(){
   try{
     const h=await window.showDirectoryPicker({id:'mi-semana',mode:'readwrite'});
-    await idbDo('meta','readwrite',st=>st.put(h,'dir'));BK.dir=h;BK.perm='granted';
-    await snapNow();say('Listo: cada día se guarda una copia en «'+h.name+'»');
+    await idbDo('meta','readwrite',st=>st.put(h,'dir'));BK.dir=h;BK.perm='granted';BK.err='';
+    await snapNow();if(!BK.err)say('Listo: cada día se guarda una copia en «'+h.name+'»');else say(BK.err);
   }catch(e){if(e&&e.name!=='AbortError')say('No pude usar esa carpeta.');}
   renderBk();
 }
 async function folderAllow(){
   if(!BK.dir)return;
-  try{BK.perm=await BK.dir.requestPermission({mode:'readwrite'});if(BK.perm==='granted'){await snapNow();say('Copias en tu carpeta activadas de nuevo');}}catch(_){}
+  try{BK.perm=await BK.dir.requestPermission({mode:'readwrite'});if(BK.perm==='granted'){await snapNow();say(BK.err?BK.err:'Copias en tu carpeta activadas de nuevo');}else say('Sin permiso, las copias en la carpeta siguen en pausa. Podés bajar una copia a mano.');}catch(_){say('El navegador no dejó pedir el permiso. Probá de nuevo tocando el botón.');}
   bkBan();renderBk();
 }
-function bkBan(){const b=$('#bkban');if(b)b.hidden=!(BK.dir&&BK.perm&&BK.perm!=='granted');}
+/* Estado de la copia en carpeta: off (sin elegir) · ok (activa) · perm (permiso requerido) · err (error) · na (no se puede en este navegador) */
+function bkState(){
+  if(!canDir)return 'na';
+  if(!BK.dir)return 'off';
+  if(BK.perm&&BK.perm!=='granted')return 'perm';
+  if(BK.err)return 'err';
+  return 'ok';
+}
+const BKCHIP={ok:['s-ok','Activa'],perm:['s-warn','Permiso requerido'],err:['s-bad','Error'],off:['s-off','Sin carpeta'],na:['s-off','No disponible acá']};
+const chip=(cls,t)=>`<span class="stc ${cls}">${t}</span>`;
+function bkBan(){
+  const b=$('#bkban');if(!b)return;const st=bkState();
+  b.hidden=!(st==='perm'||st==='err');
+  if(b.hidden)return;
+  const last=BK.at?` Última copia guardada ahí: <b>${whenAt(BK.at)}</b>.`:' Todavía no se guardó ninguna ahí.';
+  $('#bkbanT').innerHTML=st==='perm'?`<b>Las copias en tu carpeta están en pausa.</b> El navegador pide permiso de nuevo para seguir guardándolas.${last}`:`<b>No se pudo guardar la copia en tu carpeta.</b> ${esc(BK.err)}${last} Mientras tanto, bajá una copia a mano.`;
+  $('#bkAllow2').hidden=st!=='perm';
+  try{renderSyncBadge();}catch(_){}
+}
 async function renderBk(){
   const el=$('#bkAuto');if(!el)return;
   let ks=[];try{ks=(await idbDo('snaps','readonly',st=>st.getAllKeys())).sort().reverse();}catch(_){}
-  let h=`<p class="st">${ks.length?'Se guarda sola una copia por día en este navegador (quedan las últimas 14). Tocá un día para volver a ese estado.':'La primera copia se guarda sola en unos segundos.'}</p>`;
+  const I=bkst();
+  let h=`<p class="st">${I.idbErr?'<span class="bad">'+esc(I.idbErr)+'</span> ':''}${ks.length?`Se guarda sola una copia por día en este navegador (quedan las últimas 14). Última: <b>${whenAt(I.idbAt)||cap(dayWord(ks[0]))}</b>. Tocá un día para ver qué tiene y volver a ese estado.`:'La primera copia se guarda sola en unos segundos.'}</p>`;
   if(ks.length)h+=`<div class="row">${ks.slice(0,7).map(k=>`<button class="sm ghost" type="button" data-snap="${k}">${cap(dayWord(k))}</button>`).join('')}</div>`;
-  if(canDir){
-    if(!BK.dir)h+=`<p class="st"><b>Copia en una carpeta de tu Mac:</b> elegí una carpeta (mejor una de iCloud Drive) y cada día se guarda ahí un archivo. Así no perdés nada aunque se borren los datos del navegador.</p><div class="row"><button class="sm btn" type="button" id="bkDir">Elegir carpeta</button></div>`;
-    else if(BK.perm!=='granted')h+=`<p class="st"><b>Copias en «${esc(BK.dir.name)}» en pausa.</b> El navegador pide permiso de nuevo.</p><div class="row"><button class="sm btn" type="button" id="bkAllow">Seguir guardando</button><button class="sm ghost" type="button" id="bkDir">Cambiar carpeta</button></div>`;
-    else h+=`<p class="st"><span class="ok">✓ Guardando una copia por día en «${esc(BK.dir.name)}»</span>${BK.at?' · última a las '+hm(new Date(BK.at).getHours()*60+new Date(BK.at).getMinutes()):''}${BK.err?' <span class="bad">'+esc(BK.err)+'</span>':''}</p><div class="row"><button class="sm ghost" type="button" id="bkDir">Cambiar carpeta</button></div>`;
-  }else if(!inClaude)h+='<p class="st">Para guardar además una copia diaria en una carpeta de la Mac, abrí la app con Chrome.</p>';
+  const pre=await preGet('pre');
+  if(pre)h+=`<p class="st">Antes de la última vez que cargaste una copia guardé lo que tenías: <b>${whenAt(pre.at)}</b>. <button class="sm ghost" type="button" data-snap="pre">Ver y volver a eso</button></p>`;
+  const pre3=APPS_ON?await preGet('pre3'):null;
+  if(pre3)h+=`<p class="st">Antes de cargar la última copia de todas tus apps guardé cómo estaban: <b>${whenAt(pre3.at)}</b>. <button class="sm ghost" type="button" data-snap3="1">Ver y volver a eso</button></p>`;
+  const st=bkState(),[c,t]=BKCHIP[st];
+  if(st==='na'){if(!inClaude)h+=`<p class="st">${chip(c,t)} Para guardar además una copia diaria en una carpeta de la Mac, abrí la app con Chrome. Acá, usá <b>Bajar copia</b> de vez en cuando.</p>`;}
+  else if(st==='off')h+=`<p class="st">${chip(c,t)} <b>Copia en una carpeta de tu Mac:</b> elegí una carpeta (mejor una de iCloud Drive) y cada día se guarda ahí un archivo. Así no perdés nada aunque se borren los datos del navegador.</p><div class="row"><button class="sm btn" type="button" id="bkDir">Elegir carpeta</button></div>`;
+  else if(st==='perm')h+=`<p class="st">${chip(c,t)} Copias en «${esc(BK.dir.name)}» en pausa: el navegador pide permiso de nuevo.${BK.at?' Última copia ahí: <b>'+whenAt(BK.at)+'</b>.':''}</p><div class="row"><button class="sm btn" type="button" id="bkAllow">Seguir guardando</button><button class="sm ghost" type="button" id="bkDir">Cambiar carpeta</button></div>`;
+  else if(st==='err')h+=`<p class="st">${chip(c,t)} <span class="bad">${esc(BK.err)}</span>${BK.at?' Última copia buena: <b>'+whenAt(BK.at)+'</b>.':''} Bajá una copia a mano mientras tanto.</p><div class="row"><button class="sm btn" type="button" id="bkRetry">Reintentar</button><button class="sm ghost" type="button" id="bkDir">Cambiar carpeta</button><button class="sm ghost" type="button" data-bkout="1">Bajar copia</button></div>`;
+  else h+=`<p class="st">${chip(c,t)} Guardando una copia por día en «${esc(BK.dir.name)}»${BK.at?' · última: <b>'+whenAt(BK.at)+'</b>':''}</p><div class="row"><button class="sm ghost" type="button" id="bkDir">Cambiar carpeta</button></div>`;
   el.innerHTML=h;
+}
+/* Copia de seguridad previa a cargar otra: queda en la base interna del navegador (y en la carpeta, si hay) */
+async function preGet(k){try{return (await idbDo('meta','readonly',st=>st.get(k)))||null;}catch(_){return null;}}
+async function prePut(k,json,fileName){
+  let ok=false;
+  try{await idbDo('meta','readwrite',st=>st.put({at:Date.now(),json},k));ok=true;}catch(_){}
+  if(BK.dir&&BK.perm==='granted'){try{const fh=await BK.dir.getFileHandle(fileName,{create:true});const w=await fh.createWritable();await w.write(json);await w.close();ok=true;}catch(_){}}
+  return ok;
 }
 $('#smodal').addEventListener('click',async e=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.id==='bkDir')folderPick();
   else if(b.id==='bkAllow')folderAllow();
+  else if(b.id==='bkRetry'){BK.err='';await snapNow();say(BK.err||'Copia guardada en tu carpeta');renderBk();}
+  else if(b.dataset.snap3!==undefined){const r=await preGet('pre3');try{const o=r&&JSON.parse(r.json);if(o&&o.ls)ask3(o,{name:'Cómo estaban tus apps antes de cargar una copia',size:r.json.length});}catch(_){say('No pude leer esa copia.');}}
   else if(b.dataset.snap!==undefined){
-    try{const r=await idbDo('snaps','readonly',st=>st.get(b.dataset.snap));const o=r&&JSON.parse(r.json);if(o&&o.S&&Array.isArray(o.S.tasks))askBackup(o);}catch(_){say('No pude leer esa copia.');}
+    try{
+      const k=b.dataset.snap,r=k==='pre'?await preGet('pre'):await idbDo('snaps','readonly',st=>st.get(k));
+      const o=r&&JSON.parse(r.json);
+      if(o&&o.S&&Array.isArray(o.S.tasks))askBackup(o,{name:k==='pre'?'Lo que tenías antes de cargar una copia':'Copia automática de '+dayWord(k),size:r.json.length});
+      else say('No pude leer esa copia.');
+    }catch(_){say('No pude leer esa copia.');}
   }
 });
 $('#bkAllow2').addEventListener('click',folderAllow);
+$('#bkDl2').addEventListener('click',()=>backupOut());
+$('#saveDl').addEventListener('click',()=>backupOut());
+$('#saveRetry').addEventListener('click',()=>{if(save())say('Guardado');else say(SAVE.err==='quota'?'Sigue sin haber espacio. Bajá la copia para no perder nada.':'Sigue sin poder guardar. Bajá la copia para no perder nada.');});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-bkout]');if(b)backupOut();});
 const _saveBk=save;
 save=function(){_saveBk();snapSoon();};
 
@@ -3864,7 +4039,7 @@ function gWanted(){
   const T=todayS(),W=new Map(),rem=n=>n==null?{useDefault:false,overrides:[]}:{useDefault:false,overrides:[{method:'popup',minutes:Math.max(0,n)}]};
   const timed=(k,date,s,m,title,desc,r,color)=>W.set(k,{summary:title,description:desc,start:{dateTime:rfc(date,s),timeZone:TZ},end:{dateTime:rfc(date,s+Math.max(15,m)),timeZone:TZ},reminders:rem(r),colorId:color,extendedProperties:{private:{misemana:'1',mk:k}}});
   for(const b of S.blocks){if(b.date<T)continue;const t=taskOf(b.tid);if(!t||t.done)continue;const x=t.ex&&examOf(t.ex);timed('b'+b.id,b.date,b.s,b.m,t.t,'Mi semana'+(x?' · Examen: '+x.name:'')+(t.h?'\n'+t.h:''),t.rem!=null?t.rem:bkR(),x?'2':'7');}
-  for(const t of S.tasks){if(t.done||t.note||!t.due||t.due<T||isScheduled(t.id)||t.ds==null)continue;timed('t'+t.id,t.due,t.ds,t.m||30,t.t,'Mi semana · aviso',t.rem,'5');}
+  for(const t of S.tasks){if(t.done||t.note||!t.due||t.due<T||isScheduled(t.id)||(t.ds==null&&t.rem==null))continue;timed('t'+t.id,t.due,t.ds!=null?t.ds:540,t.ds!=null?(t.m||30):15,t.t,'Mi semana · aviso',t.rem,'5');}
   for(const x of S.exams){if(x.date<T)continue;W.set('x'+x.id,{summary:'Examen: '+x.name,description:'Mi semana',start:{date:x.date},end:{date:addD(x.date,1)},transparency:'transparent',reminders:{useDefault:false,overrides:[{method:'popup',minutes:900}]},colorId:'11',extendedProperties:{private:{misemana:'1',mk:'x'+x.id}}});}
   for(let i=0;i<14;i++){const d=addD(T,i),ida=travelOn(d).find(t=>t.k==='ida');if(ida)timed('tv'+d.replace(/-/g,''),d,ida.s,ida.e-ida.s,'Salir para la facultad','Mi semana · viaje',10,'8');}
   if(GG.rt)for(let i=0;i<14;i++){const d=addD(T,i);for(const h of habTimed(d))timed('h'+h.id+d.replace(/-/g,''),d,h.s,h.m,h.n,'Mi semana · rutina',bkR(),'10');}
@@ -3892,6 +4067,7 @@ async function gSync(ask,quiet){
   try{
     await gToken(ask);await gPull();
     const n=GG.push?await gPush():0;
+    if(GG.push){let ch=false;for(const t of S.tasks)if(t.rs==='gg'||t.rs==='nomcp'){t.rs='ok';ch=true;}if(ch)save();}
     GG.at=Date.now();GC.st='ok';
     if(!quiet)say(GG.push?(n?`Google Calendar sincronizado (${n} ${n===1?'cambio':'cambios'})`:'Google Calendar al día'):'Traje tus eventos de Google Calendar');
   }catch(e){gErr=gErrTxt(e);GC.st=GC.ev&&GC.ev.length?'ok':'';if(!quiet)say(gErr);}
@@ -4272,23 +4448,26 @@ function gastoSend(type,amt,what){
 }
 
 /* Copia de las 3 apps juntas (todo lo que guardan en este navegador) */
-const BK_SKIP=new Set(['mi-semana-sync','pom_end_time','pom_mode','pom_total','pom_five_warned']);
+const BK_SKIP=new Set(['mi-semana-sync','mi-semana-bkst','pom_end_time','pom_mode','pom_total','pom_five_warned']);
 function allBackup(){const ls={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!BK_SKIP.has(k))ls[k]=localStorage.getItem(k);}return {format:'mis-apps-backup',v:1,at:new Date().toISOString(),ls};}
 function backup3(){
   const text=JSON.stringify(allBackup()),name='mis-apps-copia-'+todayS()+'.json';
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();a.remove();
-  say('Copia de las 3 apps descargada');
+  say('Copia de todas tus apps descargada');
 }
 let bk3Pend=null;
-function ask3(o){
-  bk3Pend=o;const d=o.at?new Date(o.at):null,n=Object.keys(o.ls||{}).length;
-  $('#bkAsk').innerHTML=`<div class="ask"><b>¿Cargar la copia de las 3 apps?</b><span>Es ${d?'del '+fmtDate(iso(d))+' a las '+hm(d.getHours()*60+d.getMinutes()):'de una fecha desconocida'} (${n} datos). Reemplaza lo de Mi semana, Estudio y Gastos en este navegador y recarga.</span><div class="row"><button class="btn sm" id="bk3Yes" type="button">Reemplazar todo</button><button class="sm ghost" id="bkNo" type="button">Cancelar</button></div></div>`;
+function ask3(o,meta){
+  bk3Pend=o;meta=meta||{};const d=o.at?new Date(o.at):null,n=Object.keys(o.ls||{}).length;
+  const has=re=>Object.keys(o.ls||{}).some(k=>re.test(k));
+  const apps=[['Mi semana',/^mi-semana-v3$/],['Estudio',/^pom_|^carrera_v2$/],['Gastos',/^gastos\.v1$/],['Inglés',/^englishc2_db$/],['Ajedrez',/^ajedrez-entrenador-v1$/]].filter(([,re])=>has(re)).map(x=>x[0]);
+  $('#bkAsk').innerHTML=`<div class="ask" role="alertdialog" aria-labelledby="bk3T"><b id="bk3T">¿Cargar la copia de tus apps?</b><span>${meta.name?'<b>'+esc(meta.name)+'</b> · ':''}${meta.size?kb(meta.size)+' · ':''}${d?'guardada el '+fmtDate(iso(d))+' a las '+hm(d.getHours()*60+d.getMinutes()):'sin fecha'} · ${n} datos.</span><span>Trae: <b>${apps.join(', ')||'nada reconocible'}</b>. Reemplaza lo de esas apps en este navegador y recarga. Antes guardo sola una copia de todo lo que tenés ahora.</span><div class="row"><button class="btn sm" id="bk3Yes" type="button">Reemplazar</button><button class="sm ghost" id="bkNo" type="button">Cancelar</button></div></div>`;
   if($('#smodal').hidden)openS();
+  setTimeout(()=>{const y=$('#bkAsk .ask');if(y){y.scrollIntoView({block:'nearest',behavior:'smooth'});$('#bkNo').focus();}},60);
 }
 document.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;const d=b.dataset;
   if(b.id==='bk3Out')backup3();
-  else if(b.id==='bk3Yes'&&bk3Pend){try{for(const k in bk3Pend.ls)localStorage.setItem(k,bk3Pend.ls[k]);}catch(_){say('No entró todo en el almacenamiento del navegador.');return;}location.reload();}
+  else if(b.id==='bk3Yes'&&bk3Pend){(async()=>{const o=bk3Pend;bk3Pend=null;const prev=JSON.stringify(allBackup());if(!await prePut('pre3',prev,'mis-apps-antes-de-cargar.json'))backup3();const old={};for(const k in o.ls)old[k]=localStorage.getItem(k);try{for(const k in o.ls)localStorage.setItem(k,o.ls[k]);}catch(_){for(const k in old){try{if(old[k]==null)localStorage.removeItem(k);else localStorage.setItem(k,old[k]);}catch(__){}}say('No entró todo en el almacenamiento del navegador. Dejé todo como estaba.');return;}location.reload();})();}
   else if(d.pom!==undefined){startPom(d.pom);}
   else if(d.week!==undefined){openWeek();}
 });
@@ -4468,22 +4647,73 @@ function renderNtf(){
   const el=$('#ntfBody');if(!el)return;
   const K=ntfK(),lead=S.ntfLead==null?5:S.ntfLead,ok=window.Notification&&Notification.permission==='granted'&&S.ntf;
   const row=(k,l)=>`<label class="aichk"><input type="checkbox" data-ntfk="${k}" ${K[k]?'checked':''} ${ok?'':'disabled'}> ${l}</label>`;
-  el.innerHTML=`<div class="row"><button class="sm ${ok?'':'btn'}" id="ntog2" type="button">${nstate()}</button>${ok?'<button class="sm ghost" id="ntest" type="button">Probar un aviso</button>':''}</div>
+  const P=window.Notification?Notification.permission:'na';
+  const [pc,pt,ph]=!window.Notification||inClaude||location.protocol==='file:'?['s-off','No disponible',inClaude?'Dentro de Claude el navegador no deja mostrar avisos. Usá Google Calendar o el .ics.':location.protocol==='file:'?'Abierta como archivo no se pueden mostrar avisos. Desde GitHub Pages (https) sí.':'Este navegador no muestra avisos de páginas.']
+    :P==='denied'?['s-bad','Bloqueados','El navegador tiene bloqueados los avisos de esta página. En Chrome: tocá el ícono a la izquierda de la dirección → Notificaciones → Permitir, y recargá. En Safari: Ajustes → Sitios web → Notificaciones.']
+    :ok?['s-ok','Activos','Llegan mientras Mi semana esté abierta, aunque esté minimizada o en otra pestaña. Si el aviso de prueba no aparece, revisá Ajustes del Sistema → Notificaciones → tu navegador.']
+    :P==='granted'?['s-off','Apagados','El navegador ya dio permiso; tocá Activar.']:['s-warn','Falta permiso','Tocá Activar y aceptá el permiso que pide el navegador.'];
+  el.innerHTML=`<p class="st">${chip(pc,pt)} ${ph}</p><div class="row"><button class="sm ${ok?'':'btn'}" id="ntog2" type="button">${nstate()}</button>${ok?'<button class="sm ghost" id="ntest" type="button">Probar un aviso</button>':''}</div>
     ${row('bk','Bloques y rutinas con hora')}
     <label class="aichk" style="padding-left:26px">Avisar <select id="ntfLead" ${ok?'':'disabled'}>${[[0,'al empezar'],[5,'5 min antes'],[10,'10 min antes'],[15,'15 min antes']].map(([v,l])=>`<option value="${v}"${lead===v?' selected':''}>${l}</option>`).join('')}</select></label>
     ${row('tv','Salir para la facultad (10 min antes del viaje)')}
     ${row('pg','Pagos fijos y vencimientos de tarjeta del día (a las 10)')}
     ${row('en','Si a las 21 te falta tu hora de inglés')}
     ${row('ex','La noche antes de un examen (a las 20)')}
-    <p class="st">Llegan mientras Mi semana esté abierta, aunque esté minimizada o en otra pestaña. Con la app cerrada te avisa Google Calendar (si lo conectaste) o el Calendario de la Mac con el archivo .ics, que ahora también llevan la hora de salir para la facultad.</p>`;
+    <p class="st"><b>Con la app cerrada no llegan.</b> Para eso están Google Calendar y el archivo .ics (más abajo): esos avisos los dispara el calendario, e incluyen la hora de salir para la facultad.</p>`;
 }
+function ntfChip(){
+  const P=window.Notification?Notification.permission:'na',on=P==='granted'&&S.ntf;
+  if(!window.Notification||inClaude||location.protocol==='file:')return ['s-off','No disponible',inClaude?'Dentro de Claude no hay avisos del navegador: usá Google Calendar o el .ics.':'No se pueden mostrar avisos en esta forma de abrir la app.'];
+  if(P==='denied')return ['s-bad','Bloqueados','El navegador bloqueó los avisos de esta página. Mirá abajo cómo habilitarlos.'];
+  if(on)return ['s-ok','Activos','Solo llegan con la app abierta (aunque esté minimizada).'];
+  return ['s-warn','Apagados','Activalos abajo y aceptá el permiso del navegador.'];
+}
+function renderDiag(){
+  const el=$('#diag');if(!el)return;
+  const I=bkst(),rows=[];
+  const R=(t,c,ct,sub,act)=>rows.push(`<li><b>${t}</b>${chip(c,ct)}<small>${sub}</small>${act?'<div class="row">'+act+'</div>':''}</li>`);
+  R('Guardado en este navegador',SAVE.ok?'s-ok':'s-bad',SAVE.ok?'Guardado':'Error',
+    SAVE.ok?(SAVE.at?'Último cambio guardado '+whenAt(SAVE.at)+'.':'Todo guardado.'):'El último cambio no se pudo guardar. '+esc($('#saveWhy').textContent||''),
+    SAVE.ok?'':'<button class="sm btn" type="button" data-bkout="1">Bajar copia ahora</button><button class="sm ghost" type="button" data-dg="save">Reintentar</button>');
+  R('Copias diarias en este navegador',I.idbErr?'s-bad':I.idbAt?'s-ok':'s-off',I.idbErr?'Error':I.idbAt?'Activas':'Pendiente',
+    I.idbErr?esc(I.idbErr)+' Bajá una copia a mano.':I.idbAt?'Última: '+whenAt(I.idbAt)+'. Quedan las últimas 14.':'La primera se guarda sola en unos segundos.',
+    I.idbErr?'<button class="sm" type="button" data-bkout="1">Bajar copia</button>':'');
+  const st=bkState(),[c,t]=BKCHIP[st];
+  R('Copia en una carpeta de la Mac',c,t,
+    st==='ok'?`En «${esc(BK.dir.name)}» · última: ${BK.at?whenAt(BK.at):'en unos segundos'}.`
+    :st==='perm'?`El navegador pide permiso de nuevo para seguir guardando.${BK.at?' Última copia: '+whenAt(BK.at)+'.':''}`
+    :st==='err'?esc(BK.err)+(BK.at?' Última buena: '+whenAt(BK.at)+'.':'')
+    :st==='off'?'Elegí una carpeta (mejor de iCloud Drive) para tener una copia fuera del navegador.'
+    :(inClaude?'Dentro de Claude tus datos se guardan en tu cuenta.':'Solo con Chrome en la Mac. Acá, bajá una copia a mano cada tanto.')+(I.outAt?' La última copia manual: '+whenAt(I.outAt)+'.':''),
+    st==='perm'?'<button class="sm btn" type="button" data-dg="allow">Seguir guardando</button><button class="sm ghost" type="button" data-bkout="1">Bajar copia</button>'
+    :st==='err'?'<button class="sm btn" type="button" data-dg="retry">Reintentar</button><button class="sm ghost" type="button" data-bkout="1">Bajar copia</button>'
+    :st==='off'?'<button class="sm" type="button" data-dg="dir">Elegir carpeta</button>'
+    :!inClaude?'<button class="sm" type="button" data-bkout="1">Bajar copia</button>':'');
+  if(inClaude)R('Entre la Mac y el celular',dbErr?'s-bad':dbDoc?'s-ok':'s-off',dbErr?'Error':dbDoc?'Activa':'Conectando',dbErr?esc(dbErr):'Con tu cuenta de Claude, en vivo.');
+  else R('Entre la Mac y el celular',SY.gist?(SY.err?'s-bad':'s-ok'):'s-off',SY.gist?(SY.err?'Error':'Activa'):'Apagada',
+    SY.gist?(SY.err?esc(SY.err):'Última: '+(SY.at?whenAt(SY.at):'—')+'. Mi semana y tus otras apps.'):'Conectá GitHub (más abajo) en la Mac y en el celular.');
+  if(!inClaude)R('Google Calendar',GG.on?(gErr?'s-bad':'s-ok'):'s-off',GG.on?(gErr?'Error':'Conectado'):'Sin conectar',
+    GG.on?(gErr?esc(gErr):(GG.push?'Lee tus eventos y sube bloques, avisos y exámenes':'Solo lee tus eventos')+(GG.at?'. Última: '+whenAt(GG.at)+'.':'.')):'Necesita tu cuenta de Google. Sus avisos llegan aunque la app esté cerrada.');
+  const [nc,nt,nh]=ntfChip();R('Avisos en la Mac',nc,nt,nh);
+  R('Asistente «Decime qué necesitás»','s-ok','Local','Funciona siempre, sin IA ni internet: entiende frases y preguntas.');
+  R('Armá mi día con IA',aiSample?'s-ok':'s-off',aiSample?'Automático':'Manual','Con la IA de Claude cuando abrís la app desde Claude. En las demás copias, copiás el pedido y pegás la respuesta.');
+  if(!inClaude&&location.protocol==='https:'){const sw=!!(navigator.serviceWorker&&navigator.serviceWorker.controller);R('Funciona sin internet',sw?'s-ok':'s-warn',sw?'Lista':'Todavía no',sw?'Abre sin conexión. Necesitan internet: sincronizar, Google y el clima.':'Se activa después de abrirla una vez con internet. Recargá la página.');}
+  el.innerHTML=`<ul class="diag">${rows.join('')}</ul>`;
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-dg]');if(!b)return;const k=b.dataset.dg;
+  if(k==='save'){$('#saveRetry').click();}
+  else if(k==='allow')folderAllow().then(renderDiag);
+  else if(k==='retry'){BK.err='';snapNow().then(()=>{say(BK.err||'Copia guardada en tu carpeta');renderDiag();renderBk();});}
+  else if(k==='dir')folderPick().then(renderDiag);
+});
 document.addEventListener('change',e=>{
   if(e.target.dataset&&e.target.dataset.ntfk){S.ntfK=Object.assign({},ntfK(),{[e.target.dataset.ntfk]:e.target.checked});save();}
   else if(e.target.id==='ntfLead'){S.ntfLead=+e.target.value;save();}
 });
 document.addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
-  if(b.id==='ntog2'){toggleNtf().then(()=>renderNtf());}
+  if(b.id==='ntog2'){toggleNtf().then(()=>{renderNtf();renderDiag();});}
   else if(b.id==='ntest'){nfire('Mi semana','Así te van a llegar los avisos.','test'+Date.now());say('Te mandé un aviso de prueba');}
 });
 
