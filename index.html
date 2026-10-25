@@ -91,7 +91,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   border-radius:24px;background:var(--hero-bg);color:var(--hero-fg);padding:20px;display:grid;gap:12px;min-width:0}
 .hmain{display:grid;gap:9px;min-width:0}
 .eb{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:15px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--hero-mut)}
-.orb{flex:none;width:10px;height:10px;border-radius:50%;background:var(--x5);animation:pulse 2.4s infinite}
+.orb{flex:none;width:10px;height:10px;border-radius:50%;background:var(--x5);position:relative}
+.orb::after{content:'';position:absolute;inset:0;border-radius:50%;background:rgba(242,160,60,.55);animation:orbp 2.4s ease-out 3;pointer-events:none}
+@keyframes orbp{0%{transform:scale(1);opacity:.9}70%,100%{transform:scale(2.6);opacity:0}}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,160,60,.6)}70%,100%{box-shadow:0 0 0 10px rgba(242,160,60,0)}}
 @media (prefers-reduced-motion:reduce){.orb{animation:none}}
 .ht{font-family:var(--f-display);font-weight:800;font-size:clamp(28px,6vw,40px);line-height:1.02;letter-spacing:.005em;margin:0;text-wrap:balance;overflow-wrap:anywhere}
@@ -776,41 +778,9 @@ body.mini{padding:10px!important;min-height:100vh}
 .iconb .gl{font-size:17px}
 
 /* ===== Tus apps ===== */
-.apps{display:inline-flex;gap:2px;padding:3px;border-radius:999px;border:2px solid var(--fg);background:var(--bg)}
-.apps[hidden]{display:none}
-.apps button{border:0;min-height:30px;padding:3px 13px;font-size:13px;font-weight:700;color:var(--fg);background:transparent}
-.apps button:hover{background:color-mix(in srgb,var(--fg) 10%,transparent)}
-.apps button.on{background:var(--fg);color:var(--bg)}
-#appov{position:fixed;inset:0;z-index:60;background:var(--bg);display:grid;grid-template-rows:auto minmax(0,1fr)}
 /* Las apps quedan cargadas y con su tamaño real aunque no se vean (así funcionan bien al mostrarlas, también en Safari) */
-#appov:not(.show){visibility:hidden;pointer-events:none}
-body.apopen{overflow:hidden}
-.apbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:max(8px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) 8px max(12px,env(safe-area-inset-left));border-bottom:2px solid var(--fg)}
-.apbar a.btnl{color:var(--fg);border-color:var(--fg)}
-#apframes{position:relative;min-height:0}
-#apframes iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
-#apframes iframe:not(.on){visibility:hidden;pointer-events:none}
-.apt{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px}
-.aptile{display:grid;gap:3px;text-align:left;padding:10px 12px;border-radius:18px;border:0;background:rgba(247,240,220,.1);color:var(--hero-fg);min-height:0}
-.aptile:hover{background:rgba(247,240,220,.17);border:0}
-.aptile small{font-family:var(--f-display);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--hero-mut)}
-.aptile b{font-family:var(--f-display);font-size:16px;font-weight:800;line-height:1.15}
-.aptile span{font-size:12px;color:var(--hero-mut);line-height:1.3}
-.at-e small::before,.at-g small::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#7fc4a0}
-.at-g small::before{background:#f5e36a}
-.apb{display:block;height:5px;border-radius:9px;background:rgba(247,240,220,.15);overflow:hidden;margin-top:4px}
-.apb i{display:block;height:100%;border-radius:9px;background:#7fc4a0}
-.at-g .apb i{background:#f5e36a}.apb.hot i{background:#ff8a70}
-@media (max-width:700px){.top .apps{grid-column:1/-1;order:5;justify-self:start}}
 /* ===== v10: apps como una sola ===== */
-#appov.enter{animation:apin .22s cubic-bezier(.2,.8,.2,1)}
-#appov.out{animation:apout .15s ease forwards}
-@keyframes apin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes apout{to{opacity:0;transform:translateY(8px)}}
-#apframes iframe.fadein{animation:apfade .18s ease}
 @keyframes apfade{from{opacity:.2}to{opacity:1}}
-@media (prefers-reduced-motion:reduce){#appov.enter,#appov.out,#apframes iframe.fadein{animation:none}}
-.apkeys{font-size:12px;color:var(--muted);margin-left:auto;margin-right:8px}
 @media (max-width:700px){.apkeys{display:none}}
 .exc.pay{background:transparent;color:var(--di);box-shadow:inset 0 0 0 1.5px var(--di);border-style:dashed}
 .blink{min-height:0;padding:1px 10px;font-size:12px;margin-left:4px;border-color:rgba(247,240,220,.55);color:var(--hero-fg)}
@@ -833,15 +803,6 @@ body.apopen{overflow:hidden}
 .wkl li b{white-space:nowrap;font-weight:700}
 
 /* ===== v11: 5 apps ===== */
-.apps button{display:inline-flex;align-items:center;gap:6px;padding:3px 12px 3px 6px}
-.apps button .gl{width:22px;height:22px;padding:3px;border-radius:50%;background:var(--ac);color:#1b2620;font-size:16px;flex:none}
-.apps button[data-app="semana"] .gl{color:#f7f0dc}
-.apps button.on .gl{box-shadow:0 0 0 2px var(--bg)}
-@media (max-width:860px){.apps button span{display:none}.apps button{padding:3px}.apps button.on span{display:inline;padding-right:8px}}
-@media (pointer:coarse){.apps button{min-height:40px;min-width:40px;justify-content:center}.apps button .gl{width:28px;height:28px;padding:5px}.apps{gap:4px}}
-.apt{grid-template-columns:repeat(2,minmax(0,1fr))}
-.at-i small::before{background:#6fb1e0}.at-a small::before{background:#b7a4dd}
-.at-i .apb i{background:#6fb1e0}.at-a .apb i{background:#b7a4dd}
 .wk-i{background:#b9d7f0}
 
 @media (max-width:480px){.top{grid-template-columns:minmax(0,1fr)!important}.top h1{font-size:clamp(26px,8vw,34px)!important}.topb{order:4;flex-wrap:wrap}#miniBtn{display:none}}
@@ -913,7 +874,7 @@ body.apopen{overflow:hidden}
       <circle cx="56" cy="12" r="6" fill="var(--x5)" stroke="var(--bg)" stroke-width="2.5"/>
     </svg>
     <h1>Mi semana</h1>
-    <nav class="apps" id="apps" aria-label="Tus apps" hidden><button type="button" data-app="semana" class="on" style="--ac:#1f5a45" title="Mi semana (⌘1)"><svg class="gl" aria-hidden="true"><use href="#g-cal"/></svg><span>Mi semana</span></button><button type="button" data-app="estudio" class="" style="--ac:#7fc4a0" title="Estudio (⌘2)"><svg class="gl" aria-hidden="true"><use href="#g-est"/></svg><span>Estudio</span></button><button type="button" data-app="ingles" class="" style="--ac:#6fb1e0" title="Inglés (⌘3)"><svg class="gl" aria-hidden="true"><use href="#g-ing"/></svg><span>Inglés</span></button><button type="button" data-app="ajedrez" class="" style="--ac:#b7a4dd" title="Ajedrez (⌘4)"><svg class="gl" aria-hidden="true"><use href="#g-aje"/></svg><span>Ajedrez</span></button></nav>
+    
     <div class="topb"><button class="ghost sm" id="instBtn" type="button" hidden>Instalar</button><button class="ghost sm iconb" id="thBtn" type="button" aria-label="Tema de colores" title="Tema de colores"><svg class="gl" aria-hidden="true"><use href="#g-pal"/></svg></button><button class="ghost sm iconb" id="miniBtn" type="button" aria-label="Abrir ventana mini" title="Ventana mini: ahora y lo próximo"><svg class="gl" aria-hidden="true"><use href="#g-mini"/></svg></button><button class="ghost sm" data-hmodal="1">Mis horarios</button><button class="ghost sm sybtn" data-smodal="1" id="syBtn" aria-label="Datos, avisos y copias" title="Datos, avisos y copias"><svg class="gl" aria-hidden="true"><use href="#g-sync"/></svg><i id="syDot"></i></button></div>
     <p class="dt" id="dateTxt"></p>
   </header>
@@ -1145,7 +1106,7 @@ body.apopen{overflow:hidden}
     <div id="bkAuto" class="sbody"></div>
     <h4>Copia manual <span class="req">un archivo que guardás vos</span></h4>
     <p class="muted" style="margin:0;font-size:13px">Bajá una copia y guardala donde quieras (por ejemplo iCloud Drive). Al cargar una, primero te muestro qué trae y guardo sola una copia de lo que tenés ahora, así podés volver atrás.</p>
-    <div class="row"><button class="sm" id="bkOut" type="button">Bajar copia (.json)</button><button class="sm ghost" id="bkIn" type="button">Cargar copia</button><button class="sm" id="bk3Out" type="button" hidden>Copia de todas tus apps</button></div>
+    <div class="row"><button class="sm" id="bkOut" type="button">Bajar copia (.json)</button><button class="sm ghost" id="bkIn" type="button">Cargar copia</button></div>
     <input type="file" id="bkFile" accept=".json,application/json" hidden>
     <div id="bkAsk"></div>
     <button class="ghost" type="button" data-sclose>Cerrar</button>
@@ -1182,7 +1143,7 @@ body.apopen{overflow:hidden}
     <button class="ghost" type="button" data-tclose>Listo</button>
   </div>
 </div>
-<div id="appov"><div class="apbar"><nav class="apps" aria-label="Tus apps"><button type="button" data-app="semana" class="on" style="--ac:#1f5a45" title="Mi semana (⌘1)"><svg class="gl" aria-hidden="true"><use href="#g-cal"/></svg><span>Mi semana</span></button><button type="button" data-app="estudio" class="" style="--ac:#7fc4a0" title="Estudio (⌘2)"><svg class="gl" aria-hidden="true"><use href="#g-est"/></svg><span>Estudio</span></button><button type="button" data-app="ingles" class="" style="--ac:#6fb1e0" title="Inglés (⌘3)"><svg class="gl" aria-hidden="true"><use href="#g-ing"/></svg><span>Inglés</span></button><button type="button" data-app="ajedrez" class="" style="--ac:#b7a4dd" title="Ajedrez (⌘4)"><svg class="gl" aria-hidden="true"><use href="#g-aje"/></svg><span>Ajedrez</span></button></nav><span class="apkeys">⌘1 a ⌘4 para cambiar</span><a class="btnl" id="apOut" target="_blank" rel="noopener" href="#">Abrir aparte</a></div><div id="apframes"></div></div>
+
 <div id="wmodal" class="modal" hidden><div class="sheet wsheet" role="dialog" aria-modal="true" aria-labelledby="wkT"><div><h3 id="wkT">Tu semana</h3><p class="muted" id="wkR" style="margin:4px 0 0"></p></div><div id="wkBody"></div><button class="ghost" type="button" data-wclose>Listo</button></div></div>
 <div id="msg" hidden></div>
 
@@ -1728,7 +1689,6 @@ function wxLine(){
 function briefLines(){
   const T=todayS(),now=nowM(),L=[];
   const w=wxLine();if(w)L.push(['wx',w]);
-  if(typeof appsBrief==='function')L.push(...appsBrief());
   {const dw=dow(T),hr=new Date().getHours();if((dw===6&&hr>=17)||(dw===0&&hr<12))L.push(['otr','Ya está listo tu resumen de la semana. <button class="blink" type="button" data-week="1">Verlo</button>']);}
   const ida=travelOn(T).find(t=>t.k==='ida');
   if(ida&&now<ida.s)L.push(['tra',`Hoy tenés facultad: salí de casa a las <b>${hm(ida.s)}</b> para llegar a las ${hm(ida.e)}.`]);
@@ -1765,7 +1725,7 @@ function renderHero(){
     eb=`Ahora · ${hm(H.b.s)} a ${hm(H.b.s+H.b.m)}`;ti=tb.t;
     su=(tb.h?tb.h+' ':'')+`Te quedan ${durTxt(H.b.s+H.b.m-now)}.`;
     chips=chipFor({a:tb.a,ex:tb.ex,m:H.b.m});
-    bt=`${tb.ex&&APPS_ON?`<button class="btn" data-pom="${H.b.id}">Pomodoro en Estudio</button>`:''}<button class="${tb.ex&&APPS_ON?'ghost':'btn'}" data-tdone="${tb.id}">Hecho</button><button class="ghost" data-bkpost="${H.b.id}">Posponer 30 min</button><button class="ghost" data-bk="${H.b.id}">Más</button>`;
+    bt=`<button class="btn" data-tdone="${tb.id}">Hecho</button><button class="ghost" data-bkpost="${H.b.id}">Posponer 30 min</button><button class="ghost" data-bk="${H.b.id}">Más</button>`;
   }else if(H.k==='hab'){
     const st=streak(H.h);
     eb=`Rutina · ${hm(H.h.s)} a ${hm(H.h.s+H.h.m)}`;ti=H.h.n;
@@ -1801,7 +1761,6 @@ function renderHero(){
     <h2 class="ht">${esc(ti)}</h2>${chips}${su?`<p class="hs">${esc(su)}</p>`:''}
     ${bt?`<div class="row">${bt}</div>`:''}${alts}${missed}</div>
     ${lines.length?`<ul class="brief">${lines.map(([a,t])=>`<li><i class="bdot ${a==='wx'?'bwx':'a-'+a}"></i><span>${t}</span></li>`).join('')}</ul>`:''}
-    ${typeof appsTiles==='function'?appsTiles():''}
     ${upl.length?`<div class="hup"><p class="k2">Lo que sigue hoy</p><ol class="upl">${upl.map(i=>`<li><span class="ut">${hm(i.s)}</span><i class="ud ${dot(i)}"></i><span>${esc(i.t)}</span></li>`).join('')}</ol></div>`:''}
     <div class="hstrip"><p class="k2">Tu recorrido de hoy</p>${strip(T)}<div class="ticks">${ticks}</div></div>`;
 }
@@ -1892,7 +1851,7 @@ function renderCal(){
     const exs=S.exams.filter(x=>x.date===ds).map(x=>`<span class="exc x${x.ci%6}" title="Examen: ${esc(x.name)}">Ex. ${esc(shortName(x))}</span>`).join('');
     const hol=holiday(ds),off=dayOff(ds),hn=off||(hol&&hol.n);
     const holc=hn?`<span class="exc hol" title="${esc(hn+(hol&&hol.est?' (fecha estimada)':''))}">${esc(hn)}</span>`:'';
-    return `<button class="dh d${i} ${ds===T?'today':''} ${i===sel?'on':''}" data-pill="${i}" aria-label="${DFULL[i]} ${parse(ds).getDate()}"><small>${DAYS[i]}</small><b>${parse(ds).getDate()}</b><em>${ds<T?'—':fmtH(freeWin(ds,ds===T?now:0))+' h libres'}</em>${holc}${exs}${gastosAgenda(ds).filter(p=>!p.done).slice(0,2).map(p=>`<span class="exc pay" title="${esc(p.t)}">$ ${esc(p.t)}</span>`).join('')}</button>`;
+    return `<button class="dh d${i} ${ds===T?'today':''} ${i===sel?'on':''}" data-pill="${i}" aria-label="${DFULL[i]} ${parse(ds).getDate()}"><small>${DAYS[i]}</small><b>${parse(ds).getDate()}</b><em>${ds<T?'—':fmtH(freeWin(ds,ds===T?now:0))+' h libres'}</em>${holc}${exs}</button>`;
   }).join('');
   let ax='<div class="axis">';
   for(let h=GS/60;h<GE/60;h++)ax+=`<span class="${h*60===GS?'z':''}" style="top:${(h*60-GS)/60*HP}px">${h}:00</span>`;
@@ -2050,7 +2009,6 @@ function toggleDone(id){
   }
   if(x.done&&timer.tid===id)resetTimer();
   save();render();
-  if(typeof hubAfterDone==='function')hubAfterDone(x);
 }
 function toggleStar(id){
   const x=taskOf(id);if(!x)return;
@@ -2115,7 +2073,7 @@ function openBk(bid){
   $('#bkH').textContent=t.h||'';$('#bkH').hidden=!t.h;
   const T=todayS(),live=b.date===T&&nowM()<b.s+b.m&&!t.done&&t.id;
   const mins=t.id&&!t.done?`<label class="bkmin">Tiempo que le dedicaste<input type="number" id="bkMin" min="0" max="900" step="5" value="${t.wk||b.m}" inputmode="numeric"> min</label>`:'';
-  $('#bkA').innerHTML=mins+(t.ex&&!t.done&&APPS_ON?`<button class="btn" data-pom="${b.id}">Pomodoro en Estudio</button>`:'')+(t.id?`<button class="${t.ex&&!t.done&&APPS_ON?'':'btn'}" data-bkdone="${b.id}">${t.done?'Desmarcar':'Marcar hecha'}</button>`:'')+
+  $('#bkA').innerHTML=mins+(t.id?`<button class="btn" data-bkdone="${b.id}">${t.done?'Desmarcar':'Marcar hecha'}</button>`:'')+
     (t.id&&!t.done?`<button data-bkpost="${b.id}">Posponer 30 min</button><button data-bkmov="${b.id}">Pasar a mañana</button>`:'')+
     (t.id?`<button class="ghost" data-bked="${b.id}">Cambiar día, hora o nombre</button>`:'')+
     `<button class="ghost" data-bkunb="${b.id}">Quitar del calendario</button><button class="ghost" data-bkx="1">Cerrar</button>`;
@@ -2410,7 +2368,7 @@ function renderPv(){
   const sb=$('#capf button');
   if(!v){box.innerHTML='';$('#caphint').textContent='';sb.textContent='Anotar';return;}
   const ap=asstParse(v);
-  if(asstOk(ap)&&ap.i!=='done'||ap&&ap.i==='done'&&ap.x){box.innerHTML=`<span class="pvc cmd">${ASTXT[ap.i]}${ap.x?': '+esc(tgtName(ap.x)):ap.amt?': '+gMoney(ap.amt)+(ap.what?' · '+esc(ap.what):''):''}</span>`;sb.textContent=['day','exam','free','studyq','moneyq','week'].includes(ap.i)?'Preguntar':'Hacer';return;}
+  if(asstOk(ap)&&ap.i!=='done'||ap&&ap.i==='done'&&ap.x){box.innerHTML=`<span class="pvc cmd">${ASTXT[ap.i]}${ap.x?': '+esc(tgtName(ap.x)):''}</span>`;sb.textContent=['day','exam','free','studyq','moneyq','week'].includes(ap.i)?'Preguntar':'Hacer';return;}
   sb.textContent='Anotar';
   const p=parseCap(v);
   let h=`<span class="pvc a-${p.a}">${glyph(p.a)}${AREAS[p.a][0]}</span>`;
@@ -2717,7 +2675,7 @@ async function gh(path,opt={}){
   return r.status===204?null:r.json();
 }
 const syPayload=()=>JSON.stringify({app:'mi-semana',v:1,upd:S.upd||0,dev:devName(),S});
-const syFiles=()=>Object.assign({[GFILE]:{content:syPayload()},[GICS]:{content:icsAll().text}},typeof xFiles==='function'?xFiles():{});
+const syFiles=()=>({[GFILE]:{content:syPayload()},[GICS]:{content:icsAll().text}});
 async function syRead(g){
   const f=g&&g.files&&g.files[GFILE];if(!f)return null;
   let txt=f.content;
@@ -2753,7 +2711,7 @@ async function syncNow(manual){
     let m=null,here=false,thereS=false;
     if(r){m=mergeS(S,r.S);here=canon(m)!==canon(S);thereS=canon(m)!==canon(r.S);if(here)adopt({S:m,upd:m.upd});}
     /* Primero se junta Mi semana y después las otras apps, así los exámenes que llegan de Estudio no se duplican */
-    const xp=typeof xPull==='function'?await xPull(g):{pulled:[],push:false};
+    const xp={pulled:[],push:false};
     if(typeof dedupeExams==='function'&&dedupeExams()){save();render();thereS=true;}
     const who=(r&&r.dev)||'tu otro dispositivo';
     if(!r){await syPush();if(manual)say('Cambios subidos');}
@@ -2819,7 +2777,6 @@ function renderSync(){
     const raw=`https://gist.githubusercontent.com/${SY.login||'TU-USUARIO'}/${SY.gist}/raw/${GICS}`;
     h=`<p style="margin:0">${SY.err?`<span class="bad">${esc(SY.err)}</span>`:`<span class="ok">✓ Sincronizando</span> con GitHub${SY.login?' (@'+esc(SY.login)+')':''}${ago?' · última vez '+ago:''}.`}</p>
       <p class="st">Se sincroniza solo cuando cambiás algo, al abrir la app y cada 2 minutos mientras está abierta. Si cambiás cosas distintas en cada lado, se juntan; si tocás lo mismo en los dos, queda la versión más nueva.</p>
-      ${APPS_ON?`<div class="xs"><p class="st" style="margin-top:6px"><b>También viajan tus otras apps:</b></p>${Object.keys(XAPPS).map(a=>{const m=XM[a],d=m&&m.t?new Date(m.t):null;return `<label class="aichk"><input type="checkbox" data-xs="${a}" ${xOn(a)?'checked':''}> ${APPS[a].n}${d?` <span class="st">· último cambio ${dayWord(iso(d))} ${hm(d.getHours()*60+d.getMinutes())}</span>`:' <span class="st">· todavía sin datos acá</span>'}</label>`;}).join('')}<p class="st">Viaja lo que cada app guarda en este navegador. Si la misma app cambió en los dos dispositivos entre una sincronización y otra, queda la versión más nueva. No viajan los apuntes y archivos que subiste a Estudio, ni las fotos de tickets, ni el código de bloqueo y el buzón de Gastos.</p></div>`:''}
       <div class="row"><button class="sm" id="syNow" type="button">Sincronizar ahora</button><button class="sm ghost" id="syOff" type="button">${syOff?'¿Seguro? Tocá de nuevo':'Desconectar este dispositivo'}</button></div>
       <h4>Avisos automáticos en el Calendario de la Mac</h4>
       <ol><li>En Calendario: Archivo → Nueva suscripción a calendario.</li><li>Pegá esta dirección:</li></ol>
@@ -2832,7 +2789,7 @@ function renderSync(){
         <li>En <b>Permissions → Account → Gists</b> elegí <b>Read and write</b>. No le des ningún otro permiso. Ponele vencimiento de un año.</li>
         <li>Pegalo acá y tocá Conectar. En el otro dispositivo hacé lo mismo, con el mismo token o con otro: la app encuentra tus datos sola.</li></ol>
       <div class="url"><input id="syTok" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…" aria-label="Token de GitHub"><button class="sm btn" id="syGo" type="button">${syBusy?'Conectando…':'Conectar'}</button></div>
-      <p class="st">Sincroniza Mi semana y, en tu app de GitHub, también Estudio, Inglés y Ajedrez. Gastos es aparte y tiene su propia sincronización.</p>
+      <p class="st">Sincroniza tus datos de Mi semana entre la Mac y el celular.</p>
       <p class="st">Tus datos quedan en un <b>gist secreto</b> de tu cuenta: no aparece en tu perfil ni en búsquedas, pero cualquiera con la dirección exacta lo puede leer. El token queda guardado solo en este navegador y no viaja con los datos.</p>`;
   }
   $('#sBody').innerHTML=h;
@@ -3036,7 +2993,7 @@ function readBackup(f){
     let o=null;try{o=JSON.parse(r.result);}catch(_){}
     try{
       const meta={name:f.name,size:f.size};
-      if(o&&o.format==='mis-apps-backup'&&o.ls)ask3(o,meta);
+      if(o&&o.format==='mis-apps-backup'&&o.ls&&o.ls['mi-semana-v3']){const S2=JSON.parse(o.ls['mi-semana-v3']);askBackup({format:'mi-semana-backup',v:1,at:o.at,S:S2},meta);}
       else if(o&&o.format==='mi-semana-backup'&&o.S&&Array.isArray(o.S.tasks))askBackup(o,meta);
       else prepImport(o);
     }catch(_){say('Ese archivo no es un backup del Estudio Tracker ni una copia de Mi semana.');}
@@ -3047,7 +3004,7 @@ function readBackup(f){
 }
 window.addEventListener('dragover',e=>{if(e.dataTransfer&&[...e.dataTransfer.types].includes('Files'))e.preventDefault();});
 window.addEventListener('drop',e=>{const f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];if(!f)return;e.preventDefault();readBackup(f);});
-$('#impBtn').addEventListener('click',()=>{const m=lsj('pom_mats');if(Array.isArray(m)&&m.length){try{prepImport({format:'estudio-tracker-backup',mats:m,history:lsj('pom_history')||{}});return;}catch(_){}}$('#impFile').click();});
+$('#impBtn').addEventListener('click',()=>$('#impFile').click());
 $('#impFile').addEventListener('change',e=>{
   const f=e.target.files&&e.target.files[0];if(f)readBackup(f);
 });
@@ -3658,7 +3615,6 @@ async function folderWrite(json,T){
     BK.perm=await BK.dir.queryPermission({mode:'readwrite'});
     if(BK.perm!=='granted'){bkBan();return;}
     for(const name of ['mi-semana-'+T+'.json','mi-semana-ultima.json']){const fh=await BK.dir.getFileHandle(name,{create:true});const w=await fh.createWritable();await w.write(json);await w.close();}
-    if(APPS_ON){const all=JSON.stringify(allBackup());for(const name of ['mis-apps-'+T+'.json','mis-apps-ultima.json']){const fh=await BK.dir.getFileHandle(name,{create:true});const w=await fh.createWritable();await w.write(all);await w.close();}}
     BK.at=Date.now();BK.err='';bkstSet({dirAt:BK.at,dirErr:''});
   }catch(e){BK.err=e&&e.name==='NotFoundError'?'No encuentro la carpeta (¿la moviste o la borraste?).':e&&e.name==='QuotaExceededError'?'No hay espacio en el disco.':'No pude escribir en la carpeta.';bkstSet({dirErr:BK.err});}
   bkBan();if(!$('#smodal').hidden)renderBk();
@@ -3703,8 +3659,6 @@ async function renderBk(){
   if(ks.length)h+=`<div class="row">${ks.slice(0,7).map(k=>`<button class="sm ghost" type="button" data-snap="${k}">${cap(dayWord(k))}</button>`).join('')}</div>`;
   const pre=await preGet('pre');
   if(pre)h+=`<p class="st">Antes de la última vez que cargaste una copia guardé lo que tenías: <b>${whenAt(pre.at)}</b>. <button class="sm ghost" type="button" data-snap="pre">Ver y volver a eso</button></p>`;
-  const pre3=APPS_ON?await preGet('pre3'):null;
-  if(pre3)h+=`<p class="st">Antes de cargar la última copia de todas tus apps guardé cómo estaban: <b>${whenAt(pre3.at)}</b>. <button class="sm ghost" type="button" data-snap3="1">Ver y volver a eso</button></p>`;
   const st=bkState(),[c,t]=BKCHIP[st];
   if(st==='na'){if(!inClaude)h+=`<p class="st">${chip(c,t)} Para guardar además una copia diaria en una carpeta de la Mac, abrí la app con Chrome. Acá, usá <b>Bajar copia</b> de vez en cuando.</p>`;}
   else if(st==='off')h+=`<p class="st">${chip(c,t)} <b>Copia en una carpeta de tu Mac:</b> elegí una carpeta (mejor una de iCloud Drive) y cada día se guarda ahí un archivo. Así no perdés nada aunque se borren los datos del navegador.</p><div class="row"><button class="sm btn" type="button" id="bkDir">Elegir carpeta</button></div>`;
@@ -3726,7 +3680,6 @@ $('#smodal').addEventListener('click',async e=>{
   if(b.id==='bkDir')folderPick();
   else if(b.id==='bkAllow')folderAllow();
   else if(b.id==='bkRetry'){BK.err='';await snapNow();say(BK.err||'Copia guardada en tu carpeta');renderBk();}
-  else if(b.dataset.snap3!==undefined){const r=await preGet('pre3');try{const o=r&&JSON.parse(r.json);if(o&&o.ls)ask3(o,{name:'Cómo estaban tus apps antes de cargar una copia',size:r.json.length});}catch(_){say('No pude leer esa copia.');}}
   else if(b.dataset.snap!==undefined){
     try{
       const k=b.dataset.snap,r=k==='pre'?await preGet('pre'):await idbDo('snaps','readonly',st=>st.get(k));
@@ -3822,9 +3775,8 @@ function dayAnswer(ds){
 function runAsst(p){
   const T=todayS();let h='';
   if(p.i==='week'){openWeek();showAsst('Te abrí el resumen de la semana.');return;}
-  if(p.i==='studyq'){const e=estudioInfo();showAsst(!e?'Todavía no veo datos de Estudio en este navegador.':p.wk?`Esta semana estudiaste <b>${fmtH(e.week)} h</b> de ${fmtH(e.goal)} h de meta.`:`Hoy estudiaste <b>${e.today?durTxt(e.today):'nada todavía'}</b>. En la semana llevás ${fmtH(e.week)} h de ${fmtH(e.goal)} h.${e.due?` Tenés ${e.due} ${e.due===1?'tarjeta':'tarjetas'} para repasar.`:''}`);return;}
-  if(p.i==='money'){showAsst('La plata la llevás aparte, en tu app Gastos. Acá anoto tu agenda, estudio y pendientes.');return;}
-  if(p.i==='moneyq'){const g=gastosInfo();showAsst(!g?'Todavía no veo datos de Gastos en este navegador.':g.locked?'Gastos está bloqueada: abrila para ver tus números.':p.today?`Hoy gastaste <b>${g.fmt(g.today)}</b>. En ${g.month} llevás ${g.fmt(g.spent)}.`:`En ${g.month} gastaste <b>${g.fmt(g.spent)}</b>${g.budget?`: ${g.budget-g.spent>=0?'te quedan '+g.fmt(g.budget-g.spent):'te pasaste por '+g.fmt(g.spent-g.budget)} del presupuesto`:''}${g.inc?`. Ingresos: ${g.fmt(g.inc)}`:''}.`);return;}
+  if(p.i==='studyq'){const T=todayS(),mon=monday(T),td=studyMins(T);let wk=0;for(let i=0;i<7;i++){const d=addD(mon,i);if(d<=T)wk+=studyMins(d);}showAsst(p.wk?(wk?`Esta semana hiciste <b>${durTxt(wk)}</b> de estudio en tu agenda.`:'Esta semana todavía no marcaste bloques de estudio como hechos.'):(td?`Hoy hiciste <b>${durTxt(td)}</b> de estudio`:'Hoy todavía no marcaste estudio como hecho')+(wk?`. En la semana llevás ${durTxt(wk)}.`:'.'));return;}
+  if(p.i==='money'){showAsst('La plata la llevás aparte, en tu app Gastos. Acá anoto tu agenda, tu estudio y tus pendientes.');return;}
   if(p.i==='day'){
     if(p.w==='week'||p.w==='nextweek'){
       const mon=addD(monday(T),p.w==='nextweek'?7:0);
@@ -3888,10 +3840,9 @@ function agRow(i,ds){
   if(i.k==='gap')return `<li class="agi gap"><span class="agt">${hm(i.s)}<small>${hm(i.e)}</small></span><span class="agb"></span><div class="agc"><b>Libre · ${durTxt(i.e-i.s)}</b><small>Un buen rato para avanzar con algo</small></div><button class="sm" type="button" data-agpick="${ds}|${i.s}|${i.e}">Llenar</button></li>`;
   const cls=i.k==='fx'?'k-fx':i.k==='tv'?'k-tv':i.k==='gc'?'k-gc':(i.cls||'a-'+i.a);
   const x=i.ex&&examOf(i.ex);
-  const meta={fx:'Facultad',tv:'Viaje',gc:'Google Calendar',rt:'Rutina'+(i.s==null&&i.m?' · '+durTxt(i.m):''),av:'Aviso',bk:x?'Estudio · '+esc(x.name):(AREAS[i.a]?AREAS[i.a][0]:'')+(i.e?' · '+durTxt(i.e-i.s):''),pg:(i.card?'Tarjeta':'Pago fijo')+(i.amt?' · '+gMoney(i.amt):'')+(i.done?' · ya figura pagado':'')}[i.k];
+  const meta={fx:'Facultad',tv:'Viaje',gc:'Google Calendar',rt:'Rutina'+(i.s==null&&i.m?' · '+durTxt(i.m):''),av:'Aviso',bk:x?'Estudio · '+esc(x.name):(AREAS[i.a]?AREAS[i.a][0]:'')+(i.e?' · '+durTxt(i.e-i.s):'')}[i.k];
   let act='';
   if(i.k==='bk'||i.k==='av')act=`<button class="chk ${i.done?'on':''}" type="button" data-tdone="${i.tid}" aria-label="${i.done?'Desmarcar':'Marcar hecho'}: ${esc(i.t)}">${i.done?'✓':''}</button>`;
-  else if(i.k==='pg')act=`<button class="sm" type="button" data-app="gastos" data-go="pagos">Ver</button>`;
   else if(i.k==='rt')act=`<button class="chk ${i.done?'on':''}" type="button" data-hchk="${i.id}" data-hd="${ds}" aria-label="${i.done?'Desmarcar':'Marcar hecha'}: ${esc(i.t)}">${i.done?'✓':''}</button>`;
   const open=i.k==='bk'?`data-bk="${i.id}"`:i.k==='fx'||i.k==='tv'?'data-hmodal="1"':'';
   const body=`<b>${esc(i.t)}</b><small>${meta}</small>`;
@@ -4122,7 +4073,7 @@ function renderTh(){
   const el=$('#thBody');if(!el)return;
   el.innerHTML=`<div class="skins">${Object.entries(SKINS).map(([k,v])=>`<button type="button" class="skin ${!TH.auto&&TH.skin===k?'on':''}" data-skin="${k}"><span class="sw">${v.sw.map(c=>`<i style="background:${c}"></i>`).join('')}</span><b>${v.n}</b></button>`).join('')}</div>
     <label class="aichk"><input type="checkbox" id="thAuto" ${TH.auto?'checked':''}> Que cambie solo según la hora: Menta a la mañana, Papel a la tarde y Océano a la noche</label>
-    <label class="aichk"><input type="checkbox" id="thUni" ${TH.unify!==false?'checked':''}> Usar este tema también en Estudio</label>
+
     <h4>Fondo</h4>
     <div class="seg" role="group" aria-label="Fondo">${[['auto','Como la Mac'],['light','Claro'],['dark','Oscuro']].map(([v,l])=>`<button type="button" data-thmode="${v}" class="${TH.mode===v?'on':''}" aria-pressed="${TH.mode===v}">${l}</button>`).join('')}</div>`;
 }
@@ -4199,301 +4150,39 @@ applyTheme();
 setInterval(()=>{applyTheme();MINI.forEach(m=>applyTheme(m.ownerDocument));renderMini();},30000);
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#tmodal').hidden)$('#tmodal').hidden=true;});
-/* ===== Tus 3 apps juntas: Mi semana, Estudio y Gastos =====
-   Las tres viven en tomas6304.github.io, así que comparten el almacenamiento del navegador:
-   desde acá se leen tus datos de Estudio y Gastos (solo lectura) y se abren las apps sin salir. */
-var APPS={estudio:{n:'Estudio',path:'/Estudio/'},ingles:{n:'Inglés',path:'/Study/'},ajedrez:{n:'Ajedrez',path:'/Ajedrez/'}};
-/* Solo cuando Mi semana está abierta sola: si quedara adentro de otra ventana, no abre las otras apps (evita que se repita adentro de sí misma) */
-var APPS_ON=!inClaude&&/^https?:$/.test(location.protocol)&&window.top===window;
-function lsj(k){try{return JSON.parse(localStorage.getItem(k));}catch(_){return null;}}
-function estudioInfo(){
-  const mats=lsj('pom_mats'),hist=lsj('pom_history');
-  if(!Array.isArray(mats)&&!(hist&&typeof hist==='object'))return null;
-  const T=todayS(),mon=monday(T),H=hist||{},M=Array.isArray(mats)?mats:[];
-  let week=0;for(let d=mon;d<=T;d=addD(d,1))week+=+((H[d]&&H[d].mins)||0);
-  const today=+((H[T]&&H[T].mins)||0),goal=parseInt(localStorage.getItem('pom_weekly_goal')||'300',10)||300;
-  const notes=localStorage.getItem('fc_use_notes')==='1';let due=0;
-  for(const m of M){for(const c of m.cards||[])if(c&&c.q&&c.a&&(!c.srNext||c.srNext<=T))due++;if(notes)for(const u of m.units||[])if(u&&u.note&&String(u.note).trim()&&(!u.srNext||u.srNext<=T))due++;}
-  let run=null;const end=+localStorage.getItem('pom_end_time')||0;
-  if(end>Date.now()){const mid=localStorage.getItem('pom_mat'),mt=M.find(m=>String(m.id)===String(mid));run={left:Math.max(1,Math.ceil((end-Date.now())/60000)),study:(localStorage.getItem('pom_mode')||'study')==='study',mat:mt&&mt.name};}
-  return {today,week,goal,due,run};
-}
-function gastosInfo(){
-  const d=gData();if(!d||typeof d!=='object')return null;
-  const st=d.settings||{};if(st.lock&&st.lock.on)return {locked:true};
-  const T=todayS(),M=T.slice(0,7),cur=st.currency||'ARS';
-  const fmt=v=>{try{return new Intl.NumberFormat('es-AR',{style:'currency',currency:cur,maximumFractionDigits:0}).format(v);}catch(_){return '$'+Math.round(v).toLocaleString('es-AR');}};
-  const ex=(d.expenses||[]).filter(e=>e&&String(e.date||'').startsWith(M));
-  const tot=t=>ex.filter(e=>(e.type==='ingreso')===(t==='i')).reduce((a,e)=>a+(+e.amount||0),0);
-  const spent=tot('g'),inc=tot('i'),todaySp=ex.filter(e=>e.type!=='ingreso'&&e.date===T).reduce((a,e)=>a+(+e.amount||0),0);
-  const cats=Array.isArray(d.categories)?d.categories:[];
-  const nextOf=r=>{
-    const s=String(r.start||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;
-    if(r.freq==='semanal'){if(s>=T)return s;const k=Math.ceil(diffD(s,T)/7);return addD(s,k*7);}
-    if(r.freq==='anual'){let c=T.slice(0,4)+s.slice(4);if(c<T)c=(+T.slice(0,4)+1)+s.slice(4);return c<s?s:c;}
-    const day=+s.slice(8,10),mk=(y,m)=>{const last=new Date(y,m+1,0).getDate();return iso(new Date(y,m,Math.min(day,last)));};
-    const n=new Date();let c=mk(n.getFullYear(),n.getMonth());if(c<T)c=mk(n.getFullYear(),n.getMonth()+1);return c<s?s:c;
-  };
-  let next=null;
-  for(const r of d.recurring||[]){
-    if(!r||r.active===false||r.type==='ingreso')continue;const nd=nextOf(r);if(!nd||diffD(T,nd)>10)continue;
-    const c=cats.find(x=>x.id===r.cat);
-    if(!next||nd<next.date)next={date:nd,name:r.note||(c&&c.name)||'Pago fijo',amount:+r.amount||0};
-  }
-  return {spent,inc,today:todaySp,budget:+st.budget||0,fmt,next,month:MESF[new Date().getMonth()]};
-}
-function appsTiles(){
-  const e=estudioInfo();if(!e&&!APPS_ON)return '';
-  let h='<div class="apt">';
-  if(e||APPS_ON){
-    const pct=e?Math.min(100,Math.round(e.week/e.goal*100)):0;
-    h+=`<button type="button" class="aptile at-e" data-app="estudio"${e&&e.due?' data-go="flashcard"':''}><small>Estudio</small>${e?`<b>${e.run?(e.run.study?'Pomodoro · '+e.run.left+' min':'Descanso · '+e.run.left+' min'):'Hoy '+(e.today?durTxt(e.today):'0 min')}</b><span>Semana ${fmtH(e.week)} de ${fmtH(e.goal)} h${e.due?' · '+e.due+' para repasar':''}</span><i class="apb"><i style="width:${pct}%"></i></i>`:'<b>Abrir</b><span>Todavía no hay datos</span>'}</button>`;
-  }
-  const si=studyInfo(),ci=chessInfo();
-  if(si||APPS_ON)h+=`<button type="button" class="aptile at-i" data-app="ingles"><small>Inglés</small>${si?`<b>${si.done?'Día completo':'Hoy '+si.mins+' de 60 min'}</b><span>${si.level?'Nivel '+esc(si.level)+' · ':''}racha ${si.streak} ${si.streak===1?'día':'días'}</span><i class="apb"><i style="width:${Math.min(100,Math.round(si.mins/60*100))}%"></i></i>`:'<b>Abrir</b><span>Todavía no hay datos</span>'}</button>`;
-  if(ci||APPS_ON)h+=`<button type="button" class="aptile at-a" data-app="ajedrez"><small>Ajedrez</small>${ci?`<b>${ci.plan?'Plan completo':'Plan '+ci.n+' de '+ci.of}</b><span>Elo ${ci.rating}${ci.streak?' · racha '+ci.streak:''}</span><i class="apb"><i style="width:${Math.round(ci.n/ci.of*100)}%"></i></i>`:'<b>Abrir</b><span>Todavía no hay datos</span>'}</button>`;
-  return h+'</div>';
-}
-/* Líneas para el resumen del asistente */
-function appsBrief(){
-  const L=[],e=estudioInfo(),g=gastosInfo();
-  if(e&&e.run&&e.run.study)L.push(['est',`Tenés un pomodoro en curso${e.run.mat?' de <b>'+esc(e.run.mat)+'</b>':''}: quedan ${e.run.left} min.`]);
-  if(g&&!g.locked&&g.next&&diffD(todayS(),g.next.date)<=2)L.push(['pla',`Pago fijo ${['hoy','mañana'].includes(dayWord(g.next.date))?dayWord(g.next.date):'el '+fmtDate(g.next.date)}: <b>${esc(g.next.name)}</b>${g.next.amount?' ('+g.fmt(g.next.amount)+')':''}. <button class="blink" type="button" data-app="gastos" data-go="pagos">Ver</button>`]);
-  if(g&&!g.locked&&g.budget&&g.spent>=g.budget*.9)L.push(['pla',`Ya usaste el ${Math.round(g.spent/g.budget*100)}% del presupuesto de ${g.month}.`]);
-  return L;
-}
-/* Abrir las otras apps adentro de esta, sin perder lo que estabas haciendo */
-let apCur='semana';
-function apSetOn(){document.querySelectorAll('[data-app]').forEach(b=>{if(b.closest('.apps'))b.classList.toggle('on',b.dataset.app===apCur);});}
-
-document.addEventListener('click',e=>{const b=e.target.closest('[data-app]');if(b){e.preventDefault();openApp(b.dataset.app,b.dataset.go);}});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#appov').classList.contains('show')&&!e.target.closest('input,textarea'))openApp('semana');});
-let _apT=null;
-window.addEventListener('storage',e=>{if(e.key&&(e.key.startsWith('pom_')||e.key==='gastos.v1')){clearTimeout(_apT);_apT=setTimeout(()=>{renderHero();renderMini();},400);}});
-$('#apps').hidden=!APPS_ON;
-
-/* ===== Las 3 apps como una sola: cambio instantáneo, accesos directos y datos que van y vienen ===== */
-var APPST={estudio:{ready:false,q:[]},ingles:{ready:false,q:[]},ajedrez:{ready:false,q:[]}};
-const appFrame=k=>document.getElementById('apf-'+k);
-function ensureFrame(k){
-  let f=appFrame(k);
-  if(!f&&APPS_ON&&APPS[k]){
-    f=document.createElement('iframe');f.id='apf-'+k;f.title=APPS[k].n;
-    f.setAttribute('allow','clipboard-read; clipboard-write; camera; microphone; fullscreen; screen-wake-lock; publickey-credentials-get *');
-    f.src=location.origin+APPS[k].path;$('#apframes').appendChild(f);
-  }
-  return f;
-}
-function appSend(k,msg){
-  const st=APPST[k];if(!st||!ensureFrame(k))return;
-  msg.hub='do';
-  if(st.ready){try{appFrame(k).contentWindow.postMessage(msg,location.origin);}catch(_){}}else st.q.push(msg);
-}
-window.addEventListener('message',e=>{
-  if(e.origin!==location.origin||!e.data)return;const d=e.data;
-  if(d.hub==='ready'&&APPST[d.app]){const st=APPST[d.app],f=appFrame(d.app);st.ready=true;if(f)st.q.splice(0).forEach(m=>{try{f.contentWindow.postMessage(m,location.origin);}catch(_){}});}
-  else if(d.hub==='open')openApp(d.app);
-});
-function openApp(k,go){
-  const ov=$('#appov');
-  if(k==='semana'||!APPS[k]){
-    if(ov.classList.contains('show')){ov.classList.add('out');setTimeout(()=>{ov.classList.remove('show','out');},150);}
-    document.body.classList.remove('apopen');apCur='semana';apSetOn();
-    try{localStorage.setItem('hub-last','semana');}catch(_){}
-    render();return;
-  }
-  if(!APPS_ON){say('Las otras apps se abren desde tu versión de GitHub.');return;}
-  const f=ensureFrame(k);apCur=k;
-  if(!ov.classList.contains('show')){ov.classList.add('show');ov.classList.remove('enter');void ov.offsetWidth;ov.classList.add('enter');}
-  document.body.classList.add('apopen');
-  document.querySelectorAll('#apframes iframe').forEach(x=>{x.classList.toggle('on',x===f);});
-  f.classList.remove('fadein');void f.offsetWidth;f.classList.add('fadein');
-  $('#apOut').href=location.origin+APPS[k].path;apSetOn();
-  try{localStorage.setItem('hub-last',k);}catch(_){}
-  if(go)appSend(k,{go});
-  setTimeout(()=>{try{f.contentWindow.focus();}catch(_){}},60);
-}
-document.addEventListener('keydown',e=>{
-  if((e.metaKey||e.ctrlKey)&&!e.altKey&&!e.shiftKey&&/^[1-4]$/.test(e.key)){e.preventDefault();openApp(['semana','estudio','ingles','ajedrez'][+e.key-1]);}
-});
-
-/* Datos de las otras apps (con memoria, para no releer todo a cada rato) */
-var _lc={};
-function lsc(k){const raw=localStorage.getItem(k);const c=_lc[k];if(c&&c.raw===raw)return c.obj;let obj=null;try{obj=JSON.parse(raw);}catch(_){}_lc[k]={raw,obj};return obj;}
-function gData(){return null;}/* Gastos es una app aparte: Mi semana no lee sus datos */
-function gLocked(){const d=gData();return !!(d&&d.settings&&d.settings.lock&&d.settings.lock.on);}
-function gMoney(v){const d=gData(),cur=(d&&d.settings&&d.settings.currency)||'ARS';try{return new Intl.NumberFormat('es-AR',{style:'currency',currency:cur,maximumFractionDigits:0}).format(v);}catch(_){return '$'+Math.round(v).toLocaleString('es-AR');}}
-function occursOn(r,date){
-  const s=String(r.start||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(s)||date<s)return false;
-  if(r.freq==='semanal')return diffD(s,date)%7===0;
-  if(r.freq==='anual')return date.slice(5)===s.slice(5);
-  const p=parse(date),last=new Date(p.getFullYear(),p.getMonth()+1,0).getDate();
-  return p.getDate()===Math.min(+s.slice(8,10),last);
-}
-/* Pagos fijos y vencimientos de tarjetas de Gastos, para la agenda */
-function gastosAgenda(date){
-  return [];
-  if(!APPS_ON&&!localStorage.getItem('gastos.v1'))return [];
-  const d=gData();if(!d||gLocked())return [];
-  const out=[],cats=Array.isArray(d.categories)?d.categories:[];
-  for(const r of d.recurring||[]){
-    if(!r||r.active===false||r.type==='ingreso'||!occursOn(r,date))continue;
-    const c=cats.find(x=>x.id===r.cat),paid=(d.expenses||[]).some(e=>e&&e.recId===r.id&&e.date===date);
-    out.push({k:'pg',s:null,e:null,t:r.note||(c&&c.name)||'Pago fijo',a:'pla',amt:+r.amount||0,done:paid});
-  }
-  for(const c of d.cards||[]){
-    if(!c||!c.dueDay)continue;const p=parse(date),last=new Date(p.getFullYear(),p.getMonth()+1,0).getDate();
-    if(p.getDate()===Math.min(+c.dueDay,last))out.push({k:'pg',s:null,e:null,t:'Vence la tarjeta '+(c.name||''),a:'pla',card:true,done:false});
-  }
-  return out;
-}
-
-/* Estudio → Mi semana: los exámenes llegan solos y el estudio real se suma */
-function estudioSync(){
-  const mats=lsc('pom_mats');if(!Array.isArray(mats))return;
-  const hist=lsc('pom_history')||{},T=todayS(),tot={};S.log=S.log||{};
-  for(const d in hist){const h=hist[d]||{},m=+h.mins||0;if(m&&/^\d{4}-\d{2}-\d{2}$/.test(d))S.log[d]=m;for(const id in (h.mats||{}))tot[id]=(tot[id]||0)+(+h.mats[id]||0);}
-  const sig=JSON.stringify(mats.map(m=>[m.id,m.name,m.exam,unitsOf(m),Math.round(tot[m.id]||0)]));
-  let n=0,ch=false;
-  if(sig!==localStorage.getItem('hub-et-sig')){
-    for(const m of mats){
-      const name=String(m.name||'').trim();if(!name)continue;
-      const units=unitsOf(m),done=Math.round(tot[m.id]||0);let x=matchOf(m,name);
-      if(x){
-        if(x.src!=='et'+m.id){x.src='et'+m.id;ch=true;}
-        if(done>(x.done||0)){x.done=done;ch=true;}
-        if(units&&x.units!==units){x.units=units;ch=true;}
-        if(m.exam&&m.exam!==x.date&&m.exam>T){x.date=m.exam;const gone=new Set(S.tasks.filter(t=>t.ex===x.id&&t.auto&&!t.done).map(t=>t.id));S.tasks=S.tasks.filter(t=>!gone.has(t.id));S.blocks=S.blocks.filter(b=>!gone.has(b.tid));ch=true;}
-      }else if(m.exam&&m.exam>T){
-        const used=new Set(S.exams.map(e=>e.ci));let ci=0;while(used.has(ci)&&ci<5)ci++;if(used.has(ci))ci=S.exams.length%6;
-        S.exams.push({id:uid(),src:'et'+m.id,name,date:m.exam,need:Math.max(600,units*150,done+120),done,ci,units,seq:0});n++;
-      }
-    }
-    S.mats=mats.map(m=>String(m.name||'').trim()).filter(Boolean);
-    try{localStorage.setItem('hub-et-sig',sig);}catch(_){}
-  }
-  if(n||ch){cleanOrphans();autoPlanQuiet();save();render();if(n)say(`Llegaron ${n} ${n===1?'examen':'exámenes'} desde Estudio y armé el plan`);}
-}
-/* Pomodoro desde un bloque de estudio de tu agenda */
-function matForExam(x){
-  const mats=lsc('pom_mats');if(!Array.isArray(mats)||!x)return null;
-  if(x.src&&x.src.startsWith('et')){const m=mats.find(m=>String(m.id)===x.src.slice(2));if(m)return m.id;}
-  const m=mats.find(m=>String(m.name||'').trim().toLowerCase()===x.name.toLowerCase());return m?m.id:null;
-}
-function pomMins(mid,date){const H=lsc('pom_history')||{},h=H[date]||{};return mid!=null?+((h.mats||{})[mid]||0):+(h.mins||0);}
-function startPom(bid){
-  const b=S.blocks.find(x=>x.id===bid);if(!b)return;const t=taskOf(b.tid),x=t&&t.ex&&examOf(t.ex);
-  if(!APPS_ON){say('El pomodoro se abre desde tu app de GitHub, donde está Estudio.');return;}
-  const mid=matForExam(x),T=todayS();
-  try{localStorage.setItem('hub-pom',JSON.stringify({bid,mid,base:pomMins(mid,T),date:T,at:Date.now()}));}catch(_){}
-  closeBk();openApp('estudio');appSend('estudio',{pom:mid||0});
-  say(mid?`Pomodoro de ${x.name} en marcha`:'Pomodoro en marcha. Elegí la materia en Estudio si hace falta');
-}
-function pomCheck(){
-  const hp=lsj('hub-pom');if(!hp)return;
-  const drop=()=>{try{localStorage.removeItem('hub-pom');}catch(_){}};
-  if(hp.date!==todayS()||Date.now()-hp.at>10*3600e3){drop();return;}
-  const b=S.blocks.find(x=>x.id===hp.bid),t=b&&taskOf(b.tid);if(!t){drop();return;}
-  const delta=Math.round(pomMins(hp.mid,hp.date)-hp.base);if(delta<=0)return;
-  if(!t.done&&delta>=Math.min(b.m*.5,50)){
-    t.wk=delta;t.real=true;toggleDone(t.id);
-    const e=t.ex&&examOf(t.ex);if(e){e.done=Math.max(0,(e.done||0)-(t.cred||0));t.cred=0;}
-    hp.marked=true;try{localStorage.setItem('hub-pom',JSON.stringify(hp));}catch(_){}
-    try{localStorage.removeItem('hub-et-sig');}catch(_){}estudioSync();save();render();
-    say(`Bloque hecho: ${t.t} · ${durTxt(delta)} reales en Estudio`);
-  }else if(t.done&&hp.marked&&delta>(t.wk||0)){t.wk=delta;save();render();}
-}
-let _esT=null;
-window.addEventListener('storage',e=>{
-  if(e.key==='pom_mats'||e.key==='pom_history'){clearTimeout(_esT);_esT=setTimeout(()=>{estudioSync();pomCheck();},500);}
-  else if(e.key==='englishc2_db'||e.key==='ajedrez-entrenador-v1'){clearTimeout(_esT);_esT=setTimeout(()=>{autoHabits();renderHero();},500);}
-  else if(e.key==='gastos.v1'){renderCal();}
-});
-
-/* Mi semana → Gastos */
-const isTouch=()=>matchMedia('(pointer:coarse)').matches;
+/* ===== Mi semana funciona sola: no lee ni abre otras apps ===== */
+const APPS_ON=false;
 function sayAct(text,label,fn){
   const el=$('#msg');el.textContent=text;const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=()=>{el.hidden=true;fn();};el.append(b);
   el.hidden=false;clearTimeout(say.t);say.t=setTimeout(()=>{el.hidden=true;},9000);
 }
-const PAYRE=/\b(pagar|pague|pago|abonar|cuota|factura|alquiler|expensas|luz|gas|agua|internet|tarjeta|monotributo|impuesto|patente|seguro)\b/i;
-function hubAfterDone(x){
-  return;
-  if(!x||!x.done||x.ex||!APPS_ON||!PAYRE.test(nrm(x.t)))return;
-  const cat=catFor(x.t);
-  setTimeout(()=>sayAct('¿Lo cargo como gasto en Gastos?','Cargar',()=>{openApp('gastos');appSend('gastos',{q:'accion=gasto&nota='+encodeURIComponent(x.t.slice(0,60))+(cat?'&cat='+cat:'')});}),120);
+/* Limpieza de lo que dejaba la unión de apps en este navegador */
+try{['hub-url','hub-last','hub-xmeta','hub-et-sig','hub-pom'].forEach(k=>localStorage.removeItem(k));for(let i=localStorage.length-1;i>=0;i--){const k=localStorage.key(i);if(k&&k.startsWith('hub-auto-'))localStorage.removeItem(k);}}catch(_){}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-week]');if(b)openWeek();});
+/* Estudio hecho en Mi semana: minutos de los bloques de estudio marcados como hechos */
+function studyMins(date){
+  let m=0;for(const b of S.blocks){if(b.date!==date)continue;const t=taskOf(b.tid);if(t&&t.done&&(t.ex||t.a==='est'))m+=+(t.wk||b.m)||0;}
+  return m;
 }
-const CATRE=[['super',/super|chino|mercado|carrefour|coto|\bdia\b|jumbo|disco|almacen|verdul|carniceria|despensa/],['comida',/comida|almuerzo|cena|desayuno|merienda|cafe|delivery|rappi|pedidos ?ya|pizza|empanada|resto|hamburguesa|helado|sushi/],['transporte',/sube|colectivo|bondi|uber|cabify|didi|nafta|combustible|tren|subte|taxi|peaje|estacionamiento|remis/],['casa',/alquiler|expensas|mueble|limpieza|ferreteria|decoracion/],['servicios',/\bluz\b|\bgas\b|\bagua\b|internet|wifi|celular|telefono|netflix|spotify|disney|youtube|icloud|seguro|abono|cable|claude|chatgpt/],['salud',/farmacia|medico|remedio|medicamento|dentista|obra social|prepaga|gimnasio|\bgym\b|kinesio|psicolog/],['ocio',/cine|salida|boliche|recital|juego|steam|teatro|bar\b|birra|cerveza|fiesta|entrada/],['compras',/ropa|zapatilla|remera|regalo|tecnologia|auricular|libro|compra/]];
-function catFor(txt){const n=nrm(txt),d=gData(),ids=new Set(((d&&d.categories)||[]).map(c=>c.id));for(const [id,re] of CATRE)if(re.test(n)&&(!ids.size||ids.has(id)))return id;return '';}
-function amtOf(num,mul){let s=String(num).trim();if(/^\d{1,3}(\.\d{3})+$/.test(s))s=s.replace(/\./g,'');else s=s.replace(/\./g,'').replace(',','.');let v=parseFloat(s);if(!(v>0))return 0;if(mul&&/^(k|mil|luca|lucas)$/i.test(mul))v*=1000;return Math.round(v*100)/100;}
-function gastoSend(type,amt,what){
-  if(!APPS_ON)return 'Esto funciona en tu app de GitHub, donde está Gastos.';
-  const cat=type==='ingreso'?(/sueldo|trabajo|laburo/.test(nrm(what))?'sueldo':'extras'):catFor(what);
-  const d=gData(),ok=cat&&(!d||!Array.isArray(d.categories)||d.categories.some(c=>c.id===cat));
-  const q='accion='+type+'&monto='+amt+(what?'&nota='+encodeURIComponent(cap(what).slice(0,60)):'')+(ok?'&cat='+cat:'');
-  const show=!ok||gLocked()||isTouch();
-  if(show)openApp('gastos');else ensureFrame('gastos');
-  appSend('gastos',{q});
-  const c=ok&&d&&Array.isArray(d.categories)?d.categories.find(x=>x.id===cat):null;
-  setTimeout(()=>{renderHero();},1500);
-  return gLocked()?'Gastos está bloqueada: desbloqueala y se carga.':show?`Abrí Gastos con <b>${gMoney(amt)}</b> cargado: revisá la categoría y guardá.`:`Anotado en Gastos: <b>${gMoney(amt)}</b>${what?' · '+esc(what):''}${c?' ('+esc(c.name)+')':''}. <button class="sm" type="button" data-app="gastos" data-go="home">Ver</button>`;
-}
-
-/* Copia de las 3 apps juntas (todo lo que guardan en este navegador) */
-const BK_SKIP=new Set(['mi-semana-sync','mi-semana-bkst','pom_end_time','pom_mode','pom_total','pom_five_warned']);
-function allBackup(){const ls={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!BK_SKIP.has(k)&&!/^gastos\./.test(k))ls[k]=localStorage.getItem(k);}return {format:'mis-apps-backup',v:1,at:new Date().toISOString(),ls};}
-function backup3(){
-  const text=JSON.stringify(allBackup()),name='mis-apps-copia-'+todayS()+'.json';
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();a.remove();
-  say('Copia de todas tus apps descargada');
-}
-let bk3Pend=null;
-function ask3(o,meta){
-  bk3Pend=o;meta=meta||{};const d=o.at?new Date(o.at):null,n=Object.keys(o.ls||{}).length;
-  const has=re=>Object.keys(o.ls||{}).some(k=>re.test(k));
-  const apps=[['Mi semana',/^mi-semana-v3$/],['Estudio',/^pom_|^carrera_v2$/],['Inglés',/^englishc2_db$/],['Ajedrez',/^ajedrez-entrenador-v1$/]].filter(([,re])=>has(re)).map(x=>x[0]);
-  $('#bkAsk').innerHTML=`<div class="ask" role="alertdialog" aria-labelledby="bk3T"><b id="bk3T">¿Cargar la copia de tus apps?</b><span>${meta.name?'<b>'+esc(meta.name)+'</b> · ':''}${meta.size?kb(meta.size)+' · ':''}${d?'guardada el '+fmtDate(iso(d))+' a las '+hm(d.getHours()*60+d.getMinutes()):'sin fecha'} · ${n} datos.</span><span>Trae: <b>${apps.join(', ')||'nada reconocible'}</b>. Reemplaza lo de esas apps en este navegador y recarga. Antes guardo sola una copia de todo lo que tenés ahora.</span><div class="row"><button class="btn sm" id="bk3Yes" type="button">Reemplazar</button><button class="sm ghost" id="bkNo" type="button">Cancelar</button></div></div>`;
-  if($('#smodal').hidden)openS();
-  setTimeout(()=>{const y=$('#bkAsk .ask');if(y){y.scrollIntoView({block:'nearest',behavior:'smooth'});$('#bkNo').focus();}},60);
-}
-document.addEventListener('click',e=>{
-  const b=e.target.closest('button');if(!b)return;const d=b.dataset;
-  if(b.id==='bk3Out')backup3();
-  else if(b.id==='bk3Yes'&&bk3Pend){(async()=>{const o=bk3Pend;bk3Pend=null;const prev=JSON.stringify(allBackup());if(!await prePut('pre3',prev,'mis-apps-antes-de-cargar.json'))backup3();const old={};for(const k in o.ls)old[k]=localStorage.getItem(k);try{for(const k in o.ls)localStorage.setItem(k,o.ls[k]);}catch(_){for(const k in old){try{if(old[k]==null)localStorage.removeItem(k);else localStorage.setItem(k,old[k]);}catch(__){}}say('No entró todo en el almacenamiento del navegador. Dejé todo como estaba.');return;}location.reload();})();}
-  else if(d.pom!==undefined){startPom(d.pom);}
-  else if(d.week!==undefined){openWeek();}
-});
 
 /* ===== Resumen de la semana: estudio, agenda, rutinas y plata juntos ===== */
 function weekStart(){const T=todayS(),d=dow(T),h=new Date().getHours();return d===0&&h<12?addD(monday(T),-7):monday(T);}
 function weekData(mon){
   const T=todayS(),days=[0,1,2,3,4,5,6].map(i=>addD(mon,i)),sun=days[6],upto=sun<T?sun:T,out={mon,sun,days};
-  const H=lsc('pom_history'),mats=lsc('pom_mats');
-  if(H){
-    const per=days.map(d=>+((H[d]&&H[d].mins)||0)),tot=per.reduce((a,b)=>a+b,0);
-    const prev=[0,1,2,3,4,5,6].reduce((a,i)=>{const d=addD(mon,i-7);return a+(+((H[d]&&H[d].mins)||0));},0);
-    const bym={};days.forEach(d=>{const m=(H[d]&&H[d].mats)||{};for(const k in m)bym[k]=(bym[k]||0)+(+m[k]||0);});
-    const top=Object.entries(bym).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>{const m=Array.isArray(mats)&&mats.find(x=>String(x.id)===String(k));return [m?m.name:'General',v];});
-    out.st={per,tot,prev,top,goal:parseInt(localStorage.getItem('pom_weekly_goal')||'300',10)||300};
+  {
+    const per=days.map(studyMins),tot=per.reduce((a,b)=>a+b,0);
+    const prev=[0,1,2,3,4,5,6].reduce((a,i)=>a+studyMins(addD(mon,i-7)),0);
+    const bym={};for(const b of S.blocks){if(b.date<mon||b.date>sun)continue;const t=taskOf(b.tid),x=t&&t.done&&t.ex&&examOf(t.ex);if(x)bym[x.name]=(bym[x.name]||0)+(+(t.wk||b.m)||0);}
+    const top=Object.entries(bym).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const plan=S.blocks.filter(b=>b.date>=mon&&b.date<=sun&&(t=>t&&(t.ex||t.a==='est'))(taskOf(b.tid))).reduce((a,b)=>a+b.m,0);
+    if(tot||plan||prev)out.st={per,tot,prev,top,goal:plan};
   }
   const bl=S.blocks.filter(b=>b.date>=mon&&b.date<=sun&&taskOf(b.tid));
   out.ag={blocks:bl.length,done:bl.filter(b=>taskOf(b.tid).done).length,tasks:S.tasks.filter(t=>t.done&&!t.ex&&t.dd&&t.dd>=mon&&t.dd<=sun).length};
   out.rt=(S.habits||[]).map(h=>{const sch=days.filter(d=>d<=upto&&h.days.includes(dow(d))&&(!h.at||d>=h.at));return {n:h.n,a:h.a,sch:sch.length,dn:sch.filter(d=>habDone(h,d)).length,st:streak(h)};}).filter(r=>r.sch);
   out.pj=(S.projects||[]).filter(p=>!p.arch);
-  const g=gData();
-  if(g&&!gLocked()){
-    const ex=(g.expenses||[]).filter(e=>e&&e.type!=='ingreso');
-    const sumIn=(a,b)=>ex.filter(e=>e.date>=a&&e.date<=b).reduce((s,e)=>s+(+e.amount||0),0);
-    const wk=ex.filter(e=>e.date>=mon&&e.date<=sun),cats=Array.isArray(g.categories)?g.categories:[],bc={};
-    wk.forEach(e=>{bc[e.cat]=(bc[e.cat]||0)+(+e.amount||0);});
-    const M=T.slice(0,7);
-    out.gs={tot:sumIn(mon,sun),prev:sumIn(addD(mon,-7),addD(mon,-1)),top:Object.entries(bc).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>{const c=cats.find(x=>x.id===k);return [c?c.name:k,v];}),month:ex.filter(e=>String(e.date).startsWith(M)).reduce((s,e)=>s+(+e.amount||0),0),budget:+((g.settings||{}).budget)||0};
-  }else if(g)out.gs={locked:true};
-  const nx=[];for(let i=1;i<=7;i++){const d=addD(sun,i);S.exams.filter(x=>x.date===d).forEach(x=>nx.push([d,'Examen: '+x.name]));gastosAgenda(d).filter(p=>!p.done).forEach(p=>nx.push([d,(p.card?'':'Pago: ')+p.t+(p.amt?' · '+gMoney(p.amt):'')]));}
+  const nx=[];for(let i=1;i<=7;i++){const d=addD(sun,i);S.exams.filter(x=>x.date===d).forEach(x=>nx.push([d,'Examen: '+x.name]));for(const t of S.tasks)if(!t.done&&t.due===d&&!t.ex)nx.push([d,t.t]);}
   out.nx=nx;
-  {const db=lsc('englishc2_db'),cp=lsc('ajedrez-entrenador-v1');
-   if(db&&db.days){const dd=days.filter(d=>db.days[d]).length;let secs=0;for(const k in (db.block_time||{})){const d=k.split('|')[0];if(d>=mon&&d<=sun)secs+=Math.min(720,+(db.block_time[k].seconds||0));}out.en={dd,mins:Math.round(secs/60),upto:days.filter(d=>d<=upto).length};}
-   if(cp){const t0=parse(mon).getTime(),t1=parse(addD(sun,1)).getTime(),gs=(cp.games||[]).filter(g=>g&&g.d>=t0&&g.d<t1);out.ch={games:gs.length,w:gs.filter(g=>g.res==='W').length,rating:Math.round(cp.rating||0)};}}
   return out;
 }
 function openWeek(){
@@ -4501,123 +4190,19 @@ function openWeek(){
   const dif=(a,b)=>b?Math.round((a-b)/b*100):null;
   let h=`<div class="wkg">`;
   if(w.st){const mx=Math.max(60,...w.st.per),df=dif(w.st.tot,w.st.prev);
-    h+=`<section class="wkc wk-e"><p class="k">Estudio</p><b class="wkbig">${fmtH(w.st.tot)} h</b><p class="wks">de ${fmtH(w.st.goal)} h de meta${df!=null?` · ${df>=0?'+':''}${df}% vs. la semana pasada`:''}</p>
+    h+=`<section class="wkc wk-e"><p class="k">Estudio</p><b class="wkbig">${fmtH(w.st.tot)} h</b><p class="wks">${w.st.goal?'de '+fmtH(w.st.goal)+' h que planeaste':'estudiadas'}${df!=null?` · ${df>=0?'+':''}${df}% vs. la semana pasada`:''}</p>
       <div class="wkbars">${w.st.per.map((m,i)=>`<span title="${DFULL[i]}: ${durTxt(m)}"><i style="height:${Math.round(m/mx*100)}%"></i><em>${'LMXJVSD'[i]}</em></span>`).join('')}</div>
       ${w.st.top.length?`<ul class="wkl">${w.st.top.map(([n,m])=>`<li><span>${esc(n)}</span><b>${durTxt(Math.round(m))}</b></li>`).join('')}</ul>`:''}</section>`;}
   h+=`<section class="wkc wk-a"><p class="k">Agenda</p><b class="wkbig">${w.ag.done} de ${w.ag.blocks}</b><p class="wks">bloques hechos${w.ag.tasks?` · ${w.ag.tasks} ${w.ag.tasks===1?'tarea terminada':'tareas terminadas'}`:''}</p>
     ${w.pj.length?`<ul class="wkl">${w.pj.slice(0,3).map(p=>`<li><span>${esc(p.n)}</span><b>${p.next?'sigue: '+esc(p.next.slice(0,26)):'sin próximo paso'}</b></li>`).join('')}</ul>`:''}</section>`;
   if(w.rt.length)h+=`<section class="wkc wk-r"><p class="k">Rutinas</p><ul class="wkl">${w.rt.map(r=>`<li><span>${esc(r.n)}</span><b>${r.dn}/${r.sch}${r.st>1?' · racha '+r.st:''}</b></li>`).join('')}</ul></section>`;
-  if(w.gs){if(w.gs.locked)h+=`<section class="wkc wk-g"><p class="k">Plata</p><p class="wks">Gastos está bloqueada.</p></section>`;
-    else{const df=dif(w.gs.tot,w.gs.prev);h+=`<section class="wkc wk-g"><p class="k">Plata</p><b class="wkbig">${gMoney(w.gs.tot)}</b><p class="wks">gastado en la semana${df!=null?` · ${df>=0?'+':''}${df}% vs. la anterior`:''}${w.gs.budget?` · mes: ${gMoney(w.gs.month)} de ${gMoney(w.gs.budget)}`:''}</p>
-      ${w.gs.top.length?`<ul class="wkl">${w.gs.top.map(([n,v])=>`<li><span>${esc(n)}</span><b>${gMoney(v)}</b></li>`).join('')}</ul>`:''}</section>`;}}
-  if(w.en||w.ch)h+=`<section class="wkc wk-i"><p class="k">Inglés y ajedrez</p><ul class="wkl">${w.en?`<li><span>Inglés: días completos</span><b>${w.en.dd} de ${w.en.upto}</b></li><li><span>Inglés: tiempo</span><b>${durTxt(w.en.mins)}</b></li>`:''}${w.ch?`<li><span>Ajedrez: partidas</span><b>${w.ch.games}${w.ch.games?' · '+w.ch.w+' ganadas':''}</b></li><li><span>Ajedrez: Elo</span><b>${w.ch.rating}</b></li>`:''}</ul></section>`;
-  h+=`<section class="wkc wk-n"><p class="k">La semana que viene</p>${w.nx.length?`<ul class="wkl">${w.nx.slice(0,6).map(([d,t])=>`<li><span>${esc(t)}</span><b>${fmtDate(d)}</b></li>`).join('')}</ul>`:'<p class="wks">Sin exámenes ni pagos marcados. Buena semana para adelantar.</p>'}</section></div>`;
+  h+=`<section class="wkc wk-n"><p class="k">La semana que viene</p>${w.nx.length?`<ul class="wkl">${w.nx.slice(0,6).map(([d,t])=>`<li><span>${esc(t)}</span><b>${fmtDate(d)}</b></li>`).join('')}</ul>`:'<p class="wks">Sin exámenes ni avisos marcados. Buena semana para adelantar.</p>'}</section></div>`;
   $('#wkT').textContent='Tu semana';
   $('#wkR').textContent=`${d0.getDate()} ${MES[d0.getMonth()]} – ${d6.getDate()} ${MES[d6.getMonth()]}`;
   $('#wkBody').innerHTML=h;$('#wmodal').hidden=false;
 }
 $('#wmodal').addEventListener('click',e=>{if(e.target.id==='wmodal'||e.target.closest('[data-wclose]'))$('#wmodal').hidden=true;});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#wmodal').hidden)$('#wmodal').hidden=true;});
-
-/* ===== Inglés (Study) y Ajedrez: resumen y rutinas que se marcan solas ===== */
-function studyInfo(){
-  const db=lsc('englishc2_db');if(!db||typeof db!=='object'||!db.block_time)return null;
-  const sh=+((db.settings||{}).day_start_hour)||0,day=iso(new Date(Date.now()-sh*3600e3));
-  let secs=0;for(let n=1;n<=5;n++){const bt=db.block_time[day+'|'+n];secs+=Math.min(720,bt?+bt.seconds||0:0);}
-  const days=db.days||{};let d=days[day]?day:addD(day,-1),st=0;while(days[d]&&st<2000){st++;d=addD(d,-1);}
-  return {day,mins:Math.round(secs/60),done:!!days[day],streak:st,level:(db.settings||{}).level||''};
-}
-function chessInfo(){
-  const p=lsc('ajedrez-entrenador-v1');if(!p||typeof p!=='object')return null;
-  const T=todayS(),d=p.day&&p.day.date===T?p.day:{games:0,puzzles:0,reviews:0,drills:0,dueStart:0,planDone:false};
-  const tasks=[!!(p.daily&&p.daily.date===T),!d.dueStart||d.reviews>=Math.min(5,d.dueStart),d.puzzles>=5,d.drills>=1,d.games>=1];
-  const n=tasks.filter(Boolean).length,y=addD(T,-1);
-  return {n,of:5,plan:!!d.planDone||n===5,rating:Math.round(p.rating||800),streak:(p.lastDaily===T||p.lastDaily===y)?(p.streak||0):0,session:!!d.planDone||d.puzzles>=5||d.games>=1||n>=3};
-}
-/* Si hoy tenés una rutina de inglés o de ajedrez y ya la hiciste en su app, se marca sola (una vez: si la desmarcás, queda desmarcada) */
-function autoHabits(){
-  const T=todayS(),k='hub-auto-'+T;let seen={};try{seen=JSON.parse(localStorage.getItem(k))||{};}catch(_){}
-  const si=studyInfo(),ci=chessInfo(),hit=[];
-  for(const [area,re,ok] of [['ing',/ingl|english/i,si&&si.done],['aje',/ajedrez|chess/i,ci&&ci.session]]){
-    if(!ok)continue;
-    for(const h of habOn(T)){if((h.a===area||re.test(h.n))&&!habDone(h,T)&&!seen[h.id]){h.dn=Object.assign({},h.dn,{[T]:1});seen[h.id]=1;hit.push(h.n);}}
-  }
-  if(hit.length){try{localStorage.setItem(k,JSON.stringify(seen));for(let i=0;i<localStorage.length;i++){const x=localStorage.key(i);if(x&&x.startsWith('hub-auto-')&&x<'hub-auto-'+addD(T,-3))localStorage.removeItem(x);}}catch(_){}save();render();say(`Marqué ${hit.join(' y ')} como hecho: lo completaste en su app`);}
-}
-setTimeout(autoHabits,800);
-setInterval(autoHabits,120000);
-
-/* ===== Sincronizar también Estudio, Gastos, Inglés y Ajedrez (en el mismo gist secreto) =====
-   Cada app viaja entera en su propio archivo. Si cambió en los dos dispositivos, queda la versión más nueva.
-   De Gastos no viajan el código de bloqueo ni las claves del buzón: quedan solo en cada dispositivo. */
-var XAPPS={
-  estudio:{re:/^(pom_mats|pom_history|pom_weekly_goal|pom_custom_study|pom_custom_break|pom_recall|carrera_v2|fc_use_notes)$/},
-  ingles:{re:/^englishc2_db$/},
-  ajedrez:{re:/^ajedrez-entrenador-v1$/}
-};
-const XLOCAL=['inbox','lock','notif','cloud'];
-var XM={};try{XM=JSON.parse(localStorage.getItem('hub-xmeta'))||{};}catch(_){XM={};}
-const xSave=()=>{try{localStorage.setItem('hub-xmeta',JSON.stringify(XM));}catch(_){}};
-const xOn=app=>(S.xsync||{})[app]!==false;
-function xSnap(app){
-  const o={};
-  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&XAPPS[app].re.test(k))o[k]=localStorage.getItem(k);}
-  if(app==='gastos'&&o['gastos.v1']){try{const g=JSON.parse(o['gastos.v1']);if(g&&g.settings){for(const f of XLOCAL)delete g.settings[f];}o['gastos.v1']=JSON.stringify(g);}catch(_){}}
-  return o;
-}
-function xHash(o){const j=JSON.stringify(o);let h=5381;for(let i=0;i<j.length;i++)h=((h<<5)+h+j.charCodeAt(i))>>>0;return h.toString(36)+'.'+j.length;}
-/* Anota cuándo cambió cada app en este dispositivo. Devuelve true si alguna cambió */
-function xTouch(){
-  if(!APPS_ON)return false;let ch=false;
-  for(const app in XAPPS){
-    const o=xSnap(app),n=Object.keys(o).length,h=xHash(o);
-    if(!n&&!XM[app])continue;
-    if(!XM[app]||XM[app].h!==h){XM[app]={h,t:Date.now(),n,fresh:!XM[app]};ch=true;}
-  }
-  if(ch)xSave();return ch;
-}
-function xFiles(){
-  const out={};if(!APPS_ON)return out;xTouch();
-  for(const app in XAPPS){if(!xOn(app))continue;const o=xSnap(app);if(!Object.keys(o).length)continue;out['x-'+app+'.json']={content:JSON.stringify({app,t:(XM[app]&&XM[app].t)||Date.now(),dev:devName(),data:o})};}
-  return out;
-}
-function xApply(app,data){
-  const f=appFrame(app),vis=!!(f&&f.classList.contains('on')&&$('#appov').classList.contains('show'));
-  if(f){f.remove();APPST[app].ready=false;APPST[app].q=[];}
-  for(const k in data){
-    let v=data[k];
-    if(app==='gastos'&&k==='gastos.v1'){try{const r=JSON.parse(v),l=JSON.parse(localStorage.getItem(k)||'null');if(r&&r.settings&&l&&l.settings)for(const fld of XLOCAL)if(l.settings[fld]!==undefined)r.settings[fld]=l.settings[fld];v=JSON.stringify(r);}catch(_){}}
-    try{localStorage.setItem(k,v);}catch(_){}
-  }
-  if(APPS_ON){ensureFrame(app);if(vis)openApp(app);}
-}
-async function xPull(g){
-  const out={pulled:[],push:false};if(!APPS_ON)return out;
-  xTouch();
-  for(const app in XAPPS){
-    if(!xOn(app))continue;
-    const f=g&&g.files&&g.files['x-'+app+'.json'],loc=XM[app];let rem=null;
-    if(f){let txt=f.content;if(f.truncated){try{txt=await (await fetch(f.raw_url,{cache:'no-store'})).text();}catch(_){txt=null;}}try{rem=JSON.parse(txt);}catch(_){rem=null;}}
-    if(!rem||!rem.data||!Object.keys(rem.data).length){if(loc&&loc.n)out.push=true;continue;}
-    const rh=xHash(rem.data);
-    if(loc&&loc.h===rh){if(loc.fresh){loc.fresh=false;}continue;}
-    let take;
-    if(!loc||!loc.n)take=true;
-    else if(loc.fresh){take=JSON.stringify(rem.data).length>JSON.stringify(xSnap(app)).length;}   /* primera vez en este dispositivo: gana la copia con más datos */
-    else take=(rem.t||0)>(loc.t||0);
-    if(take){xApply(app,rem.data);const o=xSnap(app);XM[app]={h:xHash(o),t:rem.t||Date.now(),n:Object.keys(o).length,fresh:false};out.pulled.push(APPS[app].n);}
-    else{if(loc.fresh)loc.fresh=false;out.push=true;}
-  }
-  xSave();
-  if(out.pulled.length){try{localStorage.removeItem('hub-et-sig');}catch(_){}estudioSync();autoHabits();renderHero();renderCal();}
-  return out;
-}
-let _xT=null;
-window.addEventListener('storage',e=>{
-  if(!e.key||!SY.gist)return;
-  /* Como máximo una vez cada 30 segundos (Inglés guarda seguido mientras practicás) */
-  for(const app in XAPPS)if(XAPPS[app].re.test(e.key)){if(!_xT)_xT=setTimeout(()=>{_xT=null;if(xTouch())syncNow(false);},30000);break;}
-});
 
 /* ===== Notificaciones de la Mac: bloques, salida a la facultad, pagos, inglés y exámenes ===== */
 const NTFK0={bk:true,tv:true,pg:true,en:true,ex:true};
@@ -4628,8 +4213,6 @@ function ntfMore(){
   const once=(k,t,b)=>{if(S.nf[k])return;S.nf[k]=1;ch=true;nfire(t,b,k);};
   const ida=travelOn(T).find(t=>t.k==='ida');
   if(K.tv&&ida&&now>=ida.s-10&&now<ida.s+15)once('tv'+T,'Salí para la facultad',`La clase arranca a las ${hm(ida.e)}. Tenés ${durTxt(ida.e-ida.s)} de viaje.`);
-  if(false)for(const p of gastosAgenda(T))if(!p.done)once('pg'+T+p.t,p.card?p.t:'Hoy vence: '+p.t,p.amt?gMoney(p.amt):'Pago fijo');
-  if(K.en&&now>=1260&&now<1410){const si=studyInfo();if(si&&!si.done)once('en'+T,'Te falta tu hora de inglés',`Llevás ${si.mins} de 60 minutos hoy.`);}
   if(K.ex&&now>=1200&&now<1410)for(const x of S.exams)if(x.date===addD(T,1))once('ex'+x.id,'Mañana rendís '+x.name,'Repaso liviano y a dormir temprano.');
   if(Object.keys(S.nf).length>400){const keep={};for(const k in S.nf)if(k.includes(T))keep[k]=1;S.nf=keep;ch=true;}
   if(ch)save();
@@ -4647,7 +4230,6 @@ function renderNtf(){
     ${row('bk','Bloques y rutinas con hora')}
     <label class="aichk" style="padding-left:26px">Avisar <select id="ntfLead" ${ok?'':'disabled'}>${[[0,'al empezar'],[5,'5 min antes'],[10,'10 min antes'],[15,'15 min antes']].map(([v,l])=>`<option value="${v}"${lead===v?' selected':''}>${l}</option>`).join('')}</select></label>
     ${row('tv','Salir para la facultad (10 min antes del viaje)')}
-    ${row('en','Si a las 21 te falta tu hora de inglés')}
     ${row('ex','La noche antes de un examen (a las 20)')}
     <p class="st"><b>Con la app cerrada no llegan.</b> Para eso están Google Calendar y el archivo .ics (más abajo): esos avisos los dispara el calendario, e incluyen la hora de salir para la facultad.</p>`;
 }
@@ -4707,7 +4289,7 @@ document.addEventListener('click',e=>{
   else if(b.id==='ntest'){nfire('Mi semana','Así te van a llegar los avisos.','test'+Date.now());say('Te mandé un aviso de prueba');}
 });
 
-document.addEventListener('change',e=>{if(e.target.dataset&&e.target.dataset.xs){S.xsync=Object.assign({},S.xsync||{},{[e.target.dataset.xs]:e.target.checked});save();if(SY.gist)syncNow(false);}});
+document.addEventListener('change',e=>{if(false&&e.target.dataset&&e.target.dataset.xs){S.xsync=Object.assign({},S.xsync||{},{[e.target.dataset.xs]:e.target.checked});save();if(SY.gist)syncNow(false);}});
 /* Si por sincronizar quedó el mismo examen dos veces (misma materia de Estudio o mismo nombre y fecha), queda uno solo */
 function dedupeExams(){
   const seen={},gone=[];
@@ -4726,17 +4308,6 @@ function dedupeExams(){
   S.blocks=S.blocks.filter(b=>!ids.has(b.tid)||b.date<todayS());S.tasks=S.tasks.filter(t=>!ids.has(t.id)||isScheduled(t.id));
   cleanOrphans();autoPlanQuiet();return true;
 }
-/* Arranque de la unión de apps */
-if(APPS_ON&&location.hash!=='#mini'){
-  try{localStorage.setItem('hub-url',location.origin+location.pathname);}catch(_){}
-  $('#bk3Out').hidden=false;
-  setTimeout(()=>{ensureFrame('estudio');},2500);
-  setTimeout(()=>ensureFrame('ingles'),5000);setTimeout(()=>ensureFrame('ajedrez'),7500);
-  const am=location.hash.match(/app=(estudio|ingles|ajedrez)/);
-  if(am){history.replaceState(null,'',location.pathname+location.search);setTimeout(()=>openApp(am[1]),0);}
-  else{let last='';try{last=localStorage.getItem('hub-last')||'';}catch(_){}if(APPS[last])setTimeout(()=>openApp(last),0);}
-}
-setTimeout(()=>{estudioSync();pomCheck();},300);
 
 fillStatic();
 /* Con sincronización activa, primero traigo lo del otro dispositivo y después completo el plan */
