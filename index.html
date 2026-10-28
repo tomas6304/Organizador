@@ -504,6 +504,48 @@ h4 .req{font-weight:600;font-size:11.5px;color:var(--muted);margin-left:6px;lett
 .bked label{display:grid;gap:3px;font-size:12.5px;color:var(--muted)}
 .bked input,.bked select{width:100%;min-width:0}
 .bked .why{margin:0;font-size:13px;color:#c0261a;font-weight:600}
+/* ===== Vista simple: ahora, después y anotar ===== */
+#simnav{order:2;display:none}
+body.simple .layout{display:block;max-width:640px;margin:0 auto}
+body.simple .side{display:grid;gap:16px}
+body.simple #calcard,body.simple #stabs,body.simple #tabbar,body.simple #aicard,body.simple #exams,body.simple #goals,body.simple #projCard,body.simple #tasksCard,body.simple .hstrip{display:none!important}
+body.simple #next{display:grid!important}
+body.simple #capcard{display:block!important}
+body.simple #simnav{display:grid!important;gap:10px}
+body.simple #ban{order:-1!important}body.simple #next{order:0!important}body.simple #capcard{order:1!important}body.simple #simnav{order:2!important}
+body.simple #localban{display:none!important}
+body.simple{padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))!important}
+.simnav .k2{margin:4px 0 0;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.simgo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.simgo button{min-height:48px;border-radius:18px;font-weight:700;justify-content:center}
+@media (min-width:700px){.simgo{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.tipc{display:grid;gap:8px;padding:14px 16px;border-radius:22px;border:2px solid var(--line2);background:var(--surface);font-size:14px}
+.tipc p{margin:0}.tipc .row{gap:8px}
+.ritchip{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:12px 16px;border-radius:18px;border:0!important;background:#f5e36a!important;color:#1b2620!important;font-weight:800;font-size:15px;text-align:left;min-height:52px}
+.ritchip small{font-weight:600;font-size:12.5px;opacity:.8}
+.ritchip.night{background:#b7a4dd!important}
+.rsheet{max-width:520px}
+.rsheet h3{margin:0}
+.rtl{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:2px}
+.rtl li{display:grid;grid-template-columns:48px 10px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14.5px}
+.rtl li:last-child{border-bottom:0}
+.rtl .ut{font-variant-numeric:tabular-nums;font-weight:700;font-size:13px;color:var(--muted)}
+.rtl .ud{width:10px;height:10px;border-radius:3px;background:var(--c,var(--line2))}
+.rtl .ud.k-fx{background:var(--fg)}.rtl .ud.k-tv{background:transparent;border:2px dashed var(--fg)}.rtl .ud.k-gc{background:#9a917c}
+.rtl .rk{display:contents;cursor:pointer}
+.rtl .rk span{font:inherit;font-size:14.5px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--fg)}
+.rtl input[type=checkbox]{width:22px;height:22px;margin:0;accent-color:#1f5a45}
+.rtl li.dn span{text-decoration:line-through;color:var(--muted)}
+.rtadd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:12px}
+.rtadd input{min-width:0;font-size:16px}
+.rtsum{margin:6px 0 0;color:var(--muted);font-size:14px}
+.rtcfg{margin-top:10px;font-size:13px;color:var(--muted)}
+.rtcfg summary{cursor:pointer;font-weight:700}
+.rtcfg .row{gap:10px;margin-top:8px;align-items:center}
+.rtcfg select{min-width:0}
+.rtres{display:grid;gap:8px;margin-top:8px}
+.rtres p{margin:0}
+.rtbig{font-family:var(--f-display);font-size:28px;font-weight:800;line-height:1.1;margin:4px 0}
 body:has(.modal:not([hidden])) #msg{top:calc(12px + env(safe-area-inset-top,0px));bottom:auto}
 #msg button{margin-left:10px;min-height:30px;padding:2px 12px;font-size:13px;color:var(--bg);border-color:var(--bg);background:transparent}
 .paceb{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13px;margin:0;padding:8px 10px;border-radius:14px;background:var(--surface2)}
@@ -875,7 +917,7 @@ body.mini{padding:10px!important;min-height:100vh}
     </svg>
     <h1>Mi semana</h1>
     
-    <div class="topb"><button class="ghost sm" id="instBtn" type="button" hidden>Instalar</button><button class="ghost sm iconb" id="thBtn" type="button" aria-label="Tema de colores" title="Tema de colores"><svg class="gl" aria-hidden="true"><use href="#g-pal"/></svg></button><button class="ghost sm iconb" id="miniBtn" type="button" aria-label="Abrir ventana mini" title="Ventana mini: ahora y lo próximo"><svg class="gl" aria-hidden="true"><use href="#g-mini"/></svg></button><button class="ghost sm" data-hmodal="1">Mis horarios</button><button class="ghost sm sybtn" data-smodal="1" id="syBtn" aria-label="Datos, avisos y copias" title="Datos, avisos y copias"><svg class="gl" aria-hidden="true"><use href="#g-sync"/></svg><i id="syDot"></i></button></div>
+    <div class="topb"><button class="ghost sm" id="instBtn" type="button" hidden>Instalar</button><button class="ghost sm iconb" id="thBtn" type="button" aria-label="Tema de colores" title="Tema de colores"><svg class="gl" aria-hidden="true"><use href="#g-pal"/></svg></button><button class="ghost sm iconb" id="miniBtn" type="button" aria-label="Abrir ventana mini" title="Ventana mini: ahora y lo próximo"><svg class="gl" aria-hidden="true"><use href="#g-mini"/></svg></button><button class="ghost sm" id="simBtn" type="button">Ver todo</button><button class="ghost sm" data-hmodal="1">Mis horarios</button><button class="ghost sm sybtn" data-smodal="1" id="syBtn" aria-label="Datos, avisos y copias" title="Datos, avisos y copias"><svg class="gl" aria-hidden="true"><use href="#g-sync"/></svg><i id="syDot"></i></button></div>
     <p class="dt" id="dateTxt"></p>
   </header>
 
@@ -936,6 +978,11 @@ body.mini{padding:10px!important;min-height:100vh}
           <details class="capex"><summary>Qué le puedo pedir</summary><div class="capx" id="capx"></div></details>
         </div>
       </section>
+      <nav class="simnav" id="simnav" aria-label="Más secciones">
+        <div id="simTips"></div>
+        <p class="k2">Cuando lo necesites</p>
+        <div class="simgo"><button type="button" data-full="cal">Semana completa</button><button type="button" data-full="exa">Exámenes</button><button type="button" data-full="cap">Pendientes</button><button type="button" data-full="vida">Rutinas y proyectos</button></div>
+      </nav>
       <nav class="stabs" id="stabs" role="tablist" aria-label="Secciones">
         <button type="button" role="tab" data-tab="hoy"><svg class="gl" aria-hidden="true"><use href="#g-hoy"/></svg>Hoy</button>
         <button type="button" role="tab" data-tab="exa"><svg class="gl" aria-hidden="true"><use href="#g-est"/></svg>Estudio</button>
@@ -1144,6 +1191,7 @@ body.mini{padding:10px!important;min-height:100vh}
   </div>
 </div>
 
+<div id="ritual" class="modal" hidden><div class="sheet rsheet" role="dialog" aria-modal="true" aria-labelledby="rtT"><div id="rtBody"></div></div></div>
 <div id="wmodal" class="modal" hidden><div class="sheet wsheet" role="dialog" aria-modal="true" aria-labelledby="wkT"><div><h3 id="wkT">Tu semana</h3><p class="muted" id="wkR" style="margin:4px 0 0"></p></div><div id="wkBody"></div><button class="ghost" type="button" data-wclose>Listo</button></div></div>
 <div id="msg" hidden></div>
 
@@ -1756,7 +1804,7 @@ function renderHero(){
   const upl=up.filter(i=>!(H.k==='block'&&i.id===H.b.id)).slice(0,4);
   const ticks=[0,6,12,18,24].map(h=>`<span style="left:${(h*60/END*100).toFixed(2)}%">${h}</span>`).join('');
   const dot=i=>i.k==='fx'?'k-fx':i.k==='tv'?'k-tv':i.k==='gc'?'k-gc':(i.cls||'a-'+i.a);
-  $('#next').innerHTML=`<div class="ashead"><div><p class="greet">${greet}, ${esc(S.name||'Tomás')}</p><p class="gdate">${cap(DFULL[dow(T)])} ${new Date().getDate()} de ${MESF[new Date().getMonth()]} · ${hm(now)}</p></div>${wxHtml()}</div>
+  $('#next').innerHTML=`<div class="ashead"><div><p class="greet">${greet}, ${esc(S.name||'Tomás')}</p><p class="gdate">${cap(DFULL[dow(T)])} ${new Date().getDate()} de ${MESF[new Date().getMonth()]} · ${hm(now)}</p></div>${wxHtml()}</div>${typeof ritChip==='function'?ritChip():''}
     <div class="hmain"><div class="eb"><span class="orb"></span><span>${esc(eb)}</span></div>
     <h2 class="ht">${esc(ti)}</h2>${chips}${su?`<p class="hs">${esc(su)}</p>`:''}
     ${bt?`<div class="row">${bt}</div>`:''}${alts}${missed}</div>
@@ -2552,6 +2600,7 @@ function icsAll(){
   const blocks=S.blocks.filter(b=>b.date>=cut&&taskOf(b.tid)&&!taskOf(b.tid).done);
   const exams=S.exams.filter(x=>x.date>=T);
   const habs=[];for(let i=0;i<14;i++){const d=addD(T,i);for(const h of habTimed(d))habs.push({uid:'h'+h.id+'-'+ymd(d),date:d,s:h.s,m:h.m,title:h.n,desc:'Rutina · Mi semana',alarms:bkR()==null?[]:[bkR()]});}
+  if(S.ritG!==false){const u=ritUrl();for(let i=0;i<14;i++){const d=addD(T,i);habs.push({uid:'rm-'+ymd(d),date:d,s:RM(),m:10,title:'Armá tu día (1 minuto)',desc:'Mi semana'+(u?' · '+u+'?r=m':''),alarms:[0]});habs.push({uid:'rn-'+ymd(d),date:d,s:RN(),m:10,title:'Cerrá el día (1 minuto)',desc:'Mi semana'+(u?' · '+u+'?r=n':''),alarms:[0]});}}
   for(let i=0;i<14;i++){const d=addD(T,i),ida=travelOn(d).find(t=>t.k==='ida');if(ida)habs.push({uid:'tv-'+ymd(d),date:d,s:ida.s,m:ida.e-ida.s,title:'Salir para la facultad',desc:'Viaje · Mi semana',alarms:[10]});}
   return {count:tasks.length+blocks.length+exams.length+habs.length,text:icsOf([...tasks.map(evTask),...blocks.map(evBlock),...exams.map(evExam),...habs])};
 }
@@ -3990,6 +4039,9 @@ function gWanted(){
   for(const t of S.tasks){if(t.done||t.note||!t.due||t.due<T||isScheduled(t.id)||(t.ds==null&&t.rem==null))continue;timed('t'+t.id,t.due,t.ds!=null?t.ds:540,t.ds!=null?(t.m||30):15,t.t,'Mi semana · aviso',t.rem,'5');}
   for(const x of S.exams){if(x.date<T)continue;W.set('x'+x.id,{summary:'Examen: '+x.name,description:'Mi semana',start:{date:x.date},end:{date:addD(x.date,1)},transparency:'transparent',reminders:{useDefault:false,overrides:[{method:'popup',minutes:900}]},colorId:'11',extendedProperties:{private:{misemana:'1',mk:'x'+x.id}}});}
   for(let i=0;i<14;i++){const d=addD(T,i),ida=travelOn(d).find(t=>t.k==='ida');if(ida)timed('tv'+d.replace(/-/g,''),d,ida.s,ida.e-ida.s,'Salir para la facultad','Mi semana · viaje',10,'8');}
+  if(S.ritG!==false)for(let i=0;i<7;i++){const d=addD(T,i),r=(S.rit||{})[d]||{},u=ritUrl();
+    if(!r.m)timed('rm'+d.replace(/-/g,''),d,RM(),10,'Armá tu día (1 minuto)','Mi semana · mirá qué hacés hoy'+(u?'\n'+u+'?r=m':''),0,'5');
+    if(!r.n)timed('rn'+d.replace(/-/g,''),d,RN(),10,'Cerrá el día (1 minuto)','Mi semana · marcá lo que hiciste'+(u?'\n'+u+'?r=n':''),0,'9');}
   if(GG.rt)for(let i=0;i<14;i++){const d=addD(T,i);for(const h of habTimed(d))timed('h'+h.id+d.replace(/-/g,''),d,h.s,h.m,h.n,'Mi semana · rutina',bkR(),'10');}
   return W;
 }
@@ -4205,7 +4257,7 @@ $('#wmodal').addEventListener('click',e=>{if(e.target.id==='wmodal'||e.target.cl
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#wmodal').hidden)$('#wmodal').hidden=true;});
 
 /* ===== Notificaciones de la Mac: bloques, salida a la facultad, pagos, inglés y exámenes ===== */
-const NTFK0={bk:true,tv:true,pg:true,en:true,ex:true};
+const NTFK0={bk:true,tv:true,pg:true,en:true,ex:true,rt:true};
 const ntfK=()=>Object.assign({},NTFK0,S.ntfK||{});
 function ntfMore(){
   if(!S.ntf)return;
@@ -4214,6 +4266,7 @@ function ntfMore(){
   const ida=travelOn(T).find(t=>t.k==='ida');
   if(K.tv&&ida&&now>=ida.s-10&&now<ida.s+15)once('tv'+T,'Salí para la facultad',`La clase arranca a las ${hm(ida.e)}. Tenés ${durTxt(ida.e-ida.s)} de viaje.`);
   if(K.ex&&now>=1200&&now<1410)for(const x of S.exams)if(x.date===addD(T,1))once('ex'+x.id,'Mañana rendís '+x.name,'Repaso liviano y a dormir temprano.');
+  if(K.rt){const r=ritDay(T);if(!r.m&&now>=RM()&&now<RM()+120)once('rm'+T,'Armá tu día','Un minuto para ver qué hacés hoy.');if(!r.n&&now>=RN()&&now<RN()+90)once('rn'+T,'Cerrá el día','Marcá lo que hiciste; lo demás lo reacomodo yo.');}
   if(Object.keys(S.nf).length>400){const keep={};for(const k in S.nf)if(k.includes(T))keep[k]=1;S.nf=keep;ch=true;}
   if(ch)save();
 }
@@ -4229,6 +4282,7 @@ function renderNtf(){
   el.innerHTML=`<p class="st">${chip(pc,pt)} ${ph}</p><div class="row"><button class="sm ${ok?'':'btn'}" id="ntog2" type="button">${nstate()}</button>${ok?'<button class="sm ghost" id="ntest" type="button">Probar un aviso</button>':''}</div>
     ${row('bk','Bloques y rutinas con hora')}
     <label class="aichk" style="padding-left:26px">Avisar <select id="ntfLead" ${ok?'':'disabled'}>${[[0,'al empezar'],[5,'5 min antes'],[10,'10 min antes'],[15,'15 min antes']].map(([v,l])=>`<option value="${v}"${lead===v?' selected':''}>${l}</option>`).join('')}</select></label>
+    ${row('rt','Armá tu día (a la mañana) y Cerrá el día (a la noche)')}
     ${row('tv','Salir para la facultad (10 min antes del viaje)')}
     ${row('ex','La noche antes de un examen (a las 20)')}
     <p class="st"><b>Con la app cerrada no llegan.</b> Para eso están Google Calendar y el archivo .ics (más abajo): esos avisos los dispara el calendario, e incluyen la hora de salir para la facultad.</p>`;
@@ -4308,6 +4362,211 @@ function dedupeExams(){
   S.blocks=S.blocks.filter(b=>!ids.has(b.tid)||b.date<todayS());S.tasks=S.tasks.filter(t=>!ids.has(t.id)||isScheduled(t.id));
   cleanOrphans();autoPlanQuiet();return true;
 }
+
+/* ===== Tu aliada: vista simple, dos momentos por día, perdón y celular ===== */
+/* 1) Vista simple: al abrir ves solo lo de ahora, lo que sigue y dónde anotar. Lo demás, a un toque. */
+const SIMKEY='mi-semana-simple';
+function simOn(){try{return localStorage.getItem(SIMKEY)!=='0';}catch(_){return true;}}
+function setSimple(on,tab){
+  try{localStorage.setItem(SIMKEY,on?'1':'0');}catch(_){}
+  document.body.classList.toggle('simple',on);
+  const b=$('#simBtn');
+  if(b){b.textContent=on?'Ver todo':'Simple';b.title=on?'Mostrar el calendario y todas las secciones':'Volver a lo esencial: ahora, después y anotar';b.setAttribute('aria-pressed',on?'false':'true');}
+  if(on)setTab('hoy',false);else if(tab){setTab(wide()&&(tab==='cal'||tab==='hoy')?'hoy':tab,false);if(tab==='cal')setTimeout(scrollCal,50);}
+  window.scrollTo(0,0);renderSimTips();
+}
+$('#simBtn').addEventListener('click',()=>setSimple(!document.body.classList.contains('simple')));
+document.addEventListener('click',e=>{const b=e.target.closest('[data-full]');if(b)setSimple(false,b.dataset.full);});
+
+/* 2) Dos momentos por día: a la mañana armás el día, a la noche lo cerrás (1 minuto cada uno) */
+const RM=()=>S.ritm==null?Math.max(420,Math.min(S.set.ws||540,660)):S.ritm;
+const RN=()=>S.ritn==null?1320:S.ritn;
+const ritUrl=()=>!inClaude&&/^https?:$/.test(location.protocol)?location.origin+location.pathname:'';
+function ritDay(T){return (S.rit||{})[T]||{};}
+function ritSet(T,k,v){
+  S.rit=Object.assign({},S.rit);S.rit[T]=Object.assign({},S.rit[T],{[k]:v});
+  const ks=Object.keys(S.rit).sort();while(ks.length>21)delete S.rit[ks.shift()];
+  save();
+}
+/* Qué momento toca ahora: 'm' (mañana), 'n' (noche) o nada */
+function ritDue(){
+  const T=todayS(),now=nowM(),r=ritDay(T);
+  if(now>=RN()-30&&!r.n)return 'n';
+  if(!r.m&&now>=RM()-60&&now<RN()-30&&now<Math.max(RM()+300,840))return 'm';
+  return null;
+}
+function ritChip(){
+  const k=ritDue();if(!k)return '';
+  return k==='m'?'<button type="button" class="ritchip" data-rt="open-m"><span>Armá tu día</span><small>1 minuto</small></button>'
+    :'<button type="button" class="ritchip night" data-rt="open-n"><span>Cerrá el día</span><small>1 minuto</small></button>';
+}
+let RIT=null;
+const itemDot=i=>i.k==='fx'?'k-fx':i.k==='tv'?'k-tv':i.k==='gc'?'k-gc':(i.cls||'a-'+i.a);
+const timeOpts15=(from,to,v)=>{let h='';for(let x=from;x<=to;x+=15)h+=`<option value="${x}"${x===v?' selected':''}>${hm(x)}</option>`;return h;};
+function ritCfg(){
+  return `<details class="rtcfg"><summary>Horarios de estos dos momentos</summary>
+    <div class="row"><label>Mañana <select id="rtM">${timeOpts15(360,720,RM())}</select></label><label>Noche <select id="rtN">${timeOpts15(1140,1425,RN())}</select></label></div>
+    <label class="aichk"><input type="checkbox" id="rtAuto" ${S.ritAuto!==false?'checked':''}> Mostrármelo solo cuando abro la app</label>
+    <label class="aichk"><input type="checkbox" id="rtG" ${S.ritG!==false?'checked':''}> Avisarme también en Google Calendar y en el .ics</label></details>`;
+}
+function openRit(k){RIT={k,step:'list'};renderRit();$('#ritual').hidden=false;setTimeout(()=>{const f=$('#ritual .btn');if(f)f.focus();},60);}
+function closeRit(skip){
+  if(RIT&&skip&&!ritDay(todayS())[RIT.k])ritSet(todayS(),RIT.k+'s',1);
+  $('#ritual').hidden=true;RIT=null;renderHero();
+}
+function renderRit(){
+  if(!RIT)return;
+  const T=todayS(),now=nowM(),el=$('#rtBody');
+  if(RIT.k==='m'){
+    const its=dayItems(T).filter(i=>!i.done),timed=its.filter(i=>i.s!=null&&(i.e==null||i.e>now)),loose=its.filter(i=>i.s==null);
+    const free=freeWin(T,now),nx=S.exams.filter(x=>x.date>=T).sort((a,b)=>a.date<b.date?-1:1)[0];
+    const ida=travelOn(T).find(t=>t.k==='ida');
+    const rows=timed.map(i=>`<li><span class="ut">${hm(i.s)}</span><i class="ud ${itemDot(i)}"></i><span>${esc(i.t)}${i.e?` <small class="muted">hasta ${hm(i.e)}</small>`:''}</span>${i.k==='bk'?`<button class="sm ghost" type="button" data-rtmv="${i.id}" title="Pasarlo a mañana">Mañana</button>`:'<span></span>'}</li>`).join('');
+    const lrows=loose.map(i=>`<li><span class="ut">—</span><i class="ud ${itemDot(i)}"></i><span>${esc(i.t)}</span><span></span></li>`).join('');
+    const hr=new Date().getHours(),greet=hr<13?'Buen día':'Hola';
+    el.innerHTML=`<div><p class="k">${cap(DFULL[dow(T)])} ${new Date().getDate()} de ${MESF[new Date().getMonth()]}</p><h3 id="rtT">${greet}, ${esc(S.name||'Tomás')}. Tu día de hoy</h3>
+      <p class="rtsum">${timed.length+loose.length?`${timed.length+loose.length} ${timed.length+loose.length===1?'cosa':'cosas'}`:'Nada agendado todavía'} · ${fmtH(free)} h libres${ida&&now<ida.s?` · salís a las <b>${hm(ida.s)}</b>`:''}${nx?` · ${esc(nx.name)} en ${diffD(T,nx.date)} ${diffD(T,nx.date)===1?'día':'días'}`:''}</p></div>
+      ${rows||lrows?`<ul class="rtl">${rows}${lrows}</ul>`:'<p class="rtsum">Tenés el día libre. Si hay algo que querés lograr hoy, anotalo acá abajo y te busco un lugar.</p>'}
+      <form class="rtadd" id="rtAddF" autocomplete="off"><input id="rtAdd" placeholder="¿Algo más para hoy? Ej: llamar al banco a las 15" aria-label="Agregar algo para hoy" enterkeyhint="done"><button class="sm" type="submit">Sumar</button></form>
+      <div class="row" style="margin-top:14px"><button class="btn" type="button" data-rt="mok">Dale, arranco</button><button class="ghost" type="button" data-rt="later">Ahora no</button></div>
+      ${ritCfg()}`;
+    return;
+  }
+  if(RIT.step==='done'){
+    const R=RIT.res,tm=dayItems(addD(T,1)).filter(i=>i.s!=null&&i.k!=='tv'),fi=tm[0],ida=travelOn(addD(T,1)).find(t=>t.k==='ida');
+    el.innerHTML=`<div><p class="k">Día cerrado</p><h3 id="rtT">${R.tot?`Hiciste ${R.done} de ${R.tot}`:'Listo por hoy'}</h3>
+      <div class="rtres">${R.tot&&R.done===R.tot?'<p class="rtbig">Día completo.</p>':''}
+      ${R.moved.length?`<p>Lo que quedó no se pierde. Lo pasé a:</p><ul class="rtl">${R.moved.slice(0,5).map(m=>`<li><span class="ut">${m.s!=null?hm(m.s):'—'}</span><i class="ud a-otr"></i><span>${esc(m.t)}</span><small class="muted">${m.ex?'se reparte en tu plan':m.date?dayWord(m.date):'mañana'}</small></li>`).join('')}</ul>`:''}
+      ${fi?`<p>Mañana arrancás con <b>${esc(fi.t)}</b> a las ${hm(fi.s)}${ida?` (salís de casa a las ${hm(ida.s)})`:''}.</p>`:'<p>Mañana no tenés nada agendado todavía.</p>'}
+      <p class="muted">Descansá. Mañana a las ${hm(RM())} te muestro el día.</p></div>
+      <div class="row" style="margin-top:12px"><button class="btn" type="button" data-rt="close">Listo</button></div></div>`;
+    return;
+  }
+  const bl=blocksOf(T).filter(b=>taskOf(b.tid)),hb=habOn(T),av=S.tasks.filter(t=>t.due===T&&!t.note&&!t.ex&&!isScheduled(t.id));
+  const row=(key,time,name,dn,cls)=>`<li class="${dn?'dn':''}"><span class="ut">${time}</span><i class="ud ${cls}"></i><label class="rk" ><span>${esc(name)}</span><input type="checkbox" data-rck="${key}" ${dn?'checked disabled':''} aria-label="Lo hice: ${esc(name)}"></label></li>`;
+  const rows=[...bl.map(b=>{const t=taskOf(b.tid);return {s:b.s,h:row('b:'+b.id,hm(b.s),t.t,t.done,clsOf(t))};}),
+    ...hb.map(h=>({s:h.s==null?-1:h.s,h:row('h:'+h.id,h.s!=null?hm(h.s):'—',h.n,habDone(h,T),'a-'+h.a)})),
+    ...av.map(t=>({s:t.ds==null?-1:t.ds,h:row('t:'+t.id,t.ds!=null?hm(t.ds):'—',t.t,t.done,'a-'+t.a)}))].sort((a,b)=>a.s-b.s).map(x=>x.h).join('');
+  el.innerHTML=`<div><p class="k">${cap(DFULL[dow(T)])} ${new Date().getDate()}</p><h3 id="rtT">¿Cómo te fue hoy?</h3>
+    <p class="rtsum">${rows?'Tildá lo que hiciste. Lo que no, lo paso a otro día sin drama.':'Hoy no tenías nada agendado.'}</p></div>
+    ${rows?`<ul class="rtl">${rows}</ul>`:''}
+    <form class="rtadd" id="rtAddF" autocomplete="off"><input id="rtAdd" placeholder="¿Algo para mañana? Ej: mañana a las 10 llamar al banco" aria-label="Agregar algo para mañana" enterkeyhint="done"><button class="sm" type="submit">Sumar</button></form>
+    <div class="row" style="margin-top:14px"><button class="btn" type="button" data-rt="nclose">Cerrar el día</button><button class="ghost" type="button" data-rt="later">Ahora no</button></div>
+    ${ritCfg()}`;
+}
+/* Buscar lugar desde un día dado (sin tocar horarios fijos, clases ni eventos de Google) */
+function slotAfter(m,from){
+  const T=todayS();
+  for(let k=0;k<14;k++){
+    const date=addD(from,k);if(date<T)continue;
+    const st=date===T?Math.max(nowM()+5,S.set.ws):S.set.ws;
+    for(const g of gapsIn(date,st,S.set.we)){const s0=ceil5(g.s);if(g.e-s0>=m)return {date,s:s0};}
+  }
+  return null;
+}
+/* 4) Perdonar: lo que no se hizo se reacomoda, no queda en rojo */
+function moveForward(b,from){
+  const t=taskOf(b.tid);if(!t||t.done)return null;
+  if(t.ds!=null&&t.due)return null; /* turnos y citas con hora fija: no se mueven */
+  if(t.ex){
+    S.blocks=S.blocks.filter(x=>x.id!==b.id);
+    if(t.auto&&!isScheduled(t.id)){S.tasks=S.tasks.filter(x=>x.id!==t.id);if(timer.tid===t.id)resetTimer();}
+    return {t:t.t,ex:true};
+  }
+  const f=slotAfter(b.m,from);if(!f)return null;
+  b.date=f.date;b.s=f.s;b.auto=false;t.moved=(t.moved||0)+1;
+  return {t:t.t,date:f.date,s:f.s};
+}
+function forgiveOld(){
+  const T=todayS();if(S.fgv===T)return;
+  const old=S.blocks.filter(b=>b.date<T&&b.date>=addD(T,-10)&&(t=>t&&!t.done&&!(t.ds!=null&&t.due))(taskOf(b.tid)));
+  const av=S.tasks.filter(t=>!t.done&&!t.note&&!t.ex&&t.due&&t.due<T&&t.due>=addD(T,-10)&&t.ds==null&&!isScheduled(t.id));
+  if(!old.length&&!av.length){S.fgv=T;save();return;}
+  snapUndo();S.fgv=T;let n=0;
+  for(const b of old.sort((a,c)=>(a.date+hm(a.s)).localeCompare(c.date+hm(c.s))))if(moveForward(b,T))n++;
+  for(const t of av){t.due=T;t.fired=false;n++;}
+  cleanOrphans();autoPlanQuiet();save();render();
+  if(n)say(`Reacomodé ${n} ${n===1?'cosa que quedó pendiente':'cosas que quedaron pendientes'} de días anteriores. Arrancamos de nuevo.`,true);
+}
+function closeDay(){
+  const T=todayS();snapUndo();let done=0,tot=0;const moved=[],marks=[];
+  document.querySelectorAll('#rtBody [data-rck]').forEach(c=>{const [k,id]=c.dataset.rck.split(':');tot++;if(c.disabled){done++;return;}marks.push({k,id,on:c.checked});if(c.checked)done++;});
+  for(const m of marks){
+    if(m.k==='b'){const b=S.blocks.find(x=>x.id===m.id),t=b&&taskOf(b.tid);if(!t)continue;
+      if(m.on){if(!t.done)toggleDone(t.id);}else{const r=moveForward(b,addD(T,1));if(r)moved.push(r);}}
+    else if(m.k==='h'){const h=(S.habits||[]).find(x=>x.id===m.id);if(h&&m.on){h.dn=Object.assign({},h.dn,{[T]:1});}}
+    else if(m.k==='t'){const t=taskOf(m.id);if(!t)continue;if(m.on){if(!t.done)toggleDone(t.id);}else if(t.ds==null){t.due=addD(T,1);t.fired=false;moved.push({t:t.t,date:addD(T,1),s:null});}}
+  }
+  cleanOrphans();autoPlanQuiet();ritSet(T,'n',1);render();
+  RIT={k:'n',step:'done',res:{done,tot,moved}};renderRit();
+}
+$('#ritual').addEventListener('click',e=>{if(e.target.id==='ritual')closeRit(true);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#ritual').hidden)closeRit(true);});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-rt],[data-rtmv]');if(!b)return;
+  const v=b.dataset.rt,T=todayS();
+  if(b.dataset.rtmv!==undefined){const bl=S.blocks.find(x=>x.id===b.dataset.rtmv);if(bl){snapUndo();const r=moveForward(bl,addD(T,1));if(r){cleanOrphans();autoPlanQuiet();save();render();say(r.ex?`Saqué ${r.t}: el plan lo reparte en otros días`:`${r.t} pasó a ${whenTxt(r.date,r.s)}`,true);}else say('No encontré lugar en los próximos días.');renderRit();}return;}
+  if(v==='open-m')openRit('m');
+  else if(v==='open-n')openRit('n');
+  else if(v==='mok'){ritSet(T,'m',1);closeRit(false);say('Dale. Cualquier cosa, anotala acá abajo.');}
+  else if(v==='nclose')closeDay();
+  else if(v==='later')closeRit(true);
+  else if(v==='close')closeRit(false);
+});
+document.addEventListener('submit',e=>{
+  if(e.target.id!=='rtAddF')return;e.preventDefault();
+  const i=$('#rtAdd'),v=(i.value||'').trim();if(!v)return;
+  $('#capi').value=RIT&&RIT.k==='n'&&!/\b(hoy|mañana|manana|lunes|martes|miercoles|miércoles|jueves|viernes|sabado|sábado|domingo|\d{1,2}\/\d{1,2})\b/i.test(v)?'mañana '+v:v;
+  capAdd();i.value='';setTimeout(renderRit,250);
+});
+document.addEventListener('change',e=>{
+  const id=e.target.id;
+  if(id==='rtM'){S.ritm=+e.target.value;save();renderRit();if(typeof gPushSoon==='function')gPushSoon();}
+  else if(id==='rtN'){S.ritn=+e.target.value;save();renderRit();if(typeof gPushSoon==='function')gPushSoon();}
+  else if(id==='rtAuto'){S.ritAuto=e.target.checked;save();}
+  else if(id==='rtG'){S.ritG=e.target.checked;save();if(typeof gPushSoon==='function')gPushSoon();}
+});
+function anyModal(){return [...document.querySelectorAll('.modal')].some(m=>!m.hidden);}
+function ritAuto(){
+  if(location.hash==='#mini'||document.visibilityState!=='visible')return;
+  forgiveOld();
+  const k=ritDue();if(!k||S.ritAuto===false||ritDay(todayS())[k+'s']||anyModal())return;
+  openRit(k);
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')setTimeout(ritAuto,600);});
+setInterval(()=>{if(document.visibilityState==='visible'&&$('#ritual').hidden)renderHero();},5*60000);
+
+/* 5) Celular: anotar en dos toques, accesos directos y consejos para tenerla a mano */
+const isIOS=()=>/iP(hone|od|ad)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const isApp=()=>(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+function tipSeen(k){try{return !!localStorage.getItem('mi-semana-tip-'+k);}catch(_){return false;}}
+function tipHide(k){try{localStorage.setItem('mi-semana-tip-'+k,'1');}catch(_){}renderSimTips();}
+function renderSimTips(){
+  const el=$('#simTips');if(!el)return;let h='';
+  if(!inClaude&&location.protocol==='https:'&&typeof GG!=='undefined'&&!GG.on&&!tipSeen('g'))
+    h+=`<div class="tipc"><p><b>Que tu día te encuentre a vos.</b> Conectá Google Calendar y tus bloques, el «Armá tu día» y el «Cerrá el día» te llegan como aviso al celular, aunque no abras la app.</p><div class="row"><button class="sm btn" type="button" data-tip="gcon">Conectar</button><button class="sm ghost" type="button" data-tip="g">Ahora no</button></div></div>`;
+  if(!inClaude&&isIOS()&&!isApp()&&!tipSeen('ios'))
+    h+=`<div class="tipc"><p><b>Tenela en tu pantalla de inicio.</b> En Safari tocá <b>Compartir</b> (el cuadrado con la flecha) → <b>Agregar a inicio</b>. Se abre como una app más.</p><div class="row"><button class="sm ghost" type="button" data-tip="ios">Listo</button></div></div>`;
+  el.innerHTML=h;
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-tip]');if(!b)return;const k=b.dataset.tip;
+  if(k==='gcon'){openS();setTimeout(()=>{const g=$('#gBody');if(g)g.scrollIntoView({block:'start',behavior:'smooth'});},120);}
+  else tipHide(k);
+});
+/* Al abrir: vista simple, momento del día y accesos directos (?r=m, ?r=n, ?a=anotar) */
+(function(){
+  if(location.hash==='#mini')return;
+  document.body.classList.toggle('simple',simOn());setSimple(simOn());
+  const q=new URLSearchParams(location.search),r=q.get('r'),a=q.get('a');
+  if(r||a){try{history.replaceState(null,'',location.pathname+location.hash);}catch(_){}}
+  setTimeout(()=>{
+    forgiveOld();
+    if(r==='m'||r==='n'){openRit(r);return;}
+    if(a==='anotar'){if(!simOn())setTab('hoy',false);const i=$('#capi');if(i){i.scrollIntoView({block:'center'});i.focus();}return;}
+    ritAuto();
+  },700);
+})();
 
 fillStatic();
 /* Con sincronización activa, primero traigo lo del otro dispositivo y después completo el plan */
